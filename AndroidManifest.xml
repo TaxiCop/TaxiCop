@@ -15,15 +15,15 @@
             </intent-filter>
             
         </activity>
-        <activity android:name=".Consultas"
+        <activity android:name="TabRequest"
 			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
 			android:launchMode="standard">
 		</activity>
-		 <activity android:name=".Denuncias"
+		 <activity android:name="TabInsert"
 			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
 			android:launchMode="standard">
 		</activity>
-		<activity android:name="Sincronizacion"
+		<activity android:name="TabSync"
 			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
 			android:launchMode="standard">
 		</activity>

@@ -12,6 +12,9 @@
 	<!-- Label for this package -->
 	
 	<string name="label">DevFieldSync</string>
+	<string name="tab_request">Consulta</string>
+	<string name="tab_insert">Denuncia</string>
+	<string name="tab_sync">Actualizar</string>
 
 	<!-- Permission label -->
 	<string name="permlab_sampleAsterasAuthPassword">access to passwords for Asteras accounts</string>
