@@ -30,6 +30,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SyncResult;
+import android.database.Cursor;
+import android.database.CursorJoiner.Result;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -37,9 +39,9 @@ import android.widget.Toast;
 
 import com.android.client.NetworkUtilities;
 import com.taxicop.authenticator.Constants;
+import com.taxicop.data.Complaint;
 import com.taxicop.data.DataBase;
 import com.taxicop.data.DataContentProvider;
-import com.taxicop.data.Complaint;
 import com.taxicop.data.Fields;
 
 /**
@@ -110,9 +112,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	}
 	public void insertId(Complaint data) {
 		Log.i(TAG, "insertIdc: ");
-		ContentResolver cr = mContext.getContentResolver();
-		ContentValues values = new ContentValues();
-		cr.insert(DataContentProvider.URI_EVENTOS, values);
+			ContentResolver cr = mContext.getContentResolver();
+			ContentValues values = new ContentValues();
+			values.put(Fields.PLACA,data.PLACA);
+			values.put(Fields.RANKING,data.RANKING);
+			values.put(Fields.DESCRIPCION,data.DESCRIPCION);
+			cr.insert(DataContentProvider.URI_DENUNCIAS, values);
+	}
+	
+	
+	public Complaint query(String who){
+		ContentResolver cr= mContext.getContentResolver();
+		Cursor c= cr.query(DataContentProvider.URI_DENUNCIAS, null, Fields.PLACA+"= "+who, null, null);
+		Complaint ret=null;
+		while(c.moveToFirst()){
+			int rank = c.getInt(c.getColumnIndex(Fields.RANKING));
+			String info = "" + (c.getString(c.getColumnIndex(Fields.PLACA)));
+			String desc= "" + (c.getString(c.getColumnIndex(Fields.DESCRIPCION)));
+			ret= new Complaint(rank, info, desc);
+		}
+		return ret;		
 	}
 	
 	
