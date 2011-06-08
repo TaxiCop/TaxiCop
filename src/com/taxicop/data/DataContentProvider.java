@@ -18,13 +18,11 @@ import android.util.Log;
 public class DataContentProvider extends ContentProvider {
 
 	static final String TAG= "DataContentProvider";	
-	public static final Uri URI_EVENTOS = Uri
-			.parse("content://com.android.devfield.sstats2/eventos");
-	public static final Uri URI_IDPARTIDO = Uri
-			.parse("content://com.android.devfield.sstats2/idpartido");
+	public static final Uri URI_DENUNCIAS = Uri
+			.parse("content://com.taxicop.taxicop/denuncias");
 	public DataBase dba;
 	private static final UriMatcher sUriMatcher;
-	public static final String AUTHORITY = "com.android.devfield.sstats2";
+	public static final String AUTHORITY = "com.taxicop.taxicop";
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_DENUNCIAS, 1);
@@ -83,7 +81,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 		switch (sUriMatcher.match(uri)) {
 		case 1:
 			dba.insertData(Fields.TABLE_DENUNCIAS, values);
-			return DataContentProvider.URI_EVENTOS;
+			return DataContentProvider.URI_DENUNCIAS;
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

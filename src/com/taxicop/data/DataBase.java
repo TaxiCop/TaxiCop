@@ -37,7 +37,7 @@ public class DataBase {
 	}
 	public void eraseData()throws SQLiteException{
 		
-		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_EVENTOS);
+		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_DENUNCIAS);
 		db.execSQL(DBhelper.CREATE_TABLE1);
 	}
 
@@ -61,13 +61,6 @@ public class DataBase {
 			Object object4) {
 		Log.i(TAG, "getData(): obtener todos los datos por tabla con seleccion");
 		Cursor c = db.query(table, selectionArgs, selection,
-				null, null, null, null);
-		// TODO Auto-generated method stub
-		return c;
-	}
-	public Cursor getDataPartido() {
-		Log.i(TAG, "getDataPartido(): obtener datos del partido");
-		Cursor c = db.query(Fields.TABLE_IDPARTIDO,null,null,
 				null, null, null, null);
 		// TODO Auto-generated method stub
 		return c;

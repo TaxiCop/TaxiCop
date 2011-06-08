@@ -27,6 +27,8 @@
 			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
 			android:launchMode="standard">
 		</activity>
+		<provider android:name="com.taxicop.data.DataContentProvider"
+			android:authorities="com.taxicop.taxicop" />
 
     </application>
 </manifest>

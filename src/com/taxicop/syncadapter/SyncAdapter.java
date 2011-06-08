@@ -39,7 +39,7 @@ import com.android.client.NetworkUtilities;
 import com.taxicop.authenticator.Constants;
 import com.taxicop.data.DataBase;
 import com.taxicop.data.DataContentProvider;
-import com.taxicop.data.Denuncia;
+import com.taxicop.data.Complaint;
 import com.taxicop.data.Fields;
 
 /**
@@ -108,11 +108,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         
 
 	}
-	public void insertId(Denuncia data) {
+	public void insertId(Complaint data) {
 		Log.i(TAG, "insertIdc: ");
 		ContentResolver cr = mContext.getContentResolver();
 		ContentValues values = new ContentValues();
-		cr.insert(DataContentProvider.URI_IDPARTIDO, values);
+		cr.insert(DataContentProvider.URI_EVENTOS, values);
 	}
 	
 	
