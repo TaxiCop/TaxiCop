@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/widget28"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
-	<TableLayout android:id="@+id/widget31"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:orientation="vertical">
-	</TableLayout>
-	<TextView android:id="@+id/tx_help" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Ingresa la placa"
-		android:gravity="center">
+	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/background">
+	<TextView android:id="@+id/tx_help" style="@style/CarPlate" android:text="@string/help_carplate"
+		android:layout_marginTop="70dp" android:gravity="center">
 	</TextView>
-	<EditText android:id="@+id/et_carplate" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textSize="18sp"
+	<EditText android:id="@+id/et_car_plate" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:textSize="18sp" android:layout_margin="5dp"
 		android:gravity="center">
 	</EditText>
 	<Button android:id="@+id/bt_query" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Consultar"
+		android:layout_height="wrap_content" android:text="Consultar" android:layout_margin="5dp"
 		android:textStyle="bold">
 	</Button>
-	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content" android:layout_gravity="center" android:visibility="gone"
-    android:layout_height="wrap_content"></RatingBar>
+	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content"
+		android:layout_gravity="center" android:visibility="visible"
+		android:layout_height="wrap_content"></RatingBar>
 	<TextView android:id="@+id/tx_output" android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 	</TextView>
