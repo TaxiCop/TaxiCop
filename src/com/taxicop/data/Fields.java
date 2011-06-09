@@ -1,7 +1,7 @@
 package com.taxicop.data;
 
 public class Fields {
-	public static final String TABLE_DENUNCIAS = "denuncias";
+	public static final String TABLE_REPORT = "report";
 	public static final String ID_KEY = "id";
 	public static final String RANKING = "rank";
 	public static final String PLACA = "car";

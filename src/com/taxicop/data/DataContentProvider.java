@@ -25,7 +25,7 @@ public class DataContentProvider extends ContentProvider {
 	public static final String AUTHORITY = "com.taxicop.taxicop";
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_DENUNCIAS, 1);
+		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);
 		
 	}
 	@Override
@@ -54,7 +54,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 		switch (sUriMatcher.match(uri)) {
 		case 1:
 			//count=2;
-			count=dba.delete(Fields.TABLE_DENUNCIAS, selection, selectionArgs);
+			count=dba.delete(Fields.TABLE_REPORT, selection, selectionArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -80,7 +80,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 		
 		switch (sUriMatcher.match(uri)) {
 		case 1:
-			dba.insertData(Fields.TABLE_DENUNCIAS, values);
+			dba.insertData(Fields.TABLE_REPORT, values);
 			return DataContentProvider.URI_DENUNCIAS;
 			
 		default:
@@ -106,7 +106,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 		Cursor c = null;
 		switch (sUriMatcher.match(uri)) {
 		case 1:
-			c = dba.getData(Fields.TABLE_DENUNCIAS, selection, selectionArgs, null,
+			c = dba.getData(Fields.TABLE_REPORT, selection, selectionArgs, null,
 					null, null);
 			break;
 		default:
@@ -123,7 +123,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 		int ret;
 		switch (sUriMatcher.match(uri)) {
 		case 1:
-			ret=dba.update(Fields.TABLE_DENUNCIAS, values, selection,selectionArgs);
+			ret=dba.update(Fields.TABLE_REPORT, values, selection,selectionArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

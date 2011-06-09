@@ -11,7 +11,7 @@ public class DBhelper extends SQLiteOpenHelper {
 	
 	
 	static final String CREATE_TABLE1 = "create table "+ 
-			Fields.TABLE_DENUNCIAS + " ( " + 
+			Fields.TABLE_REPORT + " ( " + 
 			Fields.ID_KEY + " integer primary key autoincrement, " + 
 			Fields.RANKING+" real not null, "+
 			Fields.PLACA+" integer not null, "+
@@ -54,7 +54,7 @@ public class DBhelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		Log.w("TaskDBAdapter", "Upgrading from version " + oldVersion + " to "
 				+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_DENUNCIAS);
+		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_REPORT);
 		onCreate(db);
 	}
 

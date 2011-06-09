@@ -37,7 +37,7 @@ public class DataBase {
 	}
 	public void eraseData()throws SQLiteException{
 		
-		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_DENUNCIAS);
+		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_REPORT);
 		db.execSQL(DBhelper.CREATE_TABLE1);
 	}
 

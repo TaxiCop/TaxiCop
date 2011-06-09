@@ -3,23 +3,34 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@drawable/background">
-	<TextView android:id="@+id/tx_help" style="@style/CarPlate" android:text="@string/help_carplate"
-		android:layout_marginTop="70dp" android:gravity="center">
+	<TextView android:id="@+id/tx_help" style="@style/CarPlate"
+		android:text="@string/help_carplate" android:layout_marginTop="70dp"
+		android:gravity="center">
 	</TextView>
 	<EditText android:id="@+id/et_car_plate" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textSize="18sp" android:layout_margin="5dp"
-		android:gravity="center">
+		android:layout_height="wrap_content" android:textSize="18sp"
+		android:layout_margin="5dp" android:gravity="center">
 	</EditText>
 	<Button android:id="@+id/bt_query" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Consultar" android:layout_margin="5dp"
-		android:textStyle="bold">
+		android:layout_height="wrap_content" android:text="Consultar"
+		android:layout_margin="5dp" android:textStyle="bold">
 	</Button>
-	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content"
-		android:layout_gravity="center" android:visibility="gone"
-		android:layout_height="wrap_content"
-		 android:numStars="5"
-        android:stepSize="0.5"></RatingBar>
-	<TextView android:id="@+id/tx_output" android:layout_width="fill_parent"
+	<TextView android:id="@+id/tx_label1" android:layout_width="fill_parent"
+		style="@style/Label" android:text="@string/out_placa"
 		android:layout_height="wrap_content">
 	</TextView>
+	<TextView android:id="@+id/tx_output1" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" style="@style/OutPut">
+	</TextView>
+	<TextView android:id="@+id/tx_label2" android:layout_width="fill_parent"
+		style="@style/Label" android:text="@string/out_description" android:layout_height="wrap_content">
+	</TextView>
+	<TextView android:id="@+id/tx_output2" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" style="@style/OutPut">
+	</TextView>
+	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content"
+		android:layout_gravity="center" android:visibility="gone"
+		android:layout_height="wrap_content" android:numStars="5"
+		android:stepSize="0.5">
+	</RatingBar>
 </LinearLayout>

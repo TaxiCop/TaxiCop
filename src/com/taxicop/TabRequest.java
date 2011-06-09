@@ -13,12 +13,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TabRequest extends Activity implements OnClickListener {
 
 	private EditText et_car_plate;
 	private Button bt_query;
+	private TextView tx_output1,tx_output2;
+	private RatingBar ratingBar;
 	private static final String TAG="TabRequest";
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,11 @@ public class TabRequest extends Activity implements OnClickListener {
 		setContentView(R.layout.request_activity);
 
 		et_car_plate = (EditText) findViewById(R.id.et_car_plate);
+		tx_output1 = (TextView) findViewById(R.id.tx_output1);
+		tx_output2= (TextView) findViewById(R.id.tx_output2);
+		
 		bt_query = (Button) findViewById(R.id.bt_query);
+		ratingBar= (RatingBar)findViewById(R.id.ratingBar);
 		bt_query.setOnClickListener(this);
 
 	}
@@ -39,8 +47,12 @@ public class TabRequest extends Activity implements OnClickListener {
 			String who = "" + et_car_plate.getText().toString();
 			if (!who.equals("null") && !who.equals("") && who != null){
 				Complaint result=query(who);
-				if(result!=null){
+				if(result==null){
 					
+					ratingBar.setVisibility(View.VISIBLE);
+					ratingBar.setRating(5.0f);
+					tx_output1.setText("EDS-345");
+					tx_output2.setText("Taxista GONORREA");
 					
 					
 				}
