@@ -15,8 +15,10 @@
 		android:textStyle="bold">
 	</Button>
 	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content"
-		android:layout_gravity="center" android:visibility="visible"
-		android:layout_height="wrap_content"></RatingBar>
+		android:layout_gravity="center" android:visibility="gone"
+		android:layout_height="wrap_content"
+		 android:numStars="5"
+        android:stepSize="0.5"></RatingBar>
 	<TextView android:id="@+id/tx_output" android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 	</TextView>

@@ -4,6 +4,8 @@
 	<!-- Label for this package -->
 	<string name="label">TaxiCop</string>
 	
+	<!-- Messages -->
+	<string name="error_message">Informacion Invalida</string>
 	<!-- Main Tabs -->
 	<string name="tab_request">Consulta</string>
 	<string name="tab_insert">Denuncia</string>

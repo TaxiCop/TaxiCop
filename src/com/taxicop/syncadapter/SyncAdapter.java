@@ -123,7 +123,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	
 	public Complaint query(String who){
 		ContentResolver cr= mContext.getContentResolver();
-		Cursor c= cr.query(DataContentProvider.URI_DENUNCIAS, null, Fields.PLACA+"= "+who, null, null);
+		Cursor c= cr.query(DataContentProvider.URI_DENUNCIAS, null, Fields.PLACA+"= '"+who+"'", null, null);
 		Complaint ret=null;
 		while(c.moveToFirst()){
 			int rank = c.getInt(c.getColumnIndex(Fields.RANKING));
