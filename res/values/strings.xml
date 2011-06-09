@@ -10,6 +10,10 @@
 	<string name="tab_sync">Actualizar</string>
 	<!-- Request Layaout -->
 	<string name="help_carplate">Introduzca la placa</string>
+	<string name="request_button">Consultar</string>
+	<!-- Submmint Layaout -->
+	<string name="help_report">Reportar placa</string>
+	<string name="submmit_button">Enviar</string>
 
 	<!-- Permission label -->
 	<string name="permlab_sampleAsterasAuthPassword">access to passwords for Asteras accounts</string>
