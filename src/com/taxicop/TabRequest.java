@@ -88,24 +88,24 @@ public class TabRequest extends Activity implements OnClickListener {
 						} else {
 							finalStringtoQuery.append(ith);
 						}
-						Complaint result = query(finalStringtoQuery.toString());
-
-						if (result != null) {
-
-							ratingBar.setVisibility(View.VISIBLE);
-							ratingBar.setRating(result.RANKING);
-							tx_output1.setText(result.PLACA);
-							tx_output2.setText(result.DESCRIPCION);
-						} else
-							showToastInfo(getString(R.string.error_message));
-
 					}
+					Log.e(TAG, "query= " + finalStringtoQuery.toString());
+
+					Complaint result = query(finalStringtoQuery.toString());
+
+					if (result != null) {
+
+						ratingBar.setVisibility(View.VISIBLE);
+						ratingBar.setRating(result.RANKING);
+						tx_output1.setText(result.PLACA);
+						tx_output2.setText(result.DESCRIPCION);
+					} else
+						showToastInfo(getString(R.string.error_message));
 				} else
 					showToastInfo(getString(R.string.error_message_length));
 			} else
 				showToastInfo(getString(R.string.error_message));
 
-			
 			break;
 
 		default:
@@ -121,7 +121,7 @@ public class TabRequest extends Activity implements OnClickListener {
 			Cursor c = cr.query(PlateContentProvider.URI_DENUNCIAS, null,
 					Fields.PLACA + "= '" + who + "'", null, null);
 
-			while (c.moveToFirst()) {
+			if (c.moveToFirst()) {
 				float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
 				String info = ""
 						+ (c.getString(c.getColumnIndex(Fields.PLACA)));
