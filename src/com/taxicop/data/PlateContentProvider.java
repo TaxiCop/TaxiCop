@@ -15,11 +15,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-public class DataContentProvider extends ContentProvider {
+public class PlateContentProvider extends ContentProvider {
 
-	static final String TAG= "DataContentProvider";	
+	static final String TAG= "PlateContentProvider";	
 	public static final Uri URI_DENUNCIAS = Uri
-			.parse("content://com.taxicop.taxicop/denuncias");
+			.parse("content://com.taxicop.taxicop/report");
 	public DataBase dba;
 	private static final UriMatcher sUriMatcher;
 	public static final String AUTHORITY = "com.taxicop.taxicop";
@@ -81,7 +81,7 @@ public int delete(Uri uri, String selection, String[] selectionArgs) {
 		switch (sUriMatcher.match(uri)) {
 		case 1:
 			dba.insertData(Fields.TABLE_REPORT, values);
-			return DataContentProvider.URI_DENUNCIAS;
+			return PlateContentProvider.URI_DENUNCIAS;
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

@@ -15,7 +15,7 @@ public class DBhelper extends SQLiteOpenHelper {
 			Fields.ID_KEY + " integer primary key autoincrement, " + 
 			Fields.RANKING+" real not null, "+
 			Fields.PLACA+" integer not null, "+
-			Fields.DATE_NAME + " text not null , " +
+			Fields.DATE_REPORT + " text not null , " +
 			Fields.DESCRIPCION + " text not null  );";
 	
 	public DBhelper(Context context, String name, CursorFactory factory,

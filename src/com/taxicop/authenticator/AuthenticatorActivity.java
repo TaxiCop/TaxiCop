@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import com.android.client.NetworkUtilities;
 import com.taxicop.R;
-import com.taxicop.data.DataContentProvider;
+import com.taxicop.data.PlateContentProvider;
 
 /**
  * Activity which displays login screen to the user.
@@ -190,7 +190,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 			// Set contacts sync for this account.
 
 			ContentResolver.setSyncAutomatically(account,
-					DataContentProvider.AUTHORITY, true);
+					PlateContentProvider.AUTHORITY, true);
 		} else {
 			mAccountManager.setPassword(account, mPassword);
 		}
@@ -198,7 +198,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 		// ContentResolver.requestSync(account, DataContentProvider.AUTHORITY,
 		// extras);
 
-		ContentResolver.requestSync(account, DataContentProvider.AUTHORITY,
+		ContentResolver.requestSync(account, PlateContentProvider.AUTHORITY,
 				extras);
 
 		final Intent intent = new Intent();

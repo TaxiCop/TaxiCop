@@ -7,11 +7,18 @@
 	<string name="out_placa">Placa:</string>
 	<string name="out_description">Descripcion:</string>
 	<!-- Messages -->
+	<string name="confirm_message">Nuevo Registro Insertado Correctamente</string>
 	<string name="error_message">Informacion Invalida</string>
+	<string name="error_message_length">Longitud Invalida</string>
+	<string name="error_message_characters">Caracteres Invalida</string>
+	<string name="error_message_rating">Rating Invalida</string>
 	<!-- Main Tabs -->
 	<string name="tab_request">Consulta</string>
 	<string name="tab_insert">Denuncia</string>
 	<string name="tab_sync">Actualizar</string>
+	<!-- Sync Layaout -->
+	<string name="sync">Sincronizacion de Placas</string>
+	<string name="sync_error">PorFavor activar la sincronizacion</string>
 	<!-- Request Layaout -->
 	<string name="help_carplate">Introduzca la placa</string>
 	<string name="request_button">Consultar</string>
@@ -21,19 +28,19 @@
 	<string name="submmit_button">Enviar</string>
 
 	<!-- Permission label -->
-	<string name="permlab_sampleAsterasAuthPassword">access to passwords for Asteras accounts</string>
+	<string name="permlab_sampleTaxicopAuthPassword">access to passwords for Taxicop accounts</string>
 	<!-- Permission description -->
-	<string name="permdesc_sampleAsterasAuthPassword">Allows applications direct access to the passwords
+	<string name="permdesc_sampleTaxicopAuthPassword">Allows applications direct access to the passwords
 		for the
-		Asteras account(s) you have configured.</string>
+		Taxicop account(s) you have configured.</string>
 
 	<!-- Permission label -->
-	<string name="permlab_sampleAsterasAuth">view configured accounts</string>
+	<string name="permlab_sampleTaxicopAuth">view configured accounts</string>
 	<!-- Permission description -->
-	<string name="permdesc_sampleAsterasAuth">Allows applications to see the usernames (email
+	<string name="permdesc_sampleTaxicopAuth">Allows applications to see the usernames (email
 		addresses) of
-		the Asteras account(s) you have configured.</string>
-	<string name="notification_login_error">Touch to sign into your Asteras account.</string>
+		the Taxicop account(s) you have configured.</string>
+	<string name="notification_login_error">Touch to sign into your Taxicop account.</string>
 
 	<!-- Title string for Login activity -->
 	<string name="ui_activity_title">Sign-in</string>
@@ -51,7 +58,7 @@
 
 	<!-- Message shown in dialog if the username or password is invalid. -->
 	<string name="login_activity_loginfail_text_both">The username or password isn\'t valid. A Sample
-		Asteras account is
+		Taxicop account is
 		required. Please try again. </string>
 	<!-- Message shown in dialog if the password is invalid -->
 	<string name="login_activity_loginfail_text_pwonly">You entered the wrong password or your account has
@@ -60,7 +67,7 @@
 	<!-- Message shown in dialog to prompt the user for their password -->
 	<string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
 	<!-- Message shown if the provided account doesn't support the current activity. -->
-	<string name="login_activity_newaccount_text">Sign in to your Asteras account. </string>
+	<string name="login_activity_newaccount_text">Sign in to your Taxicop account. </string>
 
 	<!-- Button that takes the user to the "sign in" screen -->
 	<string name="sign_in_button_label">Sign in</string>
@@ -68,16 +75,6 @@
 	<string name="back_button_label">Back</string>
 	<!-- Button to cancel the current operation -->
 	<string name="cancel_button_label">Cancel</string>
-	<string name="profile_action">Sample profile</string>
 	<string name="view_profile">View Profile</string>
-	<string name="app_name">DevField</string>
-	<string name="quake_feed">
-		http://earthquake.usgs.gov/eqcenter/catalogs/1day-M2.5.xml
-  </string>
-	<string name="menu_update">Refresh Earthquakes</string>
-	<string name="auto_update_prompt">Auto Update?</string>
-	<string name="update_freq_prompt">Update Frequency</string>
-	<string name="min_quake_mag_prompt">Minimum Quake Magnitude</string>
-	<string name="menu_preferences">Preferences</string>
-	<string name="menu_earthquake_map">Earthquake Map</string>
+	<string name="app_name">TaxiCop</string>
 </resources>

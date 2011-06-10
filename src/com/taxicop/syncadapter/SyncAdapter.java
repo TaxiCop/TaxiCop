@@ -41,7 +41,7 @@ import com.android.client.NetworkUtilities;
 import com.taxicop.authenticator.Constants;
 import com.taxicop.data.Complaint;
 import com.taxicop.data.DataBase;
-import com.taxicop.data.DataContentProvider;
+import com.taxicop.data.PlateContentProvider;
 import com.taxicop.data.Fields;
 
 /**
@@ -74,56 +74,47 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	@Override
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
-
+		Log.d(TAG, "onPerformSync: Start");
 		String authtoken = null;
-		try {
-			Log.i(TAG, "onPerformSync: Start");
-			myprefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-			server = myprefs.getString("ip", NetworkUtilities.URL);
-			// use the account manager to request the credentials
-			authtoken = mAccountManager.blockingGetAuthToken(account,
-					Constants.AUTHTOKEN_TYPE,
-					true /* notifyAuthFailure */);
-			mLastUpdated = new Date();
-			String ret=NetworkUtilities.id(account.name, authtoken,server);
-			Log.d(NetworkUtilities.TAG, "response: "+ret);
-			if((ret!=null)&&!ret.equals("")){
-				Log.i(TAG, "onPerformSync: los datos del servidor llegan correctamente.");
-			
-			}			
-			else{
-				Log.i(TAG, "onPerformSync: DATOS ??? no hay!!!.");
-				Toast.makeText(mContext, "La sinzronizacion fue incorrecta",
-						Toast.LENGTH_SHORT);
-			}
-				
-
-		} catch (final AuthenticatorException e) {
-            syncResult.stats.numParseExceptions++;
-            Log.e(TAG, "AuthenticatorException", e);
-        } catch (final OperationCanceledException e) {
-            Log.e(TAG, "OperationCanceledExcetpion", e);
-        } catch (final IOException e) {
-            Log.e(TAG, "IOException", e);
-            syncResult.stats.numIoExceptions++;
-        } 
+//		try {
+//			
+//			
+//			myprefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+//			server = myprefs.getString("ip", NetworkUtilities.URL);
+//			// use the account manager to request the credentials
+//			authtoken = mAccountManager.blockingGetAuthToken(account,
+//					Constants.AUTHTOKEN_TYPE,
+//					true /* notifyAuthFailure */);
+//			mLastUpdated = new Date();
+//			String ret=NetworkUtilities.id(account.name, authtoken,server);
+//			Log.d(NetworkUtilities.TAG, "response: "+ret);
+//			if((ret!=null)&&!ret.equals("")){
+//				Log.i(TAG, "onPerformSync: los datos del servidor llegan correctamente.");
+//			
+//			}			
+//			else{
+//				Log.i(TAG, "onPerformSync: DATOS ??? no hay!!!.");
+//				Toast.makeText(mContext, "La sinzronizacion fue incorrecta",
+//						Toast.LENGTH_SHORT);
+//			}
+//				
+//
+//		} catch (final AuthenticatorException e) {
+//            syncResult.stats.numParseExceptions++;
+//            Log.e(TAG, "AuthenticatorException", e);
+//        } catch (final OperationCanceledException e) {
+//            Log.e(TAG, "OperationCanceledExcetpion", e);
+//        } catch (final IOException e) {
+//            Log.e(TAG, "IOException", e);
+//            syncResult.stats.numIoExceptions++;
+//        } 
         
 
 	}
-	public void insertId(Complaint data) {
-		Log.i(TAG, "insertIdc: ");
-			ContentResolver cr = mContext.getContentResolver();
-			ContentValues values = new ContentValues();
-			values.put(Fields.PLACA,data.PLACA);
-			values.put(Fields.RANKING,data.RANKING);
-			values.put(Fields.DESCRIPCION,data.DESCRIPCION);
-			cr.insert(DataContentProvider.URI_DENUNCIAS, values);
-	}
-	
 	
 	public Complaint query(String who){
 		ContentResolver cr= mContext.getContentResolver();
-		Cursor c= cr.query(DataContentProvider.URI_DENUNCIAS, null, Fields.PLACA+"= '"+who+"'", null, null);
+		Cursor c= cr.query(PlateContentProvider.URI_DENUNCIAS, null, Fields.PLACA+"= '"+who+"'", null, null);
 		Complaint ret=null;
 		while(c.moveToFirst()){
 			int rank = c.getInt(c.getColumnIndex(Fields.RANKING));
@@ -132,6 +123,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			ret= new Complaint(rank, info, desc);
 		}
 		return ret;		
+	}
+	public void insertId(Complaint data) {
+		Log.i(TAG, "insertIdc: ");
+		ContentResolver cr = mContext.getContentResolver();
+		ContentValues values = new ContentValues();
+		values.put(Fields.PLACA, data.PLACA);
+		values.put(Fields.RANKING, data.RANKING);
+		values.put(Fields.DESCRIPCION, data.DESCRIPCION);
+		values.put(Fields.DATE_REPORT, new Date().toGMTString());
+		cr.insert(PlateContentProvider.URI_DENUNCIAS, values);
 	}
 	
 	

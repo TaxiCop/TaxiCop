@@ -22,11 +22,11 @@ public class Constants {
 	/**
 	 * Account type string.
 	 */
-	public static final String ACCOUNT_TYPE = "com.android.devfield";
+	public static final String ACCOUNT_TYPE = "com.taxicop";
 
 	/**
 	 * Authtoken type string.
 	 */
-	public static final String AUTHTOKEN_TYPE = "com.android.devfield";
+	public static final String AUTHTOKEN_TYPE = "com.taxicop";
 
 }

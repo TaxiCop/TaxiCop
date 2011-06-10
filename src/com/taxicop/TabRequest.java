@@ -1,7 +1,7 @@
 package com.taxicop;
 
 import com.taxicop.data.Complaint;
-import com.taxicop.data.DataContentProvider;
+import com.taxicop.data.PlateContentProvider;
 import com.taxicop.data.Fields;
 
 import android.app.Activity;
@@ -56,12 +56,10 @@ public class TabRequest extends Activity implements OnClickListener {
 					
 					
 				}
-				else Toast.makeText(this, getString(R.string.error_message),
-						Toast.LENGTH_SHORT);
+				else showToastInfo(getString(R.string.error_message));
 			}				
 			else
-				Toast.makeText(this, getString(R.string.error_message),
-						Toast.LENGTH_SHORT);
+				showToastInfo(getString(R.string.error_message));
 
 			break;
 
@@ -75,7 +73,7 @@ public class TabRequest extends Activity implements OnClickListener {
 		Complaint ret = null;
 		try{
 			ContentResolver cr = getContentResolver();
-			Cursor c = cr.query(DataContentProvider.URI_DENUNCIAS, null,
+			Cursor c = cr.query(PlateContentProvider.URI_DENUNCIAS, null,
 					Fields.PLACA + "= '" + who + "'", null, null);
 			
 			while (c.moveToFirst()) {
@@ -91,6 +89,9 @@ public class TabRequest extends Activity implements OnClickListener {
 		}
 		
 		return ret;
+	}
+	void showToastInfo(CharSequence msg) {
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 
 }
