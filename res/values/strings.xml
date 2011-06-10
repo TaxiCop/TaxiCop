@@ -72,7 +72,7 @@
 	<!-- Message shown in dialog to prompt the user for their password -->
 	<string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
 	<!-- Message shown if the provided account doesn't support the current activity. -->
-	<string name="login_activity_newaccount_text">Sign in to your Taxicop account. </string>
+	<string name="login_activity_newaccount_text">Comming soon: Sign into your Taxicop account. </string>
 
 	<!-- Button that takes the user to the "sign in" screen -->
 	<string name="sign_in_button_label">Sign in</string>
