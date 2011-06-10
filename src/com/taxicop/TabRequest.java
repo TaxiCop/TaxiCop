@@ -26,6 +26,7 @@
  */
 
 package com.taxicop;
+
 import com.taxicop.data.Complaint;
 import com.taxicop.data.PlateContentProvider;
 import com.taxicop.data.Fields;
@@ -47,9 +48,9 @@ public class TabRequest extends Activity implements OnClickListener {
 
 	private EditText et_car_plate;
 	private Button bt_query;
-	private TextView tx_output1,tx_output2;
+	private TextView tx_output1, tx_output2;
 	private RatingBar ratingBar;
-	private static final String TAG="TabRequest";
+	private static final String TAG = "TabRequest";
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -58,10 +59,10 @@ public class TabRequest extends Activity implements OnClickListener {
 
 		et_car_plate = (EditText) findViewById(R.id.et_car_plate);
 		tx_output1 = (TextView) findViewById(R.id.tx_output1);
-		tx_output2= (TextView) findViewById(R.id.tx_output2);
-		
+		tx_output2 = (TextView) findViewById(R.id.tx_output2);
+
 		bt_query = (Button) findViewById(R.id.bt_query);
-		ratingBar= (RatingBar)findViewById(R.id.ratingBar);
+		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 		bt_query.setOnClickListener(this);
 
 	}
@@ -70,20 +71,41 @@ public class TabRequest extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.bt_query:
-			String who = "" + et_car_plate.getText().toString();
-			if (!who.equals("null") && !who.equals("") && who != null){
-				Complaint result=query(who);
-				if(result!=null){
-					ratingBar.setVisibility(View.VISIBLE);
-					ratingBar.setRating(result.RANKING);
-					tx_output1.setText(result.PLACA);
-					tx_output2.setText(result.DESCRIPCION);
-				}
-				else showToastInfo(getString(R.string.error_message));
-			}				
-			else
+			String who = "" + et_car_plate.getText().toString().trim();
+			StringBuilder processedPlate = null,
+			finalStringtoQuery = null;
+			if (who != null && !who.equals("") && !who.equals("null")
+					&& who.length() >= 6) {
+				processedPlate = new StringBuilder(who.replaceAll("\\W", ""));
+				if (processedPlate.length() == 6) {
+					finalStringtoQuery = new StringBuilder();
+					for (int i = 0; i < processedPlate.length(); i++) {
+
+						char ith = (processedPlate.charAt(i));
+						if (Character.isLowerCase(ith)) {
+							char add = Character.toUpperCase(ith);
+							finalStringtoQuery.append(add);
+						} else {
+							finalStringtoQuery.append(ith);
+						}
+						Complaint result = query(finalStringtoQuery.toString());
+
+						if (result != null) {
+
+							ratingBar.setVisibility(View.VISIBLE);
+							ratingBar.setRating(result.RANKING);
+							tx_output1.setText(result.PLACA);
+							tx_output2.setText(result.DESCRIPCION);
+						} else
+							showToastInfo(getString(R.string.error_message));
+
+					}
+				} else
+					showToastInfo(getString(R.string.error_message_length));
+			} else
 				showToastInfo(getString(R.string.error_message));
 
+			
 			break;
 
 		default:
@@ -94,25 +116,26 @@ public class TabRequest extends Activity implements OnClickListener {
 
 	public Complaint query(String who) {
 		Complaint ret = null;
-		try{
+		try {
 			ContentResolver cr = getContentResolver();
 			Cursor c = cr.query(PlateContentProvider.URI_DENUNCIAS, null,
 					Fields.PLACA + "= '" + who + "'", null, null);
-			
+
 			while (c.moveToFirst()) {
 				float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
-				String info = "" + (c.getString(c.getColumnIndex(Fields.PLACA)));
+				String info = ""
+						+ (c.getString(c.getColumnIndex(Fields.PLACA)));
 				String desc = ""
 						+ (c.getString(c.getColumnIndex(Fields.DESCRIPCION)));
 				ret = new Complaint(rank, info, desc);
 			}
+		} catch (Exception e) {
+			Log.e(TAG, "" + e.getMessage());
 		}
-		catch (Exception e) {
-			Log.e(TAG, ""+e.getMessage());
-		}
-		
+
 		return ret;
 	}
+
 	void showToastInfo(CharSequence msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
