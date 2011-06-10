@@ -69,7 +69,7 @@ public class TabInsert extends Activity implements OnClickListener,
 			} else
 				showToastInfo(getString(R.string.error_message));
 			currentRating = ratingBar.getRating();
-			if (currentRating != -1) {
+			if (currentRating != -1 && finalStringtoInsert!=null) {
 				Log.e(TAG, "" + ratingBar.getRating());
 				Complaint newDataToInsert = new Complaint(currentRating,
 						finalStringtoInsert.toString(), desc);
