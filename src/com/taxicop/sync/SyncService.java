@@ -1,4 +1,3 @@
-
 /* 
  * PROJECT: TaxiCop
  * --------------------------------------------------------------------------------
@@ -25,16 +24,39 @@
  *  devel(at)taxicop.org
  * 
  */
-package com.taxicop.data;
 
-public class Fields {
-	public static final String TABLE_REPORT = "report";
-	public static final String ID_KEY = "id";
-	public static final String RANKING = "rank";
-	public static final String PLACA = "car";
-	public static final String DESCRIPCION = "info";
-	public static final String DATE_REPORT = "date";
-	public static final String DATABASE_NAME = "taxicop.db";
-	public static final int DATABASE_VERSION = 1;
-	
+package com.taxicop.sync;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+
+/**
+ * Service to handle Account sync. This is invoked with an intent with action
+ * ACTION_AUTHENTICATOR_INTENT. It instantiates the syncadapter and returns its
+ * IBinder.
+ */
+public class SyncService extends Service {
+    private static final Object sSyncAdapterLock = new Object();
+    private static SyncAdapter sSyncAdapter = null;
+
+    /*
+     * {@inheritDoc}
+     */
+    @Override
+    public void onCreate() {
+        synchronized (sSyncAdapterLock) {
+            if (sSyncAdapter == null) {
+                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+            }
+        }
+    }
+
+    /*
+     * {@inheritDoc}
+     */
+    @Override
+    public IBinder onBind(Intent intent) {
+        return sSyncAdapter.getSyncAdapterBinder();
+    }
 }

@@ -1,5 +1,31 @@
-package com.taxicop;
+/* 
+ * PROJECT: TaxiCop
+ * --------------------------------------------------------------------------------
+ *   Antonio Vanegas hpsaturn(at)gmail.com
+ *   Camilo Soto cmsvalenzuela(at)gmail.com
+ *   Javier Buitrago javierbuitrago123(at)gmail.com
+ *   Website: http://www.taxicop.org
+ *
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * For further information please contact.
+ *  devel(at)taxicop.org
+ * 
+ */
 
+package com.taxicop;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -11,7 +37,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.taxicop.authenticator.AuthenticatorActivity;
+import com.taxicop.auth.AuthActivity;
 import com.taxicop.data.PlateContentProvider;
 
 public class TabSync extends Activity implements OnClickListener {
@@ -43,7 +69,7 @@ public class TabSync extends Activity implements OnClickListener {
 			int active = ContentResolver.getIsSyncable(cuenta,
 					PlateContentProvider.AUTHORITY);
 			if (cuenta == null) {
-				Intent auth = new Intent(this, AuthenticatorActivity.class);
+				Intent auth = new Intent(this, AuthActivity.class);
 				startActivity(auth);
 			} 
 			else if(active>0)

@@ -1,4 +1,3 @@
-
 /* 
  * PROJECT: TaxiCop
  * --------------------------------------------------------------------------------
@@ -25,16 +24,21 @@
  *  devel(at)taxicop.org
  * 
  */
-package com.taxicop.data;
 
-public class Fields {
-	public static final String TABLE_REPORT = "report";
-	public static final String ID_KEY = "id";
-	public static final String RANKING = "rank";
-	public static final String PLACA = "car";
-	public static final String DESCRIPCION = "info";
-	public static final String DATE_REPORT = "date";
-	public static final String DATABASE_NAME = "taxicop.db";
-	public static final int DATABASE_VERSION = 1;
-	
+
+package com.taxicop.auth;
+
+
+public class Constants {
+
+	/**
+	 * Account type string.
+	 */
+	public static final String ACCOUNT_TYPE = "com.taxicop";
+
+	/**
+	 * Authtoken type string.
+	 */
+	public static final String AUTHTOKEN_TYPE = "com.taxicop";
+
 }

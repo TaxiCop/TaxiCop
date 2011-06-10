@@ -26,29 +26,26 @@
 			android:launchMode="standard" android:name=".TabSync">
 		</activity>
 
-		<service android:name=".authenticator.AuthenticationService"
-			android:exported="true">
+		<service android:exported="true" android:name=".auth.AuthService">
 			<intent-filter>
 				<action android:name="android.accounts.AccountAuthenticator" />
 			</intent-filter>
 			<meta-data android:name="android.accounts.AccountAuthenticator"
 				android:resource="@xml/authenticator" />
 		</service>
-		<service android:name=".syncadapter.SyncService"
-			android:exported="true">
+		<service android:exported="true" android:name=".sync.SyncService">
 			<intent-filter>
 				<action android:name="android.content.SyncAdapter" />
 			</intent-filter>
 			<meta-data android:name="android.content.SyncAdapter"
 				android:resource="@xml/syncadapter" />
 		</service>
-		<activity android:name=".authenticator.AuthenticatorActivity"
-			android:label="@string/ui_activity_title" android:theme="@android:style/Theme.Dialog"
-			android:excludeFromRecents="true">
+		<activity android:label="@string/ui_activity_title" android:theme="@android:style/Theme.Dialog"
+			android:excludeFromRecents="true" android:name=".auth.AuthActivity">
 			<!-- No intent-filter here! This activity is only ever launched by someone 
 				who explicitly knows the class name -->
 		</activity>
-		<provider android:authorities="com.taxicop.taxicop" android:name=".data.PlateContentProvider"/>
+		<provider android:authorities="com.taxicop.taxicop" android:name="data.PlateContentProvider"/>
 	</application>
 	<uses-sdk android:minSdkVersion="7" />
 	<uses-permission android:name="android.permission.VIBRATE" />

@@ -1,20 +1,31 @@
-/*
- * Copyright (C) 2010 The Android Open Source Project
+/* 
+ * PROJECT: TaxiCop
+ * --------------------------------------------------------------------------------
+ *   Antonio Vanegas hpsaturn(at)gmail.com
+ *   Camilo Soto cmsvalenzuela(at)gmail.com
+ *   Javier Buitrago javierbuitrago123(at)gmail.com
+ *   Website: http://www.taxicop.org
+ *
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * For further information please contact.
+ *  devel(at)taxicop.org
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
  */
 
-package com.taxicop.authenticator;
+package com.taxicop.auth;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
@@ -33,14 +44,14 @@ import com.taxicop.R;
  * This class is an implementation of AbstractAccountAuthenticator for
  * authenticating accounts in the com.example.android.samplesync domain.
  */
-class Authenticator extends AbstractAccountAuthenticator {
+class Auth extends AbstractAccountAuthenticator {
 	SharedPreferences myprefs;
 
 	String server=NetworkUtilities.URL;
 	// Authentication Service context
 	private final Context mContext;
 
-	public Authenticator(Context context) {
+	public Auth(Context context) {
 		super(context);
 		mContext = context;
 	}
@@ -52,8 +63,8 @@ class Authenticator extends AbstractAccountAuthenticator {
 	public Bundle addAccount(AccountAuthenticatorResponse response,
 			String accountType, String authTokenType,
 			String[] requiredFeatures, Bundle options) {
-		final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
-		intent.putExtra(AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE,
+		final Intent intent = new Intent(mContext, AuthActivity.class);
+		intent.putExtra(AuthActivity.PARAM_AUTHTOKEN_TYPE,
 				authTokenType);
 		intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE,
 				response);
@@ -78,9 +89,9 @@ class Authenticator extends AbstractAccountAuthenticator {
 			return result;
 		}
 		// Launch AuthenticatorActivity to confirm credentials
-		final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
-		intent.putExtra(AuthenticatorActivity.PARAM_USERNAME, account.name);
-		intent.putExtra(AuthenticatorActivity.PARAM_CONFIRMCREDENTIALS, true);
+		final Intent intent = new Intent(mContext, AuthActivity.class);
+		intent.putExtra(AuthActivity.PARAM_USERNAME, account.name);
+		intent.putExtra(AuthActivity.PARAM_CONFIRMCREDENTIALS, true);
 		intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE,
 				response);
 		final Bundle bundle = new Bundle();
@@ -125,9 +136,9 @@ class Authenticator extends AbstractAccountAuthenticator {
 		}
 		// the password was missing or incorrect, return an Intent to an
 		// Activity that will prompt the user for the password.
-		final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
-		intent.putExtra(AuthenticatorActivity.PARAM_USERNAME, account.name);
-		intent.putExtra(AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE,
+		final Intent intent = new Intent(mContext, AuthActivity.class);
+		intent.putExtra(AuthActivity.PARAM_USERNAME, account.name);
+		intent.putExtra(AuthActivity.PARAM_AUTHTOKEN_TYPE,
 				authTokenType);
 		intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE,
 				response);
@@ -175,11 +186,11 @@ class Authenticator extends AbstractAccountAuthenticator {
 	@Override
 	public Bundle updateCredentials(AccountAuthenticatorResponse response,
 			Account account, String authTokenType, Bundle loginOptions) {
-		final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
-		intent.putExtra(AuthenticatorActivity.PARAM_USERNAME, account.name);
-		intent.putExtra(AuthenticatorActivity.PARAM_AUTHTOKEN_TYPE,
+		final Intent intent = new Intent(mContext, AuthActivity.class);
+		intent.putExtra(AuthActivity.PARAM_USERNAME, account.name);
+		intent.putExtra(AuthActivity.PARAM_AUTHTOKEN_TYPE,
 				authTokenType);
-		intent.putExtra(AuthenticatorActivity.PARAM_CONFIRMCREDENTIALS, false);
+		intent.putExtra(AuthActivity.PARAM_CONFIRMCREDENTIALS, false);
 		final Bundle bundle = new Bundle();
 		bundle.putParcelable(AccountManager.KEY_INTENT, intent);
 		return bundle;
