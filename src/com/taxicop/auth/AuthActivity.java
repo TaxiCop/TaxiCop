@@ -59,7 +59,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	public static final String PARAM_USERNAME = "username";
 	public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
-	private static final String TAG = "AuthenticatorActivity";
+	private static final String TAG = "AuthActivity";
 
 	private AccountManager mAccountManager;
 	private Thread mAuthThread;

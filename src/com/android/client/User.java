@@ -32,9 +32,7 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
-/**
- * Represents a sample SyncAdapter user
- */
+
 public class User {
 
     private final String mUserName;

@@ -37,7 +37,7 @@ import android.util.Log;
  * and returns its IBinder.
  */
 public class AuthService extends Service {
-    private static final String TAG = "AuthenticationService";
+    private static final String TAG = "AuthService";
     private Auth mAuthenticator;
     
    @Override
