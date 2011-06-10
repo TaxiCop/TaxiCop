@@ -73,14 +73,11 @@ public class TabRequest extends Activity implements OnClickListener {
 			String who = "" + et_car_plate.getText().toString();
 			if (!who.equals("null") && !who.equals("") && who != null){
 				Complaint result=query(who);
-				if(result==null){
-					
+				if(result!=null){
 					ratingBar.setVisibility(View.VISIBLE);
-					ratingBar.setRating(5.0f);
-					tx_output1.setText("EDS-345");
-					tx_output2.setText("Taxista GONORREA");
-					
-					
+					ratingBar.setRating(result.RANKING);
+					tx_output1.setText(result.PLACA);
+					tx_output2.setText(result.DESCRIPCION);
 				}
 				else showToastInfo(getString(R.string.error_message));
 			}				

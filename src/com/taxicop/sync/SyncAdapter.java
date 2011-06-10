@@ -87,39 +87,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			ContentProviderClient provider, SyncResult syncResult) {
 		Log.d(TAG, "onPerformSync: Start");
 		String authtoken = null;
-//		try {
-//			
-//			
-//			myprefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-//			server = myprefs.getString("ip", NetworkUtilities.URL);
-//			// use the account manager to request the credentials
-//			authtoken = mAccountManager.blockingGetAuthToken(account,
-//					Constants.AUTHTOKEN_TYPE,
-//					true /* notifyAuthFailure */);
-//			mLastUpdated = new Date();
-//			String ret=NetworkUtilities.id(account.name, authtoken,server);
-//			Log.d(NetworkUtilities.TAG, "response: "+ret);
-//			if((ret!=null)&&!ret.equals("")){
-//				Log.i(TAG, "onPerformSync: los datos del servidor llegan correctamente.");
-//			
-//			}			
-//			else{
-//				Log.i(TAG, "onPerformSync: DATOS ??? no hay!!!.");
-//				Toast.makeText(mContext, "La sinzronizacion fue incorrecta",
-//						Toast.LENGTH_SHORT);
-//			}
-//				
-//
-//		} catch (final AuthenticatorException e) {
-//            syncResult.stats.numParseExceptions++;
-//            Log.e(TAG, "AuthenticatorException", e);
-//        } catch (final OperationCanceledException e) {
-//            Log.e(TAG, "OperationCanceledExcetpion", e);
-//        } catch (final IOException e) {
-//            Log.e(TAG, "IOException", e);
-//            syncResult.stats.numIoExceptions++;
-//        } 
-        
 
 	}
 	
