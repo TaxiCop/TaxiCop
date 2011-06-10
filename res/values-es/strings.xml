@@ -9,28 +9,28 @@
 	<!-- Label for this package -->
 	<string name="label">TaxiCop</string>
 	<!-- Descripcion -->
-	<string name="out_placa">Car Plate:</string>
-	<string name="out_description">Description:</string>
+	<string name="out_placa">Placa:</string>
+	<string name="out_description">Descripcion:</string>
 	<!-- Messages -->
-	<string name="confirm_message">New Record :) </string>
-	<string name="error_message">Invalid Info</string>
-	<string name="error_message_length">Invalid Plate</string>
-	<string name="error_message_characters">Wrong Character Secuence</string>
-	<string name="error_message_rating">Invalid Rating</string>
+	<string name="confirm_message">Nuevo Registro Insertado Correctamente</string>
+	<string name="error_message">Informacion Invalida</string>
+	<string name="error_message_length">Longitud Invalida</string>
+	<string name="error_message_characters">Caracteres Invalida</string>
+	<string name="error_message_rating">Rating Invalida</string>
 	<!-- Main Tabs -->
-	<string name="tab_request">Search</string>
-	<string name="tab_insert">Report</string>
-	<string name="tab_sync">Sync</string>
+	<string name="tab_request">Consulta</string>
+	<string name="tab_insert">Denuncia</string>
+	<string name="tab_sync">Actualizar</string>
 	<!-- Sync Layaout -->
-	<string name="sync">Car-Plates Sync:</string>
-	<string name="sync_error">Please Activate Android Sync</string>
+	<string name="sync">Sincronizacion de Placas</string>
+	<string name="sync_error">PorFavor activar la sincronizacion</string>
 	<!-- Request Layaout -->
-	<string name="help_carplate">Type Car-Plate</string>
-	<string name="request_button">Search</string>
+	<string name="help_carplate">Introduzca la placa</string>
+	<string name="request_button">Consultar</string>
 	<!-- Submmit Layaout -->
-	<string name="help_report">Report Plate:</string>
-	<string name="Description">Description (optional)</string>
-	<string name="submmit_button">Submmit</string>
+	<string name="help_report">Reportar placa</string>
+	<string name="Description">Descripcion (opcional)</string>
+	<string name="submmit_button">Enviar</string>
 
 	<!-- Permission label -->
 	<string name="permlab_TaxicopAuthPassword">access to passwords for Taxicop accounts</string>

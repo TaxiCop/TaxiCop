@@ -12,7 +12,7 @@
 		android:layout_margin="5dp" android:gravity="center">
 	</EditText>
 	<Button android:id="@+id/bt_query" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Consultar"
+		android:layout_height="wrap_content" android:text="@string/request_button"
 		android:layout_margin="5dp" android:textStyle="bold">
 	</Button>
 	<TextView android:id="@+id/tx_label1" android:layout_margin="5dp"
