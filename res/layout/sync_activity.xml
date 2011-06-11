@@ -8,8 +8,8 @@
 		android:gravity="center">
 	</TextView>
 
-	<ImageButton android:id="@+id/bt_sync" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="Sync"
+	<ImageButton android:id="@+id/bt_sync" android:layout_width="150dp"
+		android:layout_height="150dp" android:text="Sync"
 		android:layout_gravity="center"
 		android:background="@drawable/sync_button"
 		android:layout_margin="20dp" android:textStyle="bold">
