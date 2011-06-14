@@ -54,6 +54,8 @@
 
 	<!-- AuthenticatorActivity -->
 	<skip />
+	
+	<string name="prompt_label">Choose a country</string>
 	<!-- Label above username EditText -->
 	<string name="login_activity_username_label">Username</string>
 	<!-- Label above password EditText -->

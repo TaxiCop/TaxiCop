@@ -81,17 +81,19 @@ public class NetworkUtilities {
 	static String request;
 	String response;
 
-	public static final String PARAM_USERNAME = "us";
-	public static final String PARAM_PASSWORD = "pw";
+	public static final String PARAM_USERNAME = "username";
+	public static final String PARAM_PASSWORD = "password";
+	public static final String PARAM_COUNTRY = "country";
 	public static final String PARAM_REQUEST = "request";
 
 	public static final String PARAM_UPDATED = "timestamp";
 	public static final String USER_AGENT = "AuthenticationService/1.0";
 	public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
-	public static String URL="173.230.155.201:80/asteras";
+//	public static String URL="173.230.155.201:80/asteras";
+	public static String URL="192.168.1.6:8000";
 	public static final String BASE_URL ="http://";
 	public static final String LAST_SEQ_URI =  "/";
-	public static final String AUTH_URI =  "/";
+	public static final String AUTH_URI =  "/auth";
 	public static final String JSON_URI = "/";
 	public static final String ID_URI =  "/";
 	private static HttpClient mHttpClient;
@@ -300,20 +302,21 @@ public class NetworkUtilities {
 		}
 	}
 
-	public static boolean authenticate(String username, String password,
-			final String url,Handler handler, final Context context) {
+	public static boolean authenticate(String username, String password,String country,
+			Handler handler, final Context context) {
 		final HttpResponse resp;
 		final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair(PARAM_USERNAME, username));
 		params.add(new BasicNameValuePair(PARAM_PASSWORD, password));
+		params.add(new BasicNameValuePair(PARAM_COUNTRY, country));
 		HttpEntity entity = null;
 		try {
 			entity = new UrlEncodedFormEntity(params);
 		} catch (final UnsupportedEncodingException e) {
 			throw new AssertionError(e);
 		}
-		final HttpPost post = new HttpPost(BASE_URL+url+AUTH_URI);
-		Log.d(TAG, "URI= " + ((BASE_URL+"-"+url+"-"+AUTH_URI)));
+		final HttpPost post = new HttpPost(BASE_URL+URL+AUTH_URI);
+		Log.d(TAG, "URI= " + (BASE_URL+URL+AUTH_URI));
 		post.addHeader(entity.getContentType());
 		post.setEntity(entity);
 		CreateHttpClient();
@@ -390,10 +393,10 @@ public class NetworkUtilities {
 	 * @return Thread The thread on which the network mOperations are executed.
 	 */
 	public static Thread attemptAuth(final String username,
-			final String password, final Handler handler, final Context context,final String url) {
+			final String password,final String country, final Handler handler, final Context context) {
 		final Runnable runnable = new Runnable() {
 			public void run() {
-				authenticate(username, password, url,handler, context);
+				authenticate(username, password, country,handler, context);
 			}
 		};
 		// run on background thread.

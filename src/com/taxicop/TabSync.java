@@ -45,9 +45,11 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.taxicop.auth.AuthActivity;
@@ -67,36 +69,29 @@ public class TabSync extends Activity implements OnClickListener {
 		sync.setOnClickListener(this);
 
 	}
+
 	public static Criteria createCoarseCriteria() {
-		 
-		  Criteria c = new Criteria();
-		  c.setAccuracy(Criteria.ACCURACY_COARSE);
-		  c.setAltitudeRequired(false);
-		  c.setBearingRequired(false);
-		  c.setSpeedRequired(false);
-		  c.setCostAllowed(false);
-		  //c.setPowerRequirement(Criteria.POWER_HIGH);
-		  return c;
-		 
-		}
+
+		Criteria c = new Criteria();
+		c.setAccuracy(Criteria.ACCURACY_COARSE);
+		c.setAltitudeRequired(false);
+		c.setBearingRequired(false);
+		c.setSpeedRequired(false);
+		c.setCostAllowed(false);
+		// c.setPowerRequirement(Criteria.POWER_HIGH);
+		return c;
+
+	}
+
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_sync:
 			LocationManager locMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			LocationProvider low=
-			locMgr.getProvider(locMgr.getBestProvider((createCoarseCriteria()),false));
+			LocationProvider low = locMgr.getProvider(locMgr.getBestProvider(
+					(createCoarseCriteria()), false));
 			Location location = locMgr.getLastKnownLocation(low.getName());
 			Geocoder gcd = new Geocoder(this, Locale.getDefault());
 			List<Address> addresses;
-			try {
-				addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-				if(addresses.size()>0)
-					Log.d(TAG, "city: "+addresses.get(0).getLocality()+" country: "+addresses.get(0).getCountryName());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Log.e(TAG, ""+e.getMessage());
-			}
-			
 			mAccountManager = AccountManager.get(this);
 			Account ac[] = mAccountManager.getAccounts();
 			Bundle extras = new Bundle();
@@ -109,15 +104,40 @@ public class TabSync extends Activity implements OnClickListener {
 			}
 			int active = ContentResolver.getIsSyncable(cuenta,
 					PlateContentProvider.AUTHORITY);
-			if (cuenta == null) {
-				Intent auth = new Intent(this, AuthActivity.class);
-				startActivity(auth);
-			} else if (active > 0)
-				ContentResolver.requestSync(cuenta,
-						PlateContentProvider.AUTHORITY, extras);
-			else
-				showToastInfo(getString(R.string.sync_error));
-
+			
+			try {
+				if (location != null) {
+					addresses = gcd.getFromLocation(location.getLatitude(),
+							location.getLongitude(), 1);
+					if (addresses.size() > 0)
+						Log.d(TAG, "city: " + addresses.get(0).getLocality()
+								+ " country: "
+								+ addresses.get(0).getCountryName());
+				
+					if (cuenta == null) {
+						Intent auth = new Intent(this, AuthActivity.class);
+						auth.putExtra("country",addresses.get(0).getCountryName() );
+						startActivity(auth);
+					} else if (active > 0)
+						ContentResolver.requestSync(cuenta,
+								PlateContentProvider.AUTHORITY, extras);
+					else
+						showToastInfo(getString(R.string.sync_error));
+				} else {
+					if (cuenta == null) {
+						Intent auth = new Intent(this, AuthActivity.class);
+						auth.putExtra("country","null");
+						startActivity(auth);
+					} else if (active > 0)
+						ContentResolver.requestSync(cuenta,
+								PlateContentProvider.AUTHORITY, extras);
+					else
+						showToastInfo(getString(R.string.sync_error));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG, "" + e.getMessage());
+			}
 			break;
 
 		default:

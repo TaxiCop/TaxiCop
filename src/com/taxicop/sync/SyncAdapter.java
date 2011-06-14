@@ -73,6 +73,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		dba = new DataBase(context);
 		mAccountManager = AccountManager.get(context);
 		
+		
 
 	}
 

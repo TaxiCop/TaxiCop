@@ -45,7 +45,6 @@ public class PlateContentProvider extends ContentProvider {
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);
-
 	}
 
 	@Override

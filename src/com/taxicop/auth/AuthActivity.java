@@ -43,8 +43,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.android.client.NetworkUtilities;
 import com.taxicop.R;
@@ -84,8 +88,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	/** Was the original caller asking for an entirely new account? */
 	protected boolean mRequestNewAccount = false;
 
-	private String mUsername;
+	private String mUsername,mCountry;
 	private EditText mUsernameEdit;
+	private Spinner mSpinCountry;
 
 	/**
 	 * {@inheritDoc}
@@ -112,6 +117,32 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		mMessage = (TextView) findViewById(R.id.message);
 		mUsernameEdit = (EditText) findViewById(R.id.username_edit);
 		mPasswordEdit = (EditText) findViewById(R.id.password_edit);
+		String option = intent.getStringExtra("country");
+		mSpinCountry = (Spinner) findViewById(R.id.spinner1);
+		if (!option.equals("null")) {
+			mSpinCountry.setVisibility(View.GONE);
+			mCountry=option;
+			
+		} else {
+			mSpinCountry.setVisibility(View.VISIBLE);
+			ArrayAdapter<CharSequence> adapter = ArrayAdapter
+					.createFromResource(this, R.array.countries,
+							android.R.layout.simple_spinner_item);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			mSpinCountry.setAdapter(adapter);
+			mSpinCountry
+					.setOnItemSelectedListener(new OnItemSelectedListener() {
+						public void onItemSelected(AdapterView<?> parent,
+								View view, int position, long id) {
+								mCountry=""+getResources().getStringArray(R.array.countries_short)[position];
+						}
+
+						public void onNothingSelected(AdapterView<?> parent) {
+
+						}
+					});
+
+		}
 
 		mUsernameEdit.setText(mUsername);
 		mMessage.setText(getMessage());
@@ -155,10 +186,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		} else {
 			showProgress();
 			// Start authenticating...
-			myprefs = PreferenceManager.getDefaultSharedPreferences(this);
-			server = myprefs.getString("ip", NetworkUtilities.URL);
-			mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword,
-					mHandler, AuthActivity.this, server);
+			
+			mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword,mCountry,
+					mHandler, AuthActivity.this);
 		}
 	}
 
@@ -197,7 +227,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE);
 
 		if (mRequestNewAccount) {
-			mAccountManager.addAccountExplicitly(account, mPassword, null);
+			Bundle data= new Bundle();
+			data.putString("country", mCountry);
+			mAccountManager.addAccountExplicitly(account, mPassword, data);
 			// Set contacts sync for this account.
 
 			ContentResolver.setSyncAutomatically(account,
@@ -222,11 +254,12 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		}
 		setAccountAuthenticatorResult(intent.getExtras());
 		setResult(RESULT_OK, intent);
-		/* (ContentResolver.isSyncActive(account,
-				DataContentProvider.AUTHORITY)
-				|| ContentResolver.isSyncPending(account,
-						DataContentProvider.AUTHORITY));*/
-		
+		/*
+		 * (ContentResolver.isSyncActive(account, DataContentProvider.AUTHORITY)
+		 * || ContentResolver.isSyncPending(account,
+		 * DataContentProvider.AUTHORITY));
+		 */
+
 		finish();
 
 	}

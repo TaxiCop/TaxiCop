@@ -53,7 +53,7 @@
 	<string name="ui_activity_authenticating">Authenticating\u2026</string>
 
 	<!-- AuthenticatorActivity -->
-	<skip />
+	<string name="prompt_label">Escoga un Pais</string>
 	<!-- Label above username EditText -->
 	<string name="login_activity_username_label">Username</string>
 	<!-- Label above password EditText -->

@@ -82,8 +82,9 @@ class Auth extends AbstractAccountAuthenticator {
 		if (options != null && options.containsKey(AccountManager.KEY_PASSWORD)) {
 			final String password = options
 					.getString(AccountManager.KEY_PASSWORD);
+			final AccountManager am = AccountManager.get(mContext);
 			final boolean verified = onlineConfirmPassword(account.name,
-					password);
+					password,am.getUserData(account, "country"));
 			final Bundle result = new Bundle();
 			result.putBoolean(AccountManager.KEY_BOOLEAN_RESULT, verified);
 			return result;
@@ -124,7 +125,7 @@ class Auth extends AbstractAccountAuthenticator {
 		final String password = am.getPassword(account);
 		if (password != null) {
 			final boolean verified = onlineConfirmPassword(account.name,
-					password);
+					password,am.getUserData(account, "country"));
 			if (verified) {
 				final Bundle result = new Bundle();
 				result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
@@ -173,10 +174,8 @@ class Auth extends AbstractAccountAuthenticator {
 	/**
 	 * Validates user's password on the server
 	 */
-	private boolean onlineConfirmPassword(String username, String password) {
-		myprefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-		server = myprefs.getString("ip", NetworkUtilities.URL);
-		return NetworkUtilities.authenticate(username, password,server,
+	private boolean onlineConfirmPassword(String username, String password,String country) {
+		return NetworkUtilities.authenticate(username, password,country,
 				null/* Handler */, null/* Context */);
 	}
 
