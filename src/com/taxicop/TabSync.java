@@ -26,12 +26,25 @@
  */
 
 package com.taxicop;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -42,6 +55,7 @@ import com.taxicop.data.PlateContentProvider;
 
 public class TabSync extends Activity implements OnClickListener {
 
+	private static final String TAG = "TabSync";
 	ImageButton sync;
 	private AccountManager mAccountManager;
 
@@ -51,11 +65,38 @@ public class TabSync extends Activity implements OnClickListener {
 		setContentView(R.layout.sync_activity);
 		sync = (ImageButton) findViewById(R.id.bt_sync);
 		sync.setOnClickListener(this);
-	}
 
+	}
+	public static Criteria createCoarseCriteria() {
+		 
+		  Criteria c = new Criteria();
+		  c.setAccuracy(Criteria.ACCURACY_COARSE);
+		  c.setAltitudeRequired(false);
+		  c.setBearingRequired(false);
+		  c.setSpeedRequired(false);
+		  c.setCostAllowed(false);
+		  //c.setPowerRequirement(Criteria.POWER_HIGH);
+		  return c;
+		 
+		}
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_sync:
+			LocationManager locMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			LocationProvider low=
+			locMgr.getProvider(locMgr.getBestProvider((createCoarseCriteria()),false));
+			Location location = locMgr.getLastKnownLocation(low.getName());
+			Geocoder gcd = new Geocoder(this, Locale.getDefault());
+			List<Address> addresses;
+			try {
+				addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+				if(addresses.size()>0)
+					Log.d(TAG, "city: "+addresses.get(0).getLocality()+" country: "+addresses.get(0).getCountryName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG, ""+e.getMessage());
+			}
+			
 			mAccountManager = AccountManager.get(this);
 			Account ac[] = mAccountManager.getAccounts();
 			Bundle extras = new Bundle();
@@ -71,12 +112,11 @@ public class TabSync extends Activity implements OnClickListener {
 			if (cuenta == null) {
 				Intent auth = new Intent(this, AuthActivity.class);
 				startActivity(auth);
-			} 
-			else if(active>0)
+			} else if (active > 0)
 				ContentResolver.requestSync(cuenta,
 						PlateContentProvider.AUTHORITY, extras);
-			else showToastInfo(getString(R.string.sync_error));
-			
+			else
+				showToastInfo(getString(R.string.sync_error));
 
 			break;
 
@@ -85,6 +125,7 @@ public class TabSync extends Activity implements OnClickListener {
 		}
 
 	}
+
 	void showToastInfo(CharSequence msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}

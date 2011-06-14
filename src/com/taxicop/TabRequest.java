@@ -75,36 +75,33 @@ public class TabRequest extends Activity implements OnClickListener {
 			StringBuilder processedPlate = null,
 			finalStringtoQuery = null;
 			if (who != null && !who.equals("") && !who.equals("null")
-					&& who.length() >= 6) {
+					&& who.length() >= 4) {
 				processedPlate = new StringBuilder(who.replaceAll("\\W", ""));
-				if (processedPlate.length() == 6) {
-					finalStringtoQuery = new StringBuilder();
-					for (int i = 0; i < processedPlate.length(); i++) {
+				finalStringtoQuery = new StringBuilder();
+				for (int i = 0; i < processedPlate.length(); i++) {
 
-						char ith = (processedPlate.charAt(i));
-						if (Character.isLowerCase(ith)) {
-							char add = Character.toUpperCase(ith);
-							finalStringtoQuery.append(add);
-						} else {
-							finalStringtoQuery.append(ith);
-						}
+					char ith = (processedPlate.charAt(i));
+					if (Character.isLowerCase(ith)) {
+						char add = Character.toUpperCase(ith);
+						finalStringtoQuery.append(add);
+					} else {
+						finalStringtoQuery.append(ith);
 					}
-					Log.e(TAG, "query= " + finalStringtoQuery.toString());
+				}
+				Log.e(TAG, "query= " + finalStringtoQuery.toString());
 
-					Complaint result = query(finalStringtoQuery.toString());
+				Complaint result = query(finalStringtoQuery.toString());
 
-					if (result != null) {
+				if (result != null) {
 
-						ratingBar.setVisibility(View.VISIBLE);
-						ratingBar.setRating(result.RANKING);
-						tx_output1.setText(result.PLACA);
-						tx_output2.setText(result.DESCRIPCION);
-					} else
-						showToastInfo(getString(R.string.error_message));
+					ratingBar.setVisibility(View.VISIBLE);
+					ratingBar.setRating(result.RANKING);
+					tx_output1.setText(result.PLACA);
+					tx_output2.setText(result.DESCRIPCION);
 				} else
-					showToastInfo(getString(R.string.error_message_length));
+					showToastInfo(getString(R.string.error_message));
 			} else
-				showToastInfo(getString(R.string.error_message));
+				showToastInfo(getString(R.string.error_message_length));
 
 			break;
 

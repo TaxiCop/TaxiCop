@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="urls">
+		<item>http://173.230.155.201:80/asteras</item>
+		<item>http://192.168.1.110:8000</item>
+	</string-array>
+	<string-array name="names">
+		<item>Asteras Main Server</item>
+		<item>Tests server</item>
+	</string-array>
+</resources>

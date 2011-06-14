@@ -68,11 +68,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	private Date mLastUpdated;
 
 	public SyncAdapter(Context context, boolean autoInitialize) {
-
 		super(context, autoInitialize);
 		mContext = context;
 		dba = new DataBase(context);
 		mAccountManager = AccountManager.get(context);
+		
 
 	}
 

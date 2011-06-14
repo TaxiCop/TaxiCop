@@ -76,27 +76,26 @@ public class TabInsert extends Activity implements OnClickListener,
 			float rating = ratingBar.getRating();
 			StringBuilder processedPlate = null,
 			finalStringtoInsert = null;
-			if (!plate.equals("") || plate != null || plate.length() >= 6) {
+			if (!plate.equals("") || plate != null || plate.length() >= 4) {
 				processedPlate = new StringBuilder(plate.replaceAll("\\W", ""));
-				if (processedPlate.length() == 6) {
-					finalStringtoInsert = new StringBuilder();
-					for (int i = 0; i < processedPlate.length(); i++) {
 
-						char ith = (processedPlate.charAt(i));
-						if (Character.isLowerCase(ith)) {
-							char add = Character.toUpperCase(ith);
-							finalStringtoInsert.append(add);
-						} else {
-							finalStringtoInsert.append(ith);
-						}
+				finalStringtoInsert = new StringBuilder();
+				for (int i = 0; i < processedPlate.length(); i++) {
 
+					char ith = (processedPlate.charAt(i));
+					if (Character.isLowerCase(ith)) {
+						char add = Character.toUpperCase(ith);
+						finalStringtoInsert.append(add);
+					} else {
+						finalStringtoInsert.append(ith);
 					}
-				} else
-					showToastInfo(getString(R.string.error_message_length));
+
+				}
 			} else
-				showToastInfo(getString(R.string.error_message));
+				showToastInfo(getString(R.string.error_message_length));
+
 			currentRating = ratingBar.getRating();
-			if (currentRating != -1 && finalStringtoInsert!=null) {
+			if (currentRating != -1 && finalStringtoInsert != null) {
 				Log.e(TAG, "" + ratingBar.getRating());
 				Complaint newDataToInsert = new Complaint(currentRating,
 						finalStringtoInsert.toString(), desc);

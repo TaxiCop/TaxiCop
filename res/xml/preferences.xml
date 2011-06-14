@@ -2,8 +2,4 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<EditTextPreference android:title="Frecuency"
 		android:key="frecuencia" android:summary="Please provide updatefrecuency"></EditTextPreference>
-	<EditTextPreference android:title="Load"
-		android:key="carga" android:summary="Please provide loadAmount"></EditTextPreference>
-	<EditTextPreference android:title="IP" android:key="ip"
-		android:summary="PLease provide IP"></EditTextPreference>
 </PreferenceScreen>
