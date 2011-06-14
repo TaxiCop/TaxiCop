@@ -41,13 +41,17 @@ import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
 public class TaxiCop extends TabActivity {
+	
+	public static final String TAG = "TaxiCop";
 	/** Called when the activity is first created. */
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		final TabHost tabHost = getTabHost();
 		tabHost.addTab(tabHost.newTabSpec("TAB1").setIndicator(getString(R.string.tab_request))
@@ -57,6 +61,9 @@ public class TaxiCop extends TabActivity {
 		tabHost.addTab(tabHost.newTabSpec("TAB3").setIndicator(getString(R.string.tab_sync))
 				.setContent(new Intent(this, TabSync.class)
 								.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
+		
+		String locale = this.getResources().getConfiguration().locale.getCountry(); 
+		Log.d(TAG,"Locale:"+locale);
 		Eula.show(this);
 
 	}
