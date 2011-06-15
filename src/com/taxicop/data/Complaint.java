@@ -29,12 +29,14 @@ package com.taxicop.data;
 
 public class Complaint {
 	public float RANKING;
-	public String PLACA;
-	public String DESCRIPCION;
-	public 	Complaint(float r, String p, String d){
+	public String CAR_PLATE;
+	public String DESCRIPTION;
+	public String USER;
+	public 	Complaint(float r, String p, String d,String u){
 		RANKING=r;
-		PLACA=p;
-		DESCRIPCION=d;
+		CAR_PLATE=p;
+		DESCRIPTION=d;
+		USER=u;
 	}
 
 }

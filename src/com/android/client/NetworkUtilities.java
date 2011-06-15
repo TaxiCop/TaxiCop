@@ -98,9 +98,7 @@ public class NetworkUtilities {
 	public static final String ID_URI =  "/";
 	private static HttpClient mHttpClient;
 
-	/**
-	 * Configures the httpClient to connect to the URL provided.
-	 */
+	
 	public static void CreateHttpClient() {
 		Log.i(TAG, "CreateHttpClient(): ");
 		mHttpClient = new DefaultHttpClient();
@@ -110,13 +108,7 @@ public class NetworkUtilities {
 		ConnManagerParams.setTimeout(params, REGISTRATION_TIMEOUT);
 	}
 
-	/**
-	 * Executes the network requests on a separate thread.
-	 * 
-	 * @param runnable
-	 *            The runnable instance containing network mOperations to be
-	 *            executed.
-	 */
+
 	public static Thread performOnBackgroundThread(final Runnable runnable) {
 		final Thread t = new Thread() {
 			@Override
@@ -135,7 +127,7 @@ public class NetworkUtilities {
 		adapter = new LinkedList<JsonData>();
 	}
 
-	public static String process(String url) {
+	public static String process() {
 		Log.i(TAG, "process(): enviar datos al servidor");
 		JSONArray elements = new JSONArray();
 		Iterator<JsonData> i = adapter.iterator();
@@ -143,7 +135,7 @@ public class NetworkUtilities {
 		try {
 			if (elements == null || adapter == null || adapter.size() == 0)
 				return "-1";
-			elements.put(adapter.poll().toJsonHeader());
+			elements.put(adapter.poll().toJSON());
 		} catch (JSONException ex) {
 			Log.e("Json", "JSONException", ex);
 		}
@@ -158,7 +150,7 @@ public class NetworkUtilities {
 		request = elements.toString();
 		try {
 			Log.d(TAG, "send = " + request);
-			resp = sendToServer(request,url);
+			resp = sendToServer(request);
 			Log.d(TAG, "response: " + resp);
 		} catch (Exception ex) {
 			Log.e(TAG, "IOException", ex);
@@ -166,15 +158,15 @@ public class NetworkUtilities {
 		return resp;
 	}
 
-	private static String sendToServer(final String request,final String url) throws IOException {
+	private static String sendToServer(final String request) throws IOException {
 		final HttpResponse resp;
-		final HttpPost post = new HttpPost(BASE_URL+url+JSON_URI);
-		Log.d(TAG, "URI=" + (BASE_URL+url+JSON_URI));
+		final HttpPost post = new HttpPost(BASE_URL+URL+JSON_URI);
+		Log.d(TAG, "URI=" + (BASE_URL+URL+JSON_URI));
 		post.addHeader("Content-Type", "text/vnd.aexp.json.req");
 		post.setEntity(new StringEntity(request));
 		CreateHttpClient();
 		String response = "-";
-		Log.d(TAG, "sendToServer(): enviando datos a URI=" + (BASE_URL + url + JSON_URI));
+		Log.d(TAG, "sendToServer(): enviando datos a URI=" + (BASE_URL + URL + JSON_URI));
 		try {
 			resp = mHttpClient.execute(post);
 			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
@@ -192,115 +184,10 @@ public class NetworkUtilities {
 		return response;
 	}
 
-	public static String id(String password, String username,final String url)
-			throws IOException {
-		
-		final HttpResponse resp;
-		String response = "-1";
-		final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair(PARAM_USERNAME, username));
-		params.add(new BasicNameValuePair(PARAM_PASSWORD, password));
-		
-		HttpEntity entity = null;
-		try {
-			entity = new UrlEncodedFormEntity(params);
-		} catch (final UnsupportedEncodingException e) {
-			// this should never happen.
-			throw new AssertionError(e);
-		}
-		final HttpPost post = new HttpPost(BASE_URL+url+ID_URI);
-		Log.d(TAG, "id(): obtencion de id del partido. URI=" + (BASE_URL+url+ID_URI));
-		post.addHeader(entity.getContentType());
-		post.setEntity(entity);
-		CreateHttpClient();
-		try {
-			resp = mHttpClient.execute(post);
-			
-			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-			resp.getEntity().writeTo(outstream);
-			byte[] responseBody = outstream.toByteArray();
-			response = new String(responseBody);
-			Log.d(TAG, "id(): obtencion de id del partido. con respuesta="+response);
-			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return response;
-			} else {
-				return response;
-			}
-		} catch (final IOException e) {
-			return response;
-		}
-	}
-
-	/**
-	 * Connects to the Voiper server, authenticates the provided username and
-	 * password.
-	 * 
-	 * @param username
-	 *            The user's username
-	 * @param password
-	 *            The user's password
-	 * @param handler
-	 *            The hander instance from the calling UI thread.
-	 * @param context
-	 *            The context of the calling Activity.
-	 * @return boolean The boolean result indicating whether the user was
-	 *         successfully authenticated.
-	 */
+	
+	
 	public static final String PREF_FILE_NAME = "preferences";
 
-	public static String ultimoConsecutivo(String username, String password,final String url,
-			String idpartido, Handler handler, final Context context) {
-		final HttpResponse resp;
-		String response = "-1";
-		
-		final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair(PARAM_USERNAME, username));
-		params.add(new BasicNameValuePair(PARAM_PASSWORD, password));
-		params.add(new BasicNameValuePair(PARAM_REQUEST, idpartido));
-		HttpEntity entity = null;
-		try {
-			entity = new UrlEncodedFormEntity(params);
-		} catch (final UnsupportedEncodingException e) {
-			// this should never happen.
-			throw new AssertionError(e);
-		}
-		final HttpPost post = new HttpPost(BASE_URL+url+LAST_SEQ_URI);
-		Log.d(TAG, "ultimoConsecutivo(): URI= " + ((BASE_URL + url + LAST_SEQ_URI)));
-		post.addHeader(entity.getContentType());
-		post.setEntity(entity);
-		CreateHttpClient();
-		try {
-			resp = mHttpClient.execute(post);
-			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-			resp.getEntity().writeTo(outstream);
-			byte[] responseBody = outstream.toByteArray();
-			response = new String(responseBody);
-			Log.i(TAG, "ultimoConsecutivo(): respuesta obetenida del servidor : "+response );
-			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				if (Log.isLoggable(TAG, Log.VERBOSE)) {
-					Log.v(TAG, "Successful authentication");
-				}
-				sendResult(true, handler, context);
-				return response;
-			} else {
-				if (Log.isLoggable(TAG, Log.VERBOSE)) {
-					Log.v(TAG, "Error authenticating" + resp.getStatusLine());
-				}
-				sendResult(false, handler, context);
-				return response;
-			}
-		} catch (final IOException e) {
-			if (Log.isLoggable(TAG, Log.VERBOSE)) {
-				Log.v(TAG, "IOException when getting authtoken", e);
-			}
-			sendResult(false, handler, context);
-			return response;
-		} finally {
-			if (Log.isLoggable(TAG, Log.VERBOSE)) {
-				Log.v(TAG, "getAuthtoken completing");
-			}
-		}
-	}
 
 	public static boolean authenticate(String username, String password,String country,
 			Handler handler, final Context context) {
@@ -399,20 +286,16 @@ public class NetworkUtilities {
 				authenticate(username, password, country,handler, context);
 			}
 		};
-		// run on background thread.
-		return NetworkUtilities.performOnBackgroundThread(runnable);
+    	return NetworkUtilities.performOnBackgroundThread(runnable);
 	}
 
 
 	
 
-	public static void add(int I, int X, int Y, String date) {
-		adapter.add(new JsonData(I, X,Y, date));
+	public static void add(float rank, String plate, String desc,String user) {
+		adapter.add(new JsonData(rank,plate,desc,user));
 	}
 
-	public static void addHeader(int I, String u, String p) {
-		adapter.add(new JsonData(I,u,p));
-	}
 
 
 

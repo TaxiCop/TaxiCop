@@ -35,18 +35,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DBhelper extends SQLiteOpenHelper {
-	
-	
-	static final String CREATE_TABLE1 = "create table "+ 
-			Fields.TABLE_REPORT + " ( " + 
-			Fields.ID_KEY + " integer primary key autoincrement, " +
-			Fields.ID_USR + " integer, " +
-			Fields.RANKING+" real not null, "+
-			Fields.PLACA+" integer not null, "+
-			Fields.DATE_REPORT + " text not null , " +
-			Fields.COUNTRY + " text not null, " +
-			Fields.DESCRIPCION + " text not null  );";
-	
+
+	static final String CREATE_TABLE1 = "create table " + Fields.TABLE_REPORT
+			+ " ( " + Fields.ID_KEY + " integer primary key autoincrement, "
+			+ Fields.RANKING+ " real not null, " 
+			+ Fields.CAR_PLATE + " integer not null, "
+			+ Fields.DATE_REPORT + " text not null , " 
+			+ Fields.COUNTRY  + " text not null, " 
+			+ Fields.DESCRIPTION + " text not null, " 	
+			+ Fields.ID_USR + " integer not null, " 
+			+ "foreign key ("+ Fields.ID_USR + ") references " + Fields.TABLE_USERS + " (" + Fields.ID_USR + ") );";
+
+	static final String CREATE_TABLE2 = "create table " + Fields.TABLE_USERS
+			+ Fields.ID_USR + " integer primary key);";
+
 	public DBhelper(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
@@ -70,7 +72,7 @@ public class DBhelper extends SQLiteOpenHelper {
 		Log.v("open onCreate", "Creating all the tables");
 
 		try {
-		
+			db.execSQL(CREATE_TABLE2);
 			db.execSQL(CREATE_TABLE1);
 		} catch (SQLiteException ex) {
 			Log.v("open exception caught", ex.getMessage());
@@ -83,6 +85,7 @@ public class DBhelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		Log.w("TaskDBAdapter", "Upgrading from version " + oldVersion + " to "
 				+ newVersion + ", which will destroy all old data");
+		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_USERS);
 		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_REPORT);
 		onCreate(db);
 	}

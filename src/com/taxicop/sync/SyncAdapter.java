@@ -27,13 +27,11 @@
 
 package com.taxicop.sync;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -42,18 +40,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
-import android.database.CursorJoiner.Result;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.client.NetworkUtilities;
-import com.taxicop.auth.Constants;
 import com.taxicop.data.Complaint;
 import com.taxicop.data.DataBase;
-import com.taxicop.data.PlateContentProvider;
 import com.taxicop.data.Fields;
+import com.taxicop.data.PlateContentProvider;
 
 /**
  * SyncAdapter implementation for syncing sample SyncAdapter contacts to the
@@ -72,9 +66,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		mContext = context;
 		dba = new DataBase(context);
 		mAccountManager = AccountManager.get(context);
-		
-		
-
 	}
 
 	
@@ -88,30 +79,40 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			ContentProviderClient provider, SyncResult syncResult) {
 		Log.d(TAG, "onPerformSync: Start");
 		String authtoken = null;
+		
+		ArrayList<Complaint> queries=query();
+		for (Complaint c : queries) {
+			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER);
+		}
+		String response=":"+NetworkUtilities.process();
+		Log.d(TAG, response);
+		
 
 	}
 	
-	public Complaint query(String who){
+	public ArrayList<Complaint> query(){
 		ContentResolver cr= mContext.getContentResolver();
-		Cursor c= cr.query(PlateContentProvider.URI_DENUNCIAS, null, Fields.PLACA+"= '"+who+"'", null, null);
+		Cursor c= cr.query(PlateContentProvider.URI_REPORT, null, null, null, null);
 		Complaint ret=null;
+		ArrayList<Complaint> reports= new ArrayList<Complaint>();
 		while(c.moveToFirst()){
-			int rank = c.getInt(c.getColumnIndex(Fields.RANKING));
-			String info = "" + (c.getString(c.getColumnIndex(Fields.PLACA)));
-			String desc= "" + (c.getString(c.getColumnIndex(Fields.DESCRIPCION)));
-			ret= new Complaint(rank, info, desc);
+			float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
+			String plate =  (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
+			String desc=  (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
+			String user=(c.getString(c.getColumnIndex(Fields.ID_USR)));
+			reports.add(new Complaint(rank, plate, desc,user));
 		}
-		return ret;		
+		return reports;		
 	}
 	public void insertId(Complaint data) {
 		Log.i(TAG, "insertIdc: ");
 		ContentResolver cr = mContext.getContentResolver();
 		ContentValues values = new ContentValues();
-		values.put(Fields.PLACA, data.PLACA);
+		values.put(Fields.CAR_PLATE, data.CAR_PLATE);
 		values.put(Fields.RANKING, data.RANKING);
-		values.put(Fields.DESCRIPCION, data.DESCRIPCION);
+		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
 		values.put(Fields.DATE_REPORT, new Date().toGMTString());
-		cr.insert(PlateContentProvider.URI_DENUNCIAS, values);
+		cr.insert(PlateContentProvider.URI_REPORT, values);
 	}
 	
 	

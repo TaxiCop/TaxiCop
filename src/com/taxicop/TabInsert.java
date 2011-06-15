@@ -27,6 +27,7 @@
 
 package com.taxicop;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.taxicop.data.Complaint;
@@ -36,6 +37,7 @@ import com.taxicop.data.Fields;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.media.AudioRecord.OnRecordPositionUpdateListener;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,50 +71,57 @@ public class TabInsert extends Activity implements OnClickListener,
 	}
 
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.bt_submmit:
-			String plate = et_car_plate.getText().toString().trim();
-			String desc = et_desc.getText().toString();
-			float rating = ratingBar.getRating();
-			StringBuilder processedPlate = null,
-			finalStringtoInsert = null;
-			if (!plate.equals("") || plate != null || plate.length() >= 4) {
-				processedPlate = new StringBuilder(plate.replaceAll("\\W", ""));
+		try{
+			switch (v.getId()) {
+			case R.id.bt_submmit:
+				String plate = et_car_plate.getText().toString().trim();
+				String desc = et_desc.getText().toString();
+				float rating = ratingBar.getRating();
+				StringBuilder processedPlate = null,
+				finalStringtoInsert = null;
+				if (!plate.equals("") || plate != null || plate.length() >= 4) {	
+					processedPlate = new StringBuilder(plate.replaceAll("\\[a-zA-Z0-9]", ""));
 
-				finalStringtoInsert = new StringBuilder();
-				for (int i = 0; i < processedPlate.length(); i++) {
+					finalStringtoInsert = new StringBuilder();
+					for (int i = 0; i < processedPlate.length(); i++) {
 
-					char ith = (processedPlate.charAt(i));
-					if (Character.isLowerCase(ith)) {
-						char add = Character.toUpperCase(ith);
-						finalStringtoInsert.append(add);
-					} else {
-						finalStringtoInsert.append(ith);
+						char ith = (processedPlate.charAt(i));
+						if (Character.isLowerCase(ith)) {
+							char add = Character.toUpperCase(ith);
+							finalStringtoInsert.append(add);
+						} else {
+							finalStringtoInsert.append(ith);
+						}
+
 					}
+				} else
+					showToastInfo(getString(R.string.error_message_length));
 
-				}
-			} else
-				showToastInfo(getString(R.string.error_message_length));
+				currentRating = ratingBar.getRating();
+				
+				if (currentRating != -1 && finalStringtoInsert != null) {
+					Log.e(TAG, "" + ratingBar.getRating());
+					Complaint newDataToInsert = new Complaint(currentRating,
+							finalStringtoInsert.toString(), desc,query());
+					insertId(newDataToInsert);
+					showToastInfo(getString(R.string.confirm_message));
+					et_car_plate.setText("");
+					et_desc.setText("");
+					ratingBar.setRating(0.0f);
 
-			currentRating = ratingBar.getRating();
-			if (currentRating != -1 && finalStringtoInsert != null) {
-				Log.e(TAG, "" + ratingBar.getRating());
-				Complaint newDataToInsert = new Complaint(currentRating,
-						finalStringtoInsert.toString(), desc);
-				insertId(newDataToInsert);
-				showToastInfo(getString(R.string.confirm_message));
-				et_car_plate.setText("");
-				et_desc.setText("");
-				ratingBar.setRating(0.0f);
+				} else
+					showToastInfo(getString(R.string.error_message_rating));
 
-			} else
-				showToastInfo(getString(R.string.error_message_rating));
+				break;
 
-			break;
-
-		default:
-			break;
+			default:
+				break;
+			}
 		}
+		catch (Exception e) {
+			Log.e(TAG, ""+e.getMessage());
+		}
+		
 		// TODO Auto-generated method stub
 
 	}
@@ -121,11 +130,24 @@ public class TabInsert extends Activity implements OnClickListener,
 		Log.i(TAG, "insertIdc: ");
 		ContentResolver cr = getContentResolver();
 		ContentValues values = new ContentValues();
-		values.put(Fields.PLACA, data.PLACA);
+		values.put(Fields.CAR_PLATE, data.CAR_PLATE);
 		values.put(Fields.RANKING, data.RANKING);
-		values.put(Fields.DESCRIPCION, data.DESCRIPCION);
-		values.put(Fields.DATE_REPORT, new Date().toGMTString());
-		cr.insert(PlateContentProvider.URI_DENUNCIAS, values);
+		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
+		values.put(Fields.DATE_REPORT, data.USER);
+		values.put(Fields.ID_USR,query() );
+		
+		cr.insert(PlateContentProvider.URI_REPORT, values);
+	}
+	public String query(){
+		ContentResolver cr= getContentResolver();
+		Cursor c= cr.query(PlateContentProvider.URI_USERS, null, null, null, null);
+		Complaint ret=null;		
+		if(c.moveToFirst()){
+			
+			String user=(c.getString(c.getColumnIndex(Fields.ID_USR)));
+			return user;
+		}
+		return "";		
 	}
 
 	public void onRatingChanged(RatingBar ratingBar, float rating,

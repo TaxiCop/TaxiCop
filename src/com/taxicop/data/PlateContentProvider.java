@@ -37,14 +37,17 @@ import android.util.Log;
 public class PlateContentProvider extends ContentProvider {
 
 	static final String TAG = "PlateContentProvider";
-	public static final Uri URI_DENUNCIAS = Uri
+	public static final Uri URI_REPORT = Uri
 			.parse("content://com.taxicop.taxicop/report");
+	public static final Uri URI_USERS = Uri
+	.parse("content://com.taxicop.taxicop/users");
 	public DataBase dba;
 	private static final UriMatcher sUriMatcher;
 	public static final String AUTHORITY = "com.taxicop.taxicop";
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);
+		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_USERS, 2);
 	}
 
 	@Override
@@ -75,7 +78,10 @@ public class PlateContentProvider extends ContentProvider {
 		switch (sUriMatcher.match(uri)) {
 		case 1:
 			dba.insertData(Fields.TABLE_REPORT, values);
-			return PlateContentProvider.URI_DENUNCIAS;
+			return PlateContentProvider.URI_REPORT;
+		case 2:
+			dba.insertData(Fields.TABLE_USERS, values);
+			return PlateContentProvider.URI_USERS;
 
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -103,6 +109,10 @@ public class PlateContentProvider extends ContentProvider {
 			c = dba.getData(Fields.TABLE_REPORT, selection, selectionArgs,
 					null, null, null);
 			break;
+		case 2:
+			c = dba.getData(Fields.TABLE_USERS, selection, selectionArgs,
+					null, null, null);
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -118,6 +128,10 @@ public class PlateContentProvider extends ContentProvider {
 		switch (sUriMatcher.match(uri)) {
 		case 1:
 			ret = dba.update(Fields.TABLE_REPORT, values, selection,
+					selectionArgs);
+			break;
+		case 2:
+			ret = dba.update(Fields.TABLE_USERS, values, selection,
 					selectionArgs);
 			break;
 		default:
