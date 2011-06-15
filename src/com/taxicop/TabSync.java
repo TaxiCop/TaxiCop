@@ -116,7 +116,7 @@ public class TabSync extends Activity implements OnClickListener {
 				
 					if (cuenta == null) {
 						Intent auth = new Intent(this, AuthActivity.class);
-						auth.putExtra("country",addresses.get(0).getCountryName() );
+						auth.putExtra("country",addresses.get(0).getCountryCode() );
 						startActivity(auth);
 					} else if (active > 0)
 						ContentResolver.requestSync(cuenta,
