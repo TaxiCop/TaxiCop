@@ -59,12 +59,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.accounts.Account;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
 import com.taxicop.auth.AuthActivity;
 import com.taxicop.comunications.JsonData;
+import com.taxicop.data.Fields;
+import com.taxicop.data.PlateContentProvider;
 
 /**
  * Provides utility methods for communicating with the server.
@@ -89,12 +93,11 @@ public class NetworkUtilities {
 	public static final String PARAM_UPDATED = "timestamp";
 	public static final String USER_AGENT = "AuthenticationService/1.0";
 	public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
-//	public static String URL="173.230.155.201:80/asteras";
 	public static String URL="192.168.1.6:8000";
 	public static final String BASE_URL ="http://";
 	public static final String LAST_SEQ_URI =  "/";
 	public static final String AUTH_URI =  "/auth";
-	public static final String JSON_URI = "/";
+	public static final String JSON_URI = "/upload";
 	public static final String ID_URI =  "/";
 	private static HttpClient mHttpClient;
 
@@ -135,7 +138,7 @@ public class NetworkUtilities {
 		try {
 			if (elements == null || adapter == null || adapter.size() == 0)
 				return "-1";
-			elements.put(adapter.poll().toJSON());
+			elements.put(adapter.poll().toJSON_HEADER());
 		} catch (JSONException ex) {
 			Log.e("Json", "JSONException", ex);
 		}
@@ -189,7 +192,7 @@ public class NetworkUtilities {
 	public static final String PREF_FILE_NAME = "preferences";
 
 
-	public static boolean authenticate(String username, String password,String country,
+	public static String authenticate(String username, String password,String country,
 			Handler handler, final Context context) {
 		final HttpResponse resp;
 		final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -221,20 +224,20 @@ public class NetworkUtilities {
 					Log.v(TAG, "Successful authentication");
 				}
 				sendResult(true, handler, context);
-				return true;
+				return response;
 			} else {
 				if (Log.isLoggable(TAG, Log.VERBOSE)) {
 					Log.v(TAG, "Error authenticating" + resp.getStatusLine());
 				}
 				sendResult(false, handler, context);
-				return false;
+				return response;
 			}
 		} catch (final IOException e) {
 			if (Log.isLoggable(TAG, Log.VERBOSE)) {
 				Log.v(TAG, "IOException when getting authtoken", e);
 			}
 			sendResult(false, handler, context);
-			return false;
+			return null;
 		} finally {
 			if (Log.isLoggable(TAG, Log.VERBOSE)) {
 				Log.v(TAG, "getAuthtoken completing");
@@ -283,7 +286,14 @@ public class NetworkUtilities {
 			final String password,final String country, final Handler handler, final Context context) {
 		final Runnable runnable = new Runnable() {
 			public void run() {
-				authenticate(username, password, country,handler, context);
+				String ret=	""+authenticate(username, password, country,handler, context);
+				if(!ret.equals("")){
+					ContentResolver next= context.getContentResolver();
+					ContentValues values = new ContentValues();
+					values.put(Fields.ID_USR, ret);
+					next.insert(PlateContentProvider.URI_USERS, values);
+					
+				}
 			}
 		};
     	return NetworkUtilities.performOnBackgroundThread(runnable);

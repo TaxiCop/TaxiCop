@@ -38,16 +38,15 @@ public class DBhelper extends SQLiteOpenHelper {
 
 	static final String CREATE_TABLE1 = "create table " + Fields.TABLE_REPORT
 			+ " ( " + Fields.ID_KEY + " integer primary key autoincrement, "
-			+ Fields.RANKING+ " real not null, " 
-			+ Fields.CAR_PLATE + " integer not null, "
-			+ Fields.DATE_REPORT + " text not null , " 
-			+ Fields.COUNTRY  + " text not null, " 
-			+ Fields.DESCRIPTION + " text not null, " 	
-			+ Fields.ID_USR + " integer not null, " 
-			+ "foreign key ("+ Fields.ID_USR + ") references " + Fields.TABLE_USERS + " (" + Fields.ID_USR + ") );";
+			+ Fields.RANKING + " real not null, " + Fields.CAR_PLATE
+			+ " integer not null, " + Fields.DATE_REPORT + " text not null , "
+			+ Fields.COUNTRY + " text not null, " + Fields.DESCRIPTION
+			+ " text not null, " + Fields.ID_USR + " integer not null, "
+			+ "foreign key (" + Fields.ID_USR + ") references "
+			+ Fields.TABLE_USERS + " (" + Fields.ID_USR + ") );";
 
 	static final String CREATE_TABLE2 = "create table " + Fields.TABLE_USERS
-			+ Fields.ID_USR + " integer primary key);";
+			+ " ( " + Fields.ID_USR + " integer primary key));";
 
 	public DBhelper(Context context, String name, CursorFactory factory,
 			int version) {

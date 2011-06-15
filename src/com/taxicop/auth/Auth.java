@@ -175,8 +175,9 @@ class Auth extends AbstractAccountAuthenticator {
 	 * Validates user's password on the server
 	 */
 	private boolean onlineConfirmPassword(String username, String password,String country) {
-		return NetworkUtilities.authenticate(username, password,country,
+		String ret=NetworkUtilities.authenticate(username, password,country,
 				null/* Handler */, null/* Context */);
+		return (ret.equals(""))?false:true;
 	}
 
 	/**

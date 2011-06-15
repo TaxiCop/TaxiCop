@@ -42,7 +42,7 @@ public class JsonData {
 	String user;
 	String desc;
 	String plate;
-	public JsonData(float rank, String plate, String desc, String user) {
+	public JsonData(float rank, String plate, String desc) {
 		this.rank=rank;
 		this.plate=plate;
 		this.desc=desc;
@@ -51,11 +51,20 @@ public class JsonData {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject obj = new JSONObject();
 		obj.put(RANK, rank);
-		obj.put(USER, user);
 		obj.put(DESC, desc);
 		obj.put(PLATE, plate);
 		return obj;
 	}
-
+	public JSONObject toJSON_HEADER() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.put(USER, user);
+		return obj;
+	}
+	public JsonData(float rank, String plate, String desc, String user) {
+		this.rank=rank;
+		this.plate=plate;
+		this.desc=desc;
+		this.user=user;
+	}
 	
 }
