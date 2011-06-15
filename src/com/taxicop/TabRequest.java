@@ -124,9 +124,8 @@ public class TabRequest extends Activity implements OnClickListener {
 						+ (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
 				String desc = ""
 						+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
-				String user= ""
-					+ (c.getString(c.getColumnIndex(Fields.ID_USR)));
-				ret = new Complaint(rank, plate, desc,user);
+				
+				ret = new Complaint(rank, plate, desc);
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "" + e.getMessage());

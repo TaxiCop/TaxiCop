@@ -78,9 +78,11 @@ public class PlateContentProvider extends ContentProvider {
 		switch (sUriMatcher.match(uri)) {
 		case 1:
 			dba.insertData(Fields.TABLE_REPORT, values);
+			
 			return PlateContentProvider.URI_REPORT;
 		case 2:
 			dba.insertData(Fields.TABLE_USERS, values);
+			
 			return PlateContentProvider.URI_USERS;
 
 		default:

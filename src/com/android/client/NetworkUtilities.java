@@ -287,6 +287,7 @@ public class NetworkUtilities {
 		final Runnable runnable = new Runnable() {
 			public void run() {
 				String ret=	""+authenticate(username, password, country,handler, context);
+				Log.e(TAG, ""+ret);
 				if(!ret.equals("")){
 					ContentResolver next= context.getContentResolver();
 					ContentValues values = new ContentValues();
@@ -305,6 +306,7 @@ public class NetworkUtilities {
 	public static void add(float rank, String plate, String desc,String user) {
 		adapter.add(new JsonData(rank,plate,desc,user));
 	}
+	
 
 
 

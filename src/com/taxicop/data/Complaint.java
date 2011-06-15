@@ -38,5 +38,11 @@ public class Complaint {
 		DESCRIPTION=d;
 		USER=u;
 	}
+	public 	Complaint(float r, String p, String d){
+		RANKING=r;
+		CAR_PLATE=p;
+		DESCRIPTION=d;
+		
+	}
 
 }

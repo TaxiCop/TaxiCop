@@ -68,55 +68,51 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		mAccountManager = AccountManager.get(context);
 	}
 
-	
 	String username;
 	String password;
 	SharedPreferences myprefs;
 
-	String server=NetworkUtilities.URL;
+	String server = NetworkUtilities.URL;
+
 	@Override
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
 		Log.d(TAG, "onPerformSync: Start");
-		String authtoken = null;
-		
-		ArrayList<Complaint> queries=query();
+		NetworkUtilities.reset();
+		ArrayList<Complaint> queries = query();
+
 		for (Complaint c : queries) {
 			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER);
 		}
-		String response=":"+NetworkUtilities.process();
-		Log.d(TAG, response);
-		
+		String response;
+		if (NetworkUtilities.adapter.size() > 0) {
+			response = ":" + NetworkUtilities.process();
+			Log.d(TAG, response);
+		} else
+			Log.e(TAG, "no data");
 
 	}
-	
+
 	public ArrayList<Complaint> query(){
+		ArrayList<Complaint> reports= new ArrayList<Complaint>();
 		ContentResolver cr= mContext.getContentResolver();
 		Cursor c= cr.query(PlateContentProvider.URI_REPORT, null, null, null, null);
-		Complaint ret=null;
-		ArrayList<Complaint> reports= new ArrayList<Complaint>();
-		while(c.moveToFirst()){
-			float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
-			String plate =  (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
-			String desc=  (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
-			String user=(c.getString(c.getColumnIndex(Fields.ID_USR)));
-			reports.add(new Complaint(rank, plate, desc,user));
+		try{
+			while(c.moveToFirst()){
+				float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
+				String plate =  (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
+				String desc=  (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
+				reports.add(new Complaint(rank, plate, desc));
+			}
+			
 		}
+		catch (Exception e) {
+			// TODO: handle exception
+			Log.e(TAG, ""+e.getMessage());
+		}
+		c.close();
+		
 		return reports;		
 	}
-	public void insertId(Complaint data) {
-		Log.i(TAG, "insertIdc: ");
-		ContentResolver cr = mContext.getContentResolver();
-		ContentValues values = new ContentValues();
-		values.put(Fields.CAR_PLATE, data.CAR_PLATE);
-		values.put(Fields.RANKING, data.RANKING);
-		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
-		values.put(Fields.DATE_REPORT, new Date().toGMTString());
-		cr.insert(PlateContentProvider.URI_REPORT, values);
-	}
-	
-	
-	
-	
-	
+
 }

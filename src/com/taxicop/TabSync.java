@@ -115,14 +115,12 @@ public class TabSync extends Activity implements OnClickListener {
 								+ addresses.get(0).getCountryName());
 				
 					if (cuenta == null) {
-						Intent auth = new Intent(this, AuthActivity.class);
-						auth.putExtra("country",addresses.get(0).getCountryCode());
-						startActivity(auth);
-					} else if (active > 0)
 						ContentResolver.requestSync(cuenta,
 								PlateContentProvider.AUTHORITY, extras);
-					else
-						showToastInfo(getString(R.string.sync_error));
+//						Intent auth = new Intent(this, AuthActivity.class);
+//						auth.putExtra("country",addresses.get(0).getCountryCode());
+//						startActivity(auth);
+					} 
 				} else {
 					if (cuenta == null) {
 						Intent auth = new Intent(this, AuthActivity.class);

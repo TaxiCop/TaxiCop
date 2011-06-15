@@ -80,7 +80,7 @@ public class TabInsert extends Activity implements OnClickListener,
 				StringBuilder processedPlate = null,
 				finalStringtoInsert = null;
 				if (!plate.equals("") || plate != null || plate.length() >= 4) {	
-					processedPlate = new StringBuilder(plate.replaceAll("\\[a-zA-Z0-9]", ""));
+					processedPlate = new StringBuilder(plate.replaceAll("\\^[a-zA-Z0-9]", ""));
 
 					finalStringtoInsert = new StringBuilder();
 					for (int i = 0; i < processedPlate.length(); i++) {
@@ -100,9 +100,9 @@ public class TabInsert extends Activity implements OnClickListener,
 				currentRating = ratingBar.getRating();
 				
 				if (currentRating != -1 && finalStringtoInsert != null) {
-					Log.e(TAG, "" + ratingBar.getRating());
+					Log.d(TAG, " insert: "+finalStringtoInsert+" desc "+desc);
 					Complaint newDataToInsert = new Complaint(currentRating,
-							finalStringtoInsert.toString(), desc,query());
+							finalStringtoInsert.toString(), desc);
 					insertId(newDataToInsert);
 					showToastInfo(getString(R.string.confirm_message));
 					et_car_plate.setText("");
@@ -133,22 +133,10 @@ public class TabInsert extends Activity implements OnClickListener,
 		values.put(Fields.CAR_PLATE, data.CAR_PLATE);
 		values.put(Fields.RANKING, data.RANKING);
 		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
-		values.put(Fields.DATE_REPORT, data.USER);
-		values.put(Fields.ID_USR,query() );
-		
+		values.put(Fields.DATE_REPORT, new Date().toGMTString());
 		cr.insert(PlateContentProvider.URI_REPORT, values);
 	}
-	public String query(){
-		ContentResolver cr= getContentResolver();
-		Cursor c= cr.query(PlateContentProvider.URI_USERS, null, null, null, null);
-		Complaint ret=null;		
-		if(c.moveToFirst()){
-			
-			String user=(c.getString(c.getColumnIndex(Fields.ID_USR)));
-			return user;
-		}
-		return "";		
-	}
+	
 
 	public void onRatingChanged(RatingBar ratingBar, float rating,
 			boolean fromUser) {
