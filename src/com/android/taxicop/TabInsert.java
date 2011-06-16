@@ -27,6 +27,9 @@
 
 package com.android.taxicop;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
@@ -129,7 +132,9 @@ public class TabInsert extends Activity implements OnClickListener,
 		values.put(Fields.CAR_PLATE, data.CAR_PLATE);
 		values.put(Fields.RANKING, data.RANKING);
 		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
-		values.put(Fields.DATE_REPORT, new Date().toGMTString());
+		Date d = new Date();
+		String date = (new SimpleDateFormat("yyyyMMdd")).format(new Date());
+		values.put(Fields.DATE_REPORT, date);
 		cr.insert(PlateContentProvider.URI_REPORT, values);
 	}
 	

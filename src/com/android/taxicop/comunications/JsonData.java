@@ -39,15 +39,22 @@ public class JsonData {
 	public static final String DESC = Fields.DESCRIPTION;
 	public static final String PLATE = Fields.CAR_PLATE;
 	public static final String DATE = Fields.DATE_REPORT;
+	public static final String ITH = Fields.ID_KEY;
 	float rank;
 	String user;
 	String desc;
 	String plate;
 	String date;
+	int ith;
 	public JsonData(float rank, String plate, String desc) {
 		this.rank=rank;
 		this.plate=plate;
 		this.desc=desc;
+	}
+	public JsonData(int ith ) {
+		this.ith=ith;
+	}
+	public JsonData(String user) {
 		this.user=user;
 	}
 	public JSONObject toJSON() throws JSONException {
@@ -63,6 +70,12 @@ public class JsonData {
 		obj.put(USER, user);
 		return obj;
 	}
+	public JSONObject toJSON_DOWNLOAD() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.put(ITH, ith);
+		return obj;
+	}
+	
 	public JsonData(float rank, String plate, String desc, String user,String date) {
 		this.rank=rank;
 		this.plate=plate;

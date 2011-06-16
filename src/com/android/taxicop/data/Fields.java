@@ -29,7 +29,7 @@ package com.android.taxicop.data;
 
 public class Fields {
 	public static final String TABLE_REPORT = "report";
-	public static final String ID_KEY = "id";
+	public static final String ID_KEY = "ith";
 	public static final String RANKING = "rank";
 	public static final String CAR_PLATE = "car";
 	public static final String DESCRIPTION = "info";

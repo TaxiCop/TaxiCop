@@ -27,10 +27,16 @@
 
 package com.android.taxicop.data;
 
+import java.util.ArrayList;
+
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
@@ -49,16 +55,33 @@ public class PlateContentProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_USERS, 2);
 	}
-
+	public ContentProviderResult[] applyBatch(
+			ArrayList<ContentProviderOperation> operations)
+			throws OperationApplicationException {
+		Log.i(TAG, "applyBatch(): fast db operations");
+		final SQLiteDatabase db = dba.db;
+		db.beginTransaction();
+		try {
+			final int numOperations = operations.size();
+			final ContentProviderResult[] results = new ContentProviderResult[numOperations];
+			for (int i = 0; i < numOperations; i++) {
+				results[i] = operations.get(i).apply(this, results, i);
+			}
+			db.setTransactionSuccessful();
+			return results;
+		} finally {
+			db.endTransaction();
+		}
+	}
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 
 		int count;
 		switch (sUriMatcher.match(uri)) {
 		case 1:
-			// count=2;
-			count = dba.delete(Fields.TABLE_REPORT, selection, selectionArgs);
+				count = dba.delete(Fields.TABLE_REPORT, selection, selectionArgs);
 			break;
+		
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}

@@ -30,29 +30,31 @@ package com.android.taxicop.sync;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
-import android.content.ContentResolver;
+import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.android.taxicop.client.NetworkUtilities;
 import com.android.taxicop.data.Complaint;
 import com.android.taxicop.data.DataBase;
 import com.android.taxicop.data.Fields;
+import com.android.taxicop.data.Lists;
 import com.android.taxicop.data.PlateContentProvider;
 
-/**
- * SyncAdapter implementation for syncing sample SyncAdapter contacts to the
- * platform ContactOperations provider.
- */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	private static final String TAG = "SyncAdapter";
 
@@ -60,12 +62,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	private final Context mContext;
 	public DataBase dba;
 	private Date mLastUpdated;
+	ArrayList<ContentValues> insert;
 
 	public SyncAdapter(Context context, boolean autoInitialize) {
 		super(context, autoInitialize);
 		mContext = context;
 		dba = new DataBase(context);
 		mAccountManager = AccountManager.get(context);
+		insert = new ArrayList<ContentValues>();
 	}
 
 	String username;
@@ -77,37 +81,129 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	@Override
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
-		
 		Log.d(TAG, "onPerformSync: Start");
 		NetworkUtilities.reset();
 		ArrayList<Complaint> queries = query(provider);
-
 		for (Complaint c : queries) {
-			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER,c.DATE);
+			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER,
+					c.DATE);
 		}
 		String response;
 		if (NetworkUtilities.adapter.size() > 0) {
-			response = ":" + NetworkUtilities.process();
+			response = ":" + NetworkUtilities.process_upload();
 			Log.d(TAG, response);
 		} else
 			Log.e(TAG, "no data");
-		
-		
+		int FROM = queryLastId(provider);
+		String USER = queryUser(provider);
+		if (FROM != -1 && USER != null) {
+			try {
+				provider.delete(PlateContentProvider.URI_REPORT, null, null);
+			} catch (Exception e) {
+				Log.e(TAG, "" + e.getMessage());
+			}
+			NetworkUtilities.reset();
+
+			NetworkUtilities.add(USER);
+			NetworkUtilities.add(FROM);
+			response = null;
+			if (NetworkUtilities.adapter.size() > 0) {
+				response = NetworkUtilities.process_download();
+				Log.d(TAG, response);
+			} else
+				Log.e(TAG, "no data");
+			try {
+				final JSONArray cars = new JSONArray(response);
+				Log.d(TAG, "" + response);
+				for (int i = 0; i < cars.length(); i++) {
+					JSONObject e1 = cars.getJSONObject(i);
+					float rank = (float) e1.getDouble(Fields.RANKING);
+					String car = e1.getString(Fields.CAR_PLATE);
+					String desc = e1.getString(Fields.DESCRIPTION);
+					String date = e1.getString(Fields.DATE_REPORT);
+					ContentValues in = new ContentValues();
+					in.put(Fields.CAR_PLATE, car);
+					in.put(Fields.RANKING, rank);
+					in.put(Fields.DATE_REPORT, date);
+					in.put(Fields.DESCRIPTION, desc);
+					insert.add(in);
+				}
+				try {
+					provider.applyBatch(insertData());
+					insert.clear();
+
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Log.e("Json", e.getMessage());
+				} catch (OperationApplicationException e) {
+					// TODO Auto-generated catch block
+					Log.e("Json", e.getMessage());
+				}
+
+			} catch (Exception e) {
+				Log.e(TAG, "" + e.getMessage());
+			}
+
+		}
 
 	}
-	
+
+	private static ContentProviderOperation insert(ContentValues buff) {
+		final ContentProviderOperation.Builder builder = ContentProviderOperation
+				.newInsert(PlateContentProvider.URI_REPORT);
+		builder.withValue(Fields.RANKING, buff.get(Fields.RANKING));
+		builder.withValue(Fields.DESCRIPTION, buff.get(Fields.DESCRIPTION));
+		builder.withValue(Fields.DATE_REPORT, buff.get(Fields.DATE_REPORT));
+		builder.withValue(Fields.CAR_PLATE, buff.get(Fields.CAR_PLATE));
+		return builder.build();
+	}
+
+	public ArrayList<ContentProviderOperation> insertData() {
+		final ArrayList<ContentProviderOperation> batch = Lists.newArrayList();
+		for (ContentValues val : insert) {
+			batch.add(insert(val));
+		}
+		return batch;
+	}
+
+	public String queryUser(ContentProviderClient provider) {
+		Cursor c;
+		String usr = null;
+		try {
+			c = provider.query(PlateContentProvider.URI_USERS, null, null,
+					null, null);
+			if (c.moveToFirst()) {
+				usr = c.getString(c.getColumnIndex(Fields.ID_USR));
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "" + e.getMessage());
+		}
+		return usr;
+	}
+
+	public int queryLastId(ContentProviderClient provider) {
+		Cursor c;
+		int id = -1;
+		try {
+			c = provider.query(PlateContentProvider.URI_REPORT, null, null,
+					null, null);
+			if (c.moveToLast())
+				;
+			id = c.getInt(c.getColumnIndex(Fields.ID_KEY));
+
+		} catch (Exception e) {
+			Log.e(TAG, "" + e.getMessage());
+		}
+		return id;
+
+	}
 
 	public ArrayList<Complaint> query(ContentProviderClient provider) {
 		ArrayList<Complaint> reports = new ArrayList<Complaint>();
-		try{
-			Cursor c = provider.query(PlateContentProvider.URI_USERS, null, null, null,
-					null);
-			String usr=null;
-			if (c.moveToFirst()) {
-				usr = c.getString(c.getColumnIndex(Fields.ID_USR));
+		try {
 
-			}
-			c = provider.query(PlateContentProvider.URI_REPORT, null, null, null, null);
+			Cursor c = provider.query(PlateContentProvider.URI_REPORT, null,
+					null, null, null);
 			if (c.moveToFirst()) {
 				do {
 					float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
@@ -116,15 +212,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 					String desc = ""
 							+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
 					String date = ""
-						+ (c.getString(c.getColumnIndex(Fields.DATE_REPORT)));
-					reports.add(new Complaint(rank, plate, desc,usr,date));
+							+ (c.getString(c.getColumnIndex(Fields.DATE_REPORT)));
+					reports.add(new Complaint(rank, plate, desc,
+							queryUser(provider), date));
 				} while (c.moveToNext());
 			}
+		} catch (Exception e) {
+			Log.e(TAG, "" + e.getMessage());
 		}
-		catch (Exception e) {
-			Log.e(TAG, ""+e.getMessage());
-		}
-		
+
 		return reports;
 	}
 

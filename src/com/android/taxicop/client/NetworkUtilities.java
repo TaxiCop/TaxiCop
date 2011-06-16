@@ -97,7 +97,8 @@ public class NetworkUtilities {
 	public static final String BASE_URL ="http://";
 	public static final String LAST_SEQ_URI =  "/";
 	public static final String AUTH_URI =  "/auth";
-	public static final String JSON_URI = "/upload";
+	public static final String JSON_URI_UPLOAD = "/upload";
+	public static final String JSON_URI_DOWNLOAD = "/download";
 	public static final String ID_URI =  "/";
 	private static HttpClient mHttpClient;
 
@@ -130,7 +131,7 @@ public class NetworkUtilities {
 		adapter = new LinkedList<JsonData>();
 	}
 
-	public static String process() {
+	public static String process_upload() {
 		Log.i(TAG, "process(): enviar datos al servidor");
 		JSONArray elements = new JSONArray();
 		Iterator<JsonData> i = adapter.iterator();
@@ -153,7 +154,33 @@ public class NetworkUtilities {
 		request = elements.toString();
 		try {
 			Log.d(TAG, "send = " + request);
-			resp = sendToServer(request);
+			resp = sendToServer(request,JSON_URI_UPLOAD);
+			Log.d(TAG, "response: " + resp);
+		} catch (Exception ex) {
+			Log.e(TAG, "IOException", ex);
+		}
+		return resp;
+	}
+	
+	public static String process_download() {
+		Log.i(TAG, "process(): enviar datos al servidor");
+		JSONArray elements = new JSONArray();
+		Iterator<JsonData> i = adapter.iterator();
+		String resp = "";
+		try {
+			if (elements == null || adapter == null || adapter.size() == 0)
+				return "-1";
+			elements.put(adapter.poll().toJSON_HEADER());
+			elements.put(adapter.poll().toJSON_DOWNLOAD());
+		} catch (JSONException ex) {
+			Log.e("Json", "JSONException", ex);
+		}
+		Log.i(TAG, "process(): listo para enviar " +adapter.size()+" datos al servidor");
+		
+		request = elements.toString();
+		try {
+			Log.d(TAG, "send = " + request);
+			resp = sendToServer(request, JSON_URI_DOWNLOAD);
 			Log.d(TAG, "response: " + resp);
 		} catch (Exception ex) {
 			Log.e(TAG, "IOException", ex);
@@ -161,21 +188,18 @@ public class NetworkUtilities {
 		return resp;
 	}
 
-	private static String sendToServer(final String request) throws IOException {
+	private static String sendToServer(final String request, final String url) throws IOException {
 		final HttpResponse resp;
-		final HttpPost post = new HttpPost(BASE_URL+URL+JSON_URI);
-		Log.d(TAG, "URI=" + (BASE_URL+URL+JSON_URI));
+		final HttpPost post = new HttpPost(BASE_URL+URL+url);
+		Log.d(TAG, "URI=" + (BASE_URL+URL+url));
 		post.addHeader("Content-Type", "text/vnd.aexp.json.req");
 		post.setEntity(new StringEntity(request));
 		CreateHttpClient();
-		String response = "-";
-		Log.d(TAG, "sendToServer(): enviando datos a URI=" + (BASE_URL + URL + JSON_URI));
+		String response=null;
+		Log.d(TAG, "sendToServer(): enviando datos a URI=" + (BASE_URL + URL + url));
 		try {
 			resp = mHttpClient.execute(post);
-			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-			resp.getEntity().writeTo(outstream);
-			byte[] responseBody = outstream.toByteArray();
-			response = new String(responseBody);
+			response = EntityUtils.toString(resp.getEntity());
 			Log.i(TAG, "sendToServer(): datos enviados con respuesta="+ response);
 			int status = resp.getStatusLine().getStatusCode();
 			if (status != HttpStatus.SC_OK)
@@ -245,17 +269,6 @@ public class NetworkUtilities {
 		}
 	}
 
-	/**
-	 * Sends the authentication response from server back to the caller main UI
-	 * thread through its handler.
-	 * 
-	 * @param result
-	 *            The boolean holding authentication result
-	 * @param handler
-	 *            The main UI thread's handler instance.
-	 * @param context
-	 *            The caller Activity's context.
-	 */
 	private static void sendResult(final Boolean result, final Handler handler,
 			final Context context) {
 		if (handler == null || context == null) {
@@ -305,6 +318,13 @@ public class NetworkUtilities {
 
 	public static void add(float rank, String plate, String desc,String user,String date) {
 		adapter.add(new JsonData(rank,plate,desc,user,date));
+	}
+	
+	public static void add(String user) {
+		adapter.add(new JsonData(user));
+	}
+	public static void add(int from) {
+		adapter.add(new JsonData(from));
 	}
 	
 

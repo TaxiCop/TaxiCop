@@ -79,7 +79,6 @@ public class TabRequest extends Activity implements OnClickListener {
 				processedPlate = new StringBuilder(who.replaceAll("\\[a-zA-Z0-9]", ""));
 				finalStringtoQuery = new StringBuilder();
 				for (int i = 0; i < processedPlate.length(); i++) {
-
 					char ith = (processedPlate.charAt(i));
 					if (Character.isLowerCase(ith)) {
 						char add = Character.toUpperCase(ith);
@@ -91,7 +90,7 @@ public class TabRequest extends Activity implements OnClickListener {
 				Log.e(TAG, "query= " + finalStringtoQuery.toString());
 
 				Complaint result = query(finalStringtoQuery.toString());
-
+				et_car_plate.setText("");
 				if (result != null) {
 
 					ratingBar.setVisibility(View.VISIBLE);
