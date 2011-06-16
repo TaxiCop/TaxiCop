@@ -26,7 +26,7 @@
  */
 
 
-package com.taxicop.auth;
+package com.android.taxicop.auth;
 
 
 public class Constants {
@@ -34,11 +34,11 @@ public class Constants {
 	/**
 	 * Account type string.
 	 */
-	public static final String ACCOUNT_TYPE = "com.taxicop";
+	public static final String ACCOUNT_TYPE = "com.android.taxicop";
 
 	/**
 	 * Authtoken type string.
 	 */
-	public static final String AUTHTOKEN_TYPE = "com.taxicop";
+	public static final String AUTHTOKEN_TYPE = "com.android.taxicop";
 
 }

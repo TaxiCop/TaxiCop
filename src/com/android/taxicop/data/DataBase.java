@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop.data;
+package com.android.taxicop.data;
 
 import android.content.ContentValues;
 import android.content.Context;

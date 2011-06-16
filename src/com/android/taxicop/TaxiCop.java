@@ -1,4 +1,4 @@
-package com.taxicop;
+package com.android.taxicop;
 /* 
  * PROJECT: TaxiCop
  * --------------------------------------------------------------------------------
@@ -31,14 +31,11 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.taxicop.Eula.OnEulaAgreedTo;
-
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

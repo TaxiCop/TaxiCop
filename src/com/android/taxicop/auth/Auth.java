@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop.auth;
+package com.android.taxicop.auth;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
@@ -35,10 +35,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
-import com.android.client.NetworkUtilities;
-import com.taxicop.R;
+import com.android.taxicop.R;
+import com.android.taxicop.client.NetworkUtilities;
 
 /**
  * This class is an implementation of AbstractAccountAuthenticator for

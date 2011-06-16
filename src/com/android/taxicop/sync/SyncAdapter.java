@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop.sync;
+package com.android.taxicop.sync;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,11 +43,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.client.NetworkUtilities;
-import com.taxicop.data.Complaint;
-import com.taxicop.data.DataBase;
-import com.taxicop.data.Fields;
-import com.taxicop.data.PlateContentProvider;
+import com.android.taxicop.client.NetworkUtilities;
+import com.android.taxicop.data.Complaint;
+import com.android.taxicop.data.DataBase;
+import com.android.taxicop.data.Fields;
+import com.android.taxicop.data.PlateContentProvider;
 
 /**
  * SyncAdapter implementation for syncing sample SyncAdapter contacts to the
@@ -82,7 +82,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		ArrayList<Complaint> queries = query();
 
 		for (Complaint c : queries) {
-			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER);
+			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER,c.DATE);
 		}
 		String response;
 		if (NetworkUtilities.adapter.size() > 0) {
@@ -93,26 +93,31 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 	}
 
-	public ArrayList<Complaint> query(){
-		ArrayList<Complaint> reports= new ArrayList<Complaint>();
-		ContentResolver cr= mContext.getContentResolver();
-		Cursor c= cr.query(PlateContentProvider.URI_REPORT, null, null, null, null);
-		try{
-			while(c.moveToFirst()){
+	public ArrayList<Complaint> query() {
+		ArrayList<Complaint> reports = new ArrayList<Complaint>();
+		ContentResolver cr = mContext.getContentResolver();
+
+		Cursor c = cr.query(PlateContentProvider.URI_USERS, null, null, null,
+				null);
+		String usr=null;
+		if (c.moveToFirst()) {
+			usr = c.getString(c.getColumnIndex(Fields.ID_USR));
+
+		}
+		c = cr.query(PlateContentProvider.URI_REPORT, null, null, null, null);
+		if (c.moveToFirst()) {
+			do {
 				float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
-				String plate =  (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
-				String desc=  (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
-				reports.add(new Complaint(rank, plate, desc));
-			}
-			
+				String plate = ""
+						+ (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
+				String desc = ""
+						+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
+				String date = ""
+					+ (c.getString(c.getColumnIndex(Fields.DATE_REPORT)));
+				reports.add(new Complaint(rank, plate, desc,usr,date));
+			} while (c.moveToNext());
 		}
-		catch (Exception e) {
-			// TODO: handle exception
-			Log.e(TAG, ""+e.getMessage());
-		}
-		c.close();
-		
-		return reports;		
+		return reports;
 	}
 
 }

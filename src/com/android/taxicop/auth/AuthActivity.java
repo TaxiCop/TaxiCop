@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop.auth;
+package com.android.taxicop.auth;
 
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
@@ -38,21 +38,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.android.client.NetworkUtilities;
-import com.taxicop.R;
-import com.taxicop.data.PlateContentProvider;
+import com.android.taxicop.R;
+import com.android.taxicop.client.NetworkUtilities;
+import com.android.taxicop.data.PlateContentProvider;
 
 /**
  * Activity which displays login screen to the user.
@@ -123,7 +122,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 			mSpinCountry.setVisibility(View.GONE);
 			mCountry=option;
 			
-		} else {
+		} else {	
 			mSpinCountry.setVisibility(View.VISIBLE);
 			ArrayAdapter<CharSequence> adapter = ArrayAdapter
 					.createFromResource(this, R.array.countries,
@@ -238,9 +237,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 			mAccountManager.setPassword(account, mPassword);
 		}
 		Bundle extras = new Bundle();
-		// ContentResolver.requestSync(account, DataContentProvider.AUTHORITY,
-		// extras);
-
+		
 		ContentResolver.requestSync(account, PlateContentProvider.AUTHORITY,
 				extras);
 
@@ -254,12 +251,6 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		}
 		setAccountAuthenticatorResult(intent.getExtras());
 		setResult(RESULT_OK, intent);
-		/*
-		 * (ContentResolver.isSyncActive(account, DataContentProvider.AUTHORITY)
-		 * || ContentResolver.isSyncPending(account,
-		 * DataContentProvider.AUTHORITY));
-		 */
-
 		finish();
 
 	}

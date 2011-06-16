@@ -25,20 +25,13 @@
  * 
  */
 
-package com.taxicop;
+package com.android.taxicop;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-import com.taxicop.data.Complaint;
-import com.taxicop.data.PlateContentProvider;
-import com.taxicop.data.Fields;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.media.AudioRecord.OnRecordPositionUpdateListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,8 +39,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.taxicop.data.Complaint;
+import com.android.taxicop.data.Fields;
+import com.android.taxicop.data.PlateContentProvider;
 
 public class TabInsert extends Activity implements OnClickListener,
 		RatingBar.OnRatingBarChangeListener {

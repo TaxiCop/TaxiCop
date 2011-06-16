@@ -26,7 +26,7 @@
  */
 
 
-package com.taxicop.data;
+package com.android.taxicop.data;
 
 import java.util.ArrayList;
 import java.util.Collections;

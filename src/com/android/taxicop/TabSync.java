@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop;
+package com.android.taxicop;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +37,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -46,18 +45,14 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.taxicop.auth.AuthActivity;
-import com.taxicop.data.Complaint;
-import com.taxicop.data.DataBase;
-import com.taxicop.data.Fields;
-import com.taxicop.data.PlateContentProvider;
+import com.android.taxicop.auth.AuthActivity;
+import com.android.taxicop.auth.Constants;
+import com.android.taxicop.data.PlateContentProvider;
 
 public class TabSync extends Activity implements OnClickListener {
 
@@ -101,53 +96,40 @@ public class TabSync extends Activity implements OnClickListener {
 			Bundle extras = new Bundle();
 			Account cuenta = null;
 			for (int i = 0; i < ac.length; i++) {
-				if (ac[i].type.equals(PlateContentProvider.AUTHORITY)) {
-					cuenta = ac[i];
+				Log.e(TAG, "" + ac[i].name + " " + ac[i].type);
+
+				if (ac[i].type.equals(Constants.ACCOUNT_TYPE)) {
 					
+					cuenta = ac[i];
+
 					break;
 				}
 			}
 			int active = ContentResolver.getIsSyncable(cuenta,
 					PlateContentProvider.AUTHORITY);
-			
+
 			try {
 				if (location != null) {
 					addresses = gcd.getFromLocation(location.getLatitude(),
 							location.getLongitude(), 1);
 					if (addresses.size() > 0)
-						Log.d(TAG, "city: " + addresses.get(0).getLocality()
-								+ " country: "
+						Log.d(TAG, "city: " + " country: "
 								+ addresses.get(0).getCountryName());
-				
+
 					if (cuenta == null) {
-						
-						//ContentResolver.requestSync(cuenta,
-						//		PlateContentProvider.AUTHORITY, extras);
-						//Test
-						
-						 
-						DataBase dba = new DataBase(this);
-						dba.open();
-						
-						Cursor c = dba.getData(Fields.TABLE_REPORT, null, null, null, null, null);
-						startManagingCursor(c);
-						
-						while (c.moveToFirst()) {
-							float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
-							String plate = ""
-									+ (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
-							String desc = ""
-									+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
-							
-						}
-//						Intent auth = new Intent(this, AuthActivity.class);
-//						auth.putExtra("country",addresses.get(0).getCountryCode());
-//						startActivity(auth);
-					} 
+						Intent auth = new Intent(this, AuthActivity.class);
+						auth.putExtra("country", addresses.get(0)
+								.getCountryCode());
+						startActivity(auth);
+					} else if (active > 0)
+						ContentResolver.requestSync(cuenta,
+								PlateContentProvider.AUTHORITY, extras);
+					else
+						showToastInfo(getString(R.string.sync_error));
 				} else {
 					if (cuenta == null) {
 						Intent auth = new Intent(this, AuthActivity.class);
-						auth.putExtra("country","null");
+						auth.putExtra("country", "null");
 						startActivity(auth);
 					} else if (active > 0)
 						ContentResolver.requestSync(cuenta,

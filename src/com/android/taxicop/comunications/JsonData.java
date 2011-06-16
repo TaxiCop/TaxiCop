@@ -25,12 +25,12 @@
  * 
  */
 
-package com.taxicop.comunications;
+package com.android.taxicop.comunications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.taxicop.data.Fields;
+import com.android.taxicop.data.Fields;
 
 public class JsonData {
 
@@ -38,10 +38,12 @@ public class JsonData {
 	public static final String USER = Fields.ID_USR;
 	public static final String DESC = Fields.DESCRIPTION;
 	public static final String PLATE = Fields.CAR_PLATE;
+	public static final String DATE = Fields.DATE_REPORT;
 	float rank;
 	String user;
 	String desc;
 	String plate;
+	String date;
 	public JsonData(float rank, String plate, String desc) {
 		this.rank=rank;
 		this.plate=plate;
@@ -53,6 +55,7 @@ public class JsonData {
 		obj.put(RANK, rank);
 		obj.put(DESC, desc);
 		obj.put(PLATE, plate);
+		obj.put(DATE, date);
 		return obj;
 	}
 	public JSONObject toJSON_HEADER() throws JSONException {
@@ -60,11 +63,12 @@ public class JsonData {
 		obj.put(USER, user);
 		return obj;
 	}
-	public JsonData(float rank, String plate, String desc, String user) {
+	public JsonData(float rank, String plate, String desc, String user,String date) {
 		this.rank=rank;
 		this.plate=plate;
 		this.desc=desc;
 		this.user=user;
+		this.date=date;
 	}
 	
 }

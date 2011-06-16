@@ -25,11 +25,7 @@
  * 
  */
 
-package com.taxicop;
-
-import com.taxicop.data.Complaint;
-import com.taxicop.data.PlateContentProvider;
-import com.taxicop.data.Fields;
+package com.android.taxicop;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -43,6 +39,10 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.taxicop.data.Complaint;
+import com.android.taxicop.data.Fields;
+import com.android.taxicop.data.PlateContentProvider;
 
 public class TabRequest extends Activity implements OnClickListener {
 

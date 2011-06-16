@@ -25,38 +25,43 @@
  * 
  */
 
-package com.taxicop.sync;
+package com.android.taxicop.auth;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 /**
- * Service to handle Account sync. This is invoked with an intent with action
- * ACTION_AUTHENTICATOR_INTENT. It instantiates the syncadapter and returns its
- * IBinder.
+ * Service to handle Account authentication. It instantiates the authenticator
+ * and returns its IBinder.
  */
-public class SyncService extends Service {
-    private static final Object sSyncAdapterLock = new Object();
-    private static SyncAdapter sSyncAdapter = null;
-
-    /*
-     * {@inheritDoc}
-     */
-    @Override
+public class AuthService extends Service {
+    private static final String TAG = "AuthService";
+    private Auth mAuthenticator;
+    
+   @Override
     public void onCreate() {
-        synchronized (sSyncAdapterLock) {
-            if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
-            }
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG, "SampleSyncAdapter Authentication Service started.");
+        }
+        mAuthenticator = new Auth(this);
+    }
+   
+    @Override
+    public void onDestroy() {
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG, "SampleSyncAdapter Authentication Service stopped.");
         }
     }
-
-    /*
-     * {@inheritDoc}
-     */
+    
     @Override
     public IBinder onBind(Intent intent) {
-        return sSyncAdapter.getSyncAdapterBinder();
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG,
+                "getBinder()...  returning the AccountAuthenticator binder for intent "
+                    + intent);
+        }
+        return mAuthenticator.getIBinder();
     }
 }

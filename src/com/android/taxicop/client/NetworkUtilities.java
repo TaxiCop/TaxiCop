@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.client;
+package com.android.taxicop.client;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -65,10 +65,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.taxicop.auth.AuthActivity;
-import com.taxicop.comunications.JsonData;
-import com.taxicop.data.Fields;
-import com.taxicop.data.PlateContentProvider;
+import com.android.taxicop.auth.AuthActivity;
+import com.android.taxicop.comunications.JsonData;
+import com.android.taxicop.data.Fields;
+import com.android.taxicop.data.PlateContentProvider;
 
 /**
  * Provides utility methods for communicating with the server.
@@ -287,7 +287,7 @@ public class NetworkUtilities {
 		final Runnable runnable = new Runnable() {
 			public void run() {
 				String ret=	""+authenticate(username, password, country,handler, context);
-				Log.e(TAG, ""+ret);
+				Log.d(TAG, "respuesta de autenticacion= "+ret);
 				if(!ret.equals("")){
 					ContentResolver next= context.getContentResolver();
 					ContentValues values = new ContentValues();
@@ -303,8 +303,8 @@ public class NetworkUtilities {
 
 	
 
-	public static void add(float rank, String plate, String desc,String user) {
-		adapter.add(new JsonData(rank,plate,desc,user));
+	public static void add(float rank, String plate, String desc,String user,String date) {
+		adapter.add(new JsonData(rank,plate,desc,user,date));
 	}
 	
 

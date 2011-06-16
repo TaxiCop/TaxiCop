@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop.data;
+package com.android.taxicop.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -38,12 +38,12 @@ public class PlateContentProvider extends ContentProvider {
 
 	static final String TAG = "PlateContentProvider";
 	public static final Uri URI_REPORT = Uri
-			.parse("content://com.taxicop.taxicop/report");
+			.parse("content://com.android.taxicop.taxicop/report");
 	public static final Uri URI_USERS = Uri
-	.parse("content://com.taxicop.taxicop/users");
+			.parse("content://com.android.taxicop.taxicop/users");
 	public DataBase dba;
 	private static final UriMatcher sUriMatcher;
-	public static final String AUTHORITY = "com.taxicop.taxicop";
+	public static final String AUTHORITY = "com.android.taxicop.taxicop";
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);
@@ -81,7 +81,6 @@ public class PlateContentProvider extends ContentProvider {
 			return PlateContentProvider.URI_REPORT;
 		case 2:
 			dba.insertData(Fields.TABLE_USERS, values);
-			
 			return PlateContentProvider.URI_USERS;
 
 		default:
@@ -111,8 +110,8 @@ public class PlateContentProvider extends ContentProvider {
 					null, null, null);
 			break;
 		case 2:
-			c = dba.getData(Fields.TABLE_USERS, selection, selectionArgs,
-					null, null, null);
+			c = dba.getData(Fields.TABLE_USERS, selection, selectionArgs, null,
+					null, null);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

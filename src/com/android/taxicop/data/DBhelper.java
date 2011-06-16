@@ -25,7 +25,7 @@
  * 
  */
 
-package com.taxicop.data;
+package com.android.taxicop.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,7 +39,7 @@ public class DBhelper extends SQLiteOpenHelper {
 	static final String CREATE_TABLE1 = "create table " + Fields.TABLE_REPORT
 			+ " ( " + Fields.ID_KEY + " integer primary key autoincrement, "
 			+ Fields.RANKING + " real not null, " 
-			+ Fields.CAR_PLATE	+ " integer not null, " 
+			+ Fields.CAR_PLATE	+ " text not null, " 
 			+ Fields.DATE_REPORT + " text not null , "
 			+ Fields.DESCRIPTION + " text ) ;";
 			
