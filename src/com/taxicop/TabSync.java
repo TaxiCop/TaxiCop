@@ -99,6 +99,7 @@ public class TabSync extends Activity implements OnClickListener {
 			for (int i = 0; i < ac.length; i++) {
 				if (ac[i].type.equals(PlateContentProvider.AUTHORITY)) {
 					cuenta = ac[i];
+					
 					break;
 				}
 			}
