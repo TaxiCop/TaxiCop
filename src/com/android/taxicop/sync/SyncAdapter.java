@@ -77,9 +77,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	@Override
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
+		
 		Log.d(TAG, "onPerformSync: Start");
 		NetworkUtilities.reset();
-		ArrayList<Complaint> queries = query();
+		ArrayList<Complaint> queries = query(provider);
 
 		for (Complaint c : queries) {
 			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER,c.DATE);
@@ -90,33 +91,40 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			Log.d(TAG, response);
 		} else
 			Log.e(TAG, "no data");
+		
+		
 
 	}
+	
 
-	public ArrayList<Complaint> query() {
+	public ArrayList<Complaint> query(ContentProviderClient provider) {
 		ArrayList<Complaint> reports = new ArrayList<Complaint>();
-		ContentResolver cr = mContext.getContentResolver();
+		try{
+			Cursor c = provider.query(PlateContentProvider.URI_USERS, null, null, null,
+					null);
+			String usr=null;
+			if (c.moveToFirst()) {
+				usr = c.getString(c.getColumnIndex(Fields.ID_USR));
 
-		Cursor c = cr.query(PlateContentProvider.URI_USERS, null, null, null,
-				null);
-		String usr=null;
-		if (c.moveToFirst()) {
-			usr = c.getString(c.getColumnIndex(Fields.ID_USR));
-
+			}
+			c = provider.query(PlateContentProvider.URI_REPORT, null, null, null, null);
+			if (c.moveToFirst()) {
+				do {
+					float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
+					String plate = ""
+							+ (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
+					String desc = ""
+							+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
+					String date = ""
+						+ (c.getString(c.getColumnIndex(Fields.DATE_REPORT)));
+					reports.add(new Complaint(rank, plate, desc,usr,date));
+				} while (c.moveToNext());
+			}
 		}
-		c = cr.query(PlateContentProvider.URI_REPORT, null, null, null, null);
-		if (c.moveToFirst()) {
-			do {
-				float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
-				String plate = ""
-						+ (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
-				String desc = ""
-						+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
-				String date = ""
-					+ (c.getString(c.getColumnIndex(Fields.DATE_REPORT)));
-				reports.add(new Complaint(rank, plate, desc,usr,date));
-			} while (c.moveToNext());
+		catch (Exception e) {
+			Log.e(TAG, ""+e.getMessage());
 		}
+		
 		return reports;
 	}
 

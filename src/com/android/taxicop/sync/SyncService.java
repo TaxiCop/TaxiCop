@@ -27,9 +27,18 @@
 
 package com.android.taxicop.sync;
 
+import com.android.taxicop.R;
+import com.android.taxicop.TaxiCop;
+
+import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
 
 /**
  * Service to handle Account sync. This is invoked with an intent with action
@@ -37,26 +46,49 @@ import android.os.IBinder;
  * IBinder.
  */
 public class SyncService extends Service {
-    private static final Object sSyncAdapterLock = new Object();
-    private static SyncAdapter sSyncAdapter = null;
-
-    /*
-     * {@inheritDoc}
-     */
-    @Override
-    public void onCreate() {
-        synchronized (sSyncAdapterLock) {
-            if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
-            }
-        }
+	private static final Object sSyncAdapterLock = new Object();
+	private static SyncAdapter sSyncAdapter = null;
+	private NotificationManager mNM;
+	private static final int DIALOG_LOADING = 0;
+	public ProgressDialog dialog;
+	 private int NOTIFICATION =0;
+	private void showNotification() {
+        Notification notification = new Notification(R.drawable.icon_sync, null,
+                System.currentTimeMillis());
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, TaxiCop.class), 0);
+        notification.setLatestEventInfo(this, null,
+                       null, contentIntent);
+       mNM.notify(NOTIFICATION, notification);
     }
 
-    /*
-     * {@inheritDoc}
-     */
-    @Override
-    public IBinder onBind(Intent intent) {
-        return sSyncAdapter.getSyncAdapterBinder();
-    }
+
+	/*
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onCreate() {
+		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		showNotification();
+		synchronized (sSyncAdapterLock) {
+			if (sSyncAdapter == null) {
+				sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+			}
+		}
+	}
+
+	/*
+	 * {@inheritDoc}
+	 */
+	@Override
+	public IBinder onBind(Intent intent) {
+		return sSyncAdapter.getSyncAdapterBinder();
+	}
+	
+	@Override
+	public void onDestroy() {
+		mNM.cancel(NOTIFICATION);
+		super.onDestroy();
+	}
+
 }
