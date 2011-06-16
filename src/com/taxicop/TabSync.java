@@ -37,6 +37,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -53,6 +54,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.taxicop.auth.AuthActivity;
+import com.taxicop.data.Complaint;
+import com.taxicop.data.DataBase;
+import com.taxicop.data.Fields;
 import com.taxicop.data.PlateContentProvider;
 
 public class TabSync extends Activity implements OnClickListener {
@@ -116,8 +120,26 @@ public class TabSync extends Activity implements OnClickListener {
 								+ addresses.get(0).getCountryName());
 				
 					if (cuenta == null) {
-						ContentResolver.requestSync(cuenta,
-								PlateContentProvider.AUTHORITY, extras);
+						
+						//ContentResolver.requestSync(cuenta,
+						//		PlateContentProvider.AUTHORITY, extras);
+						//Test
+						
+						 
+						DataBase dba = new DataBase(this);
+						dba.open();
+						
+						Cursor c = dba.getData(Fields.TABLE_REPORT, null, null, null, null, null);
+						startManagingCursor(c);
+						
+						while (c.moveToFirst()) {
+							float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
+							String plate = ""
+									+ (c.getString(c.getColumnIndex(Fields.CAR_PLATE)));
+							String desc = ""
+									+ (c.getString(c.getColumnIndex(Fields.DESCRIPTION)));
+							
+						}
 //						Intent auth = new Intent(this, AuthActivity.class);
 //						auth.putExtra("country",addresses.get(0).getCountryCode());
 //						startActivity(auth);
