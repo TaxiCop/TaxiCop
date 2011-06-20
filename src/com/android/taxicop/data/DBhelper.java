@@ -46,7 +46,8 @@ public class DBhelper extends SQLiteOpenHelper {
 
 	static final String CREATE_TABLE2 = "create table " + Fields.TABLE_USERS
 			+ " ( " + Fields.ID_KEY + " integer primary key autoincrement, "
-			 + Fields.ID_USR + " text not null);";
+			 + Fields.ITH+ " integer not null, "
+			+ Fields.ID_USR + " text not null);";
 
 	public DBhelper(Context context, String name, CursorFactory factory,
 			int version) {

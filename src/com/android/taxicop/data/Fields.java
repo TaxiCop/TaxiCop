@@ -40,6 +40,7 @@ public class Fields {
 	
 	public static final String TABLE_USERS = "users";
 	public static final String ID_USR = "id_usr";
+	public static final String ITH = "indice";
 	
 	
 }

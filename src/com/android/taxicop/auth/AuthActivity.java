@@ -87,10 +87,10 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	/** Was the original caller asking for an entirely new account? */
 	protected boolean mRequestNewAccount = false;
 
-	private String mUsername,mCountry;
+	private String mUsername, mCountry;
 	private EditText mUsernameEdit;
 	private Spinner mSpinCountry;
-
+	private Account acc;
 	/**
 	 * {@inheritDoc}
 	 */
@@ -120,9 +120,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		mSpinCountry = (Spinner) findViewById(R.id.spinner1);
 		if (!option.equals("null")) {
 			mSpinCountry.setVisibility(View.GONE);
-			mCountry=option;
-			
-		} else {	
+			mCountry = option;
+
+		} else {
 			mSpinCountry.setVisibility(View.VISIBLE);
 			ArrayAdapter<CharSequence> adapter = ArrayAdapter
 					.createFromResource(this, R.array.countries,
@@ -133,7 +133,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 					.setOnItemSelectedListener(new OnItemSelectedListener() {
 						public void onItemSelected(AdapterView<?> parent,
 								View view, int position, long id) {
-								mCountry=""+getResources().getStringArray(R.array.countries_short)[position];
+							mCountry = ""
+									+ getResources().getStringArray(
+											R.array.countries_short)[position];
 						}
 
 						public void onNothingSelected(AdapterView<?> parent) {
@@ -185,9 +187,9 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		} else {
 			showProgress();
 			// Start authenticating...
-			
-			mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword,mCountry,
-					mHandler, AuthActivity.this);
+
+			mAuthThread = NetworkUtilities.attemptAuth(mUsername, mPassword,
+					mCountry, mHandler, AuthActivity.this);
 		}
 	}
 
@@ -220,27 +222,24 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	 * @param the
 	 *            confirmCredentials result.
 	 */
-
+	 
 	protected void finishLogin() {
 		Log.i(TAG, "finishLogin()");
 		final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE);
-
+		acc=account;
 		if (mRequestNewAccount) {
-			Bundle data= new Bundle();
+			Bundle data = new Bundle();
 			data.putString("country", mCountry);
 			mAccountManager.addAccountExplicitly(account, mPassword, data);
-			// Set contacts sync for this account.
-
-			ContentResolver.setSyncAutomatically(account,
-					PlateContentProvider.AUTHORITY, true);
+			ContentResolver.addPeriodicSync(account, PlateContentProvider.AUTHORITY, data, 3600l);
+			ContentResolver.setSyncAutomatically(account, PlateContentProvider.AUTHORITY, true);
+			
+			
 		} else {
 			mAccountManager.setPassword(account, mPassword);
+			
 		}
-		Bundle extras = new Bundle();
-		
-		ContentResolver.requestSync(account, PlateContentProvider.AUTHORITY,
-				extras);
-
+		ContentResolver.requestSync(account, PlateContentProvider.AUTHORITY, new Bundle());
 		final Intent intent = new Intent();
 		mAuthtoken = mPassword;
 		intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
@@ -251,6 +250,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		}
 		setAccountAuthenticatorResult(intent.getExtras());
 		setResult(RESULT_OK, intent);
+		
 		finish();
 
 	}
@@ -287,6 +287,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 				mMessage.setText(getText(R.string.login_activity_loginfail_text_pwonly));
 			}
 		}
+		
 	}
 
 	/**

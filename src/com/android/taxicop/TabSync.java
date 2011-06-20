@@ -37,6 +37,8 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -52,6 +54,7 @@ import android.widget.Toast;
 
 import com.android.taxicop.auth.AuthActivity;
 import com.android.taxicop.auth.Constants;
+import com.android.taxicop.data.Fields;
 import com.android.taxicop.data.PlateContentProvider;
 
 public class TabSync extends Activity implements OnClickListener {
@@ -59,13 +62,16 @@ public class TabSync extends Activity implements OnClickListener {
 	private static final String TAG = "TabSync";
 	ImageButton sync;
 	private AccountManager mAccountManager;
-
-	@Override
+	private ContentResolver SYNC;
+	
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sync_activity);
 		sync = (ImageButton) findViewById(R.id.bt_sync);
 		sync.setOnClickListener(this);
+		SYNC= getContentResolver();
+		
 
 	}
 
@@ -77,7 +83,6 @@ public class TabSync extends Activity implements OnClickListener {
 		c.setBearingRequired(false);
 		c.setSpeedRequired(false);
 		c.setCostAllowed(false);
-		// c.setPowerRequirement(Criteria.POWER_HIGH);
 		return c;
 
 	}
@@ -92,55 +97,58 @@ public class TabSync extends Activity implements OnClickListener {
 			Geocoder gcd = new Geocoder(this, Locale.getDefault());
 			List<Address> addresses;
 			mAccountManager = AccountManager.get(this);
-			Account ac[] = mAccountManager.getAccounts();
+			Account ac[] = mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE);
 			Bundle extras = new Bundle();
-			Account cuenta = null;
-			for (int i = 0; i < ac.length; i++) {
-				Log.e(TAG, "" + ac[i].name + " " + ac[i].type);
+			ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS, new observer());
+			
+				try {
+					if (location != null) {
+						addresses = gcd.getFromLocation(location.getLatitude(),
+								location.getLongitude(), 1);
 
-				if (ac[i].type.equals(Constants.ACCOUNT_TYPE)) {
-					
-					cuenta = ac[i];
+						if (ac.length==0) {
+							Intent auth = new Intent(this, AuthActivity.class);
+							if (addresses.size() > 0) {
+								auth.putExtra("country", addresses.get(0).getCountryCode());
+								startActivityForResult(auth,0);
+							}
+							else{
+								auth.putExtra("country", "null");
+								startActivityForResult(auth,0);
+							}
 
-					break;
+						} else {
+							for (int i = 0; i < ac.length; i++) {
+								
+								ContentResolver.requestSync(ac[i],
+										PlateContentProvider.AUTHORITY, extras);
+								
+							}
+								
+						}						
+						
+					} else {
+						if (ac.length == 0) {
+							Intent auth = new Intent(this, AuthActivity.class);
+							auth.putExtra("country", "null");
+							startActivityForResult(auth,0);
+						} else {
+							
+							for (int i = 0; i < ac.length; i++) {
+								
+								ContentResolver.requestSync(ac[i],
+										PlateContentProvider.AUTHORITY, extras);
+								
+							}
+						}					
+						
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					Log.e(TAG, "" + e.getMessage());
 				}
-			}
-			int active = ContentResolver.getIsSyncable(cuenta,
-					PlateContentProvider.AUTHORITY);
-
-			try {
-				if (location != null) {
-					addresses = gcd.getFromLocation(location.getLatitude(),
-							location.getLongitude(), 1);
-					if (addresses.size() > 0)
-						Log.d(TAG, "city: " + " country: "
-								+ addresses.get(0).getCountryName());
-
-					if (cuenta == null) {
-						Intent auth = new Intent(this, AuthActivity.class);
-						auth.putExtra("country", addresses.get(0)
-								.getCountryCode());
-						startActivity(auth);
-					} else if (active > 0)
-						ContentResolver.requestSync(cuenta,
-								PlateContentProvider.AUTHORITY, extras);
-					else
-						showToastInfo(getString(R.string.sync_error));
-				} else {
-					if (cuenta == null) {
-						Intent auth = new Intent(this, AuthActivity.class);
-						auth.putExtra("country", "null");
-						startActivity(auth);
-					} else if (active > 0)
-						ContentResolver.requestSync(cuenta,
-								PlateContentProvider.AUTHORITY, extras);
-					else
-						showToastInfo(getString(R.string.sync_error));
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Log.e(TAG, "" + e.getMessage());
-			}
+			
+			
 			break;
 
 		default:
@@ -148,9 +156,32 @@ public class TabSync extends Activity implements OnClickListener {
 		}
 
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		switch (requestCode) {
+		case 0:
+			break;
+
+		default:
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	void showToastInfo(CharSequence msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
+	class observer implements SyncStatusObserver{
+
+		public void onStatusChanged(int which) {
+			Log.e(TAG, "Status who="+which);
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	
 
 }

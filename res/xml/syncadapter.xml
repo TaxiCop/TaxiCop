@@ -24,4 +24,5 @@
     android:contentAuthority="com.android.taxicop.taxicop"
     android:accountType="com.android.taxicop"
     android:supportsUploading="true"
+    
 />

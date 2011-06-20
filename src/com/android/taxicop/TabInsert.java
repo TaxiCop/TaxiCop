@@ -133,9 +133,10 @@ public class TabInsert extends Activity implements OnClickListener,
 		values.put(Fields.RANKING, data.RANKING);
 		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
 		Date d = new Date();
-		String date = (new SimpleDateFormat("yyyyMMdd")).format(new Date());
+		String date = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
 		values.put(Fields.DATE_REPORT, date);
 		cr.insert(PlateContentProvider.URI_REPORT, values);
+		cr.notifyChange(PlateContentProvider.URI_REPORT, null);
 	}
 	
 

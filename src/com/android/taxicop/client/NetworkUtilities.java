@@ -302,10 +302,18 @@ public class NetworkUtilities {
 				String ret=	""+authenticate(username, password, country,handler, context);
 				Log.d(TAG, "respuesta de autenticacion= "+ret);
 				if(!ret.equals("")){
-					ContentResolver next= context.getContentResolver();
-					ContentValues values = new ContentValues();
-					values.put(Fields.ID_USR, ret);
-					next.insert(PlateContentProvider.URI_USERS, values);
+					try{
+						ContentResolver next= context.getContentResolver();
+						ContentValues values = new ContentValues();
+						values.put(Fields.ITH, 0);
+						values.put(Fields.ID_USR, ret);					
+						next.insert(PlateContentProvider.URI_USERS, values);
+						Log.e(TAG, "i did it.");
+					}
+					catch (Exception e) {
+						Log.e(TAG, ""+e.getMessage());
+					}
+					
 					
 				}
 			}
