@@ -231,7 +231,6 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 			Bundle data = new Bundle();
 			data.putString("country", mCountry);
 			mAccountManager.addAccountExplicitly(account, mPassword, data);
-			ContentResolver.addPeriodicSync(account, PlateContentProvider.AUTHORITY, data, 3600l);
 			ContentResolver.setSyncAutomatically(account, PlateContentProvider.AUTHORITY, true);
 			
 			

@@ -98,7 +98,6 @@ public class TabSync extends Activity implements OnClickListener {
 			List<Address> addresses;
 			mAccountManager = AccountManager.get(this);
 			Account ac[] = mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE);
-			Bundle extras = new Bundle();
 			ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS, new observer());
 			
 				try {
@@ -121,7 +120,7 @@ public class TabSync extends Activity implements OnClickListener {
 							for (int i = 0; i < ac.length; i++) {
 								
 								ContentResolver.requestSync(ac[i],
-										PlateContentProvider.AUTHORITY, extras);
+										PlateContentProvider.AUTHORITY, new Bundle());
 								
 							}
 								
@@ -137,7 +136,7 @@ public class TabSync extends Activity implements OnClickListener {
 							for (int i = 0; i < ac.length; i++) {
 								
 								ContentResolver.requestSync(ac[i],
-										PlateContentProvider.AUTHORITY, extras);
+										PlateContentProvider.AUTHORITY, new  Bundle());
 								
 							}
 						}					
