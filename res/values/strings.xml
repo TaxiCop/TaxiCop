@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<!-- 	EULA -->
+	<!-- EULA -->
 	<string name="eula_title">License Agreement</string>
 	<string name="eula_accept">Accept</string>
 	<string name="eula_refuse">Dont Accept</string>
@@ -12,7 +12,7 @@
 	<string name="out_placa">Car Plate:</string>
 	<string name="out_description">Description:</string>
 	<!-- Messages -->
-	<string name="confirm_message">New Record :) </string>
+	<string name="confirm_message">Thanks for your kind contribution ;) !!</string>
 	<string name="error_message">Invalid Info</string>
 	<string name="error_message_length">Invalid Plate</string>
 	<string name="error_message_characters">Wrong Character Secuence</string>
@@ -54,17 +54,17 @@
 
 	<!-- AuthenticatorActivity -->
 	<skip />
-	
+
 	<string name="prompt_label">Choose a country</string>
 	<!-- Label above username EditText -->
-	<string name="login_activity_username_label">Username</string>
+	<string name="login_activity_username_label">Username (Email)</string>
 	<!-- Label above password EditText -->
 	<string name="login_activity_password_label">Password</string>
 	<!-- Button to sign in after entering username and password -->
 	<string name="login_activity_ok_button">Sign in</string>
 
 	<!-- Message shown in dialog if the username or password is invalid. -->
-	<string name="login_activity_loginfail_text_both">The username or password isn\'t valid. A 
+	<string name="login_activity_loginfail_text_both">The username(Email) or password isn\'t valid. A
 		Taxicop account is
 		required. Please try again. </string>
 	<!-- Message shown in dialog if the password is invalid -->
@@ -74,7 +74,8 @@
 	<!-- Message shown in dialog to prompt the user for their password -->
 	<string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
 	<!-- Message shown if the provided account doesn't support the current activity. -->
-	<string name="login_activity_newaccount_text">Comming soon: Sign into your Taxicop account. </string>
+	<string name="login_activity_newaccount_text">Sign into your Taxicop account. Enter your email as
+		username. </string>
 
 	<!-- Button that takes the user to the "sign in" screen -->
 	<string name="sign_in_button_label">Sign in</string>

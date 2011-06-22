@@ -27,6 +27,9 @@
 
 package com.android.taxicop.auth;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -61,6 +64,24 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	public static final String PARAM_PASSWORD = "password";
 	public static final String PARAM_USERNAME = "username";
 	public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
+	private Pattern pattern;
+	private Matcher matcher;
+
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+	/**
+	 * Validate hex with regular expression
+	 * 
+	 * @param hex
+	 *            hex for validation
+	 * @return true valid hex, false invalid hex
+	 */
+	public boolean validate(final String hex) {
+
+		matcher = pattern.matcher(hex);
+		return matcher.matches();
+
+	}
 
 	private static final String TAG = "AuthActivity";
 
@@ -91,6 +112,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	private EditText mUsernameEdit;
 	private Spinner mSpinCountry;
 	private Account acc;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -112,7 +134,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		setContentView(R.layout.login_activity);
 		getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
 				android.R.drawable.ic_dialog_alert);
-
+		pattern = Pattern.compile(EMAIL_PATTERN);
 		mMessage = (TextView) findViewById(R.id.message);
 		mUsernameEdit = (EditText) findViewById(R.id.username_edit);
 		mPasswordEdit = (EditText) findViewById(R.id.password_edit);
@@ -182,7 +204,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 			mUsername = mUsernameEdit.getText().toString();
 		}
 		mPassword = mPasswordEdit.getText().toString();
-		if (TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword)) {
+		if (!validate(mUsername)||TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword)) {
 			mMessage.setText(getMessage());
 		} else {
 			showProgress();
@@ -222,23 +244,24 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	 * @param the
 	 *            confirmCredentials result.
 	 */
-	 
+
 	protected void finishLogin() {
 		Log.i(TAG, "finishLogin()");
 		final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE);
-		acc=account;
+		acc = account;
 		if (mRequestNewAccount) {
 			Bundle data = new Bundle();
 			data.putString("country", mCountry);
 			mAccountManager.addAccountExplicitly(account, mPassword, data);
-			ContentResolver.setSyncAutomatically(account, PlateContentProvider.AUTHORITY, true);
-			
-			
+			ContentResolver.setSyncAutomatically(account,
+					PlateContentProvider.AUTHORITY, true);
+
 		} else {
 			mAccountManager.setPassword(account, mPassword);
-			
+
 		}
-		ContentResolver.requestSync(account, PlateContentProvider.AUTHORITY, new Bundle());
+		ContentResolver.requestSync(account, PlateContentProvider.AUTHORITY,
+				new Bundle());
 		final Intent intent = new Intent();
 		mAuthtoken = mPassword;
 		intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
@@ -249,7 +272,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 		}
 		setAccountAuthenticatorResult(intent.getExtras());
 		setResult(RESULT_OK, intent);
-		
+
 		finish();
 
 	}
@@ -286,7 +309,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 				mMessage.setText(getText(R.string.login_activity_loginfail_text_pwonly));
 			}
 		}
-		
+
 	}
 
 	/**
@@ -294,7 +317,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	 */
 	private CharSequence getMessage() {
 		getString(R.string.label);
-		if (TextUtils.isEmpty(mUsername)) {
+		if (TextUtils.isEmpty(mUsername)||validate(mUsername)) {
 			// If no username, then we ask the user to log in using an
 			// appropriate service.
 			final CharSequence msg = getText(R.string.login_activity_newaccount_text);
