@@ -9,7 +9,7 @@
 	</TextView>
 	<EditText android:id="@+id/et_car_plate" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:textSize="18sp"
-		android:layout_margin="5dp" android:gravity="center">
+		android:layout_margin="5dp" android:gravity="center" android:focusable="true">
 	</EditText>
 	<TextView android:id="@+id/tx_desc" style="@style/CarPlate"
 		android:text="@string/Description" android:gravity="center">
@@ -17,7 +17,7 @@
 	<EditText android:id="@+id/et_description"
 		android:layout_width="fill_parent" android:layout_height="70dp"
 		android:textSize="16sp" android:layout_margin="5dp" android:gravity="center"
-		android:singleLine="false" android:lines="4">
+		android:singleLine="false" android:lines="4" android:focusable="true">
 	</EditText>
 	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content"
 		android:layout_gravity="center" android:layout_height="wrap_content">

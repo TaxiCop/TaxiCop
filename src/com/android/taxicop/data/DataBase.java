@@ -67,6 +67,10 @@ public class DataBase {
 		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_USERS);
 		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_REPORT);
 	}
+	public void reCreate(){
+		db.execSQL("DROP TABLE IF EXISTS " + Fields.TABLE_REPORT);
+		db.execSQL(DBhelper.CREATE_TABLE1);
+	}
 
 	public int delete(String table, String whereClause, String [] whereArgs) {
 		Log.i(TAG, "delete()");

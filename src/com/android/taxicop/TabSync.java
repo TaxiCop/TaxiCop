@@ -118,7 +118,7 @@ public class TabSync extends Activity implements OnClickListener {
 
 						} else {
 							for (int i = 0; i < ac.length; i++) {
-								
+								ContentResolver.setSyncAutomatically(ac[i], PlateContentProvider.AUTHORITY, true);
 								ContentResolver.requestSync(ac[i],
 										PlateContentProvider.AUTHORITY, new Bundle());
 								
@@ -134,7 +134,7 @@ public class TabSync extends Activity implements OnClickListener {
 						} else {
 							
 							for (int i = 0; i < ac.length; i++) {
-								
+								ContentResolver.setSyncAutomatically(ac[i], PlateContentProvider.AUTHORITY, true);
 								ContentResolver.requestSync(ac[i],
 										PlateContentProvider.AUTHORITY, new  Bundle());
 								

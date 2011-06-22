@@ -27,6 +27,8 @@
 
 package com.android.taxicop.sync;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,10 +36,14 @@ import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.android.taxicop.R;
 import com.android.taxicop.TabRequest;
+import com.android.taxicop.auth.Constants;
+import com.android.taxicop.data.PlateContentProvider;
 
 /**
  * Service to handle Account sync. This is invoked with an intent with action
@@ -50,6 +56,7 @@ public class SyncService extends Service {
 	private NotificationManager mNM;
 	private static final int DIALOG_LOADING = 0;
 	public ProgressDialog dialog;
+	private AccountManager mAccountManager;
 	private int NOTIFICATION = 0;
 
 	private void showNotification() {
@@ -71,7 +78,7 @@ public class SyncService extends Service {
 		showNotification();
 		synchronized (sSyncAdapterLock) {
 			if (sSyncAdapter == null) {
-				sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+				sSyncAdapter = new SyncAdapter(getApplicationContext(), false);
 			}
 		}
 	
@@ -89,8 +96,20 @@ public class SyncService extends Service {
 
 	@Override
 	public void onDestroy() {
-		mNM.cancel(NOTIFICATION);
 		super.onDestroy();
+		mNM.cancel(NOTIFICATION);
+		stopSelf();
+		mAccountManager = AccountManager.get(this);
+		Log.i(SyncAdapter.TAG, "onDestroy");
+		
+		Account ac[] = mAccountManager.getAccountsByType(Constants.ACCOUNT_TYPE);
+		for (int i = 0; i < ac.length; i++) {
+			ContentResolver.cancelSync(ac[i],PlateContentProvider.AUTHORITY);
+			ContentResolver.setSyncAutomatically(ac[i], PlateContentProvider.AUTHORITY, false);
+		}
+		
+		
+		
 	}
 
 }

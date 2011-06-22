@@ -35,16 +35,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DBhelper extends SQLiteOpenHelper {
+	
 
-	static final String CREATE_TABLE1 = "create table " + Fields.TABLE_REPORT
-			+ " ( " + Fields.ID_KEY + " integer primary key autoincrement, "
+	public static final String CREATE_TABLE1 = "create table " + Fields.TABLE_REPORT
+			+ " ( " + Fields.ID_KEY + " integer primary key, "
 			+ Fields.RANKING + " real not null, " 
 			+ Fields.CAR_PLATE	+ " text not null, " 
 			+ Fields.DATE_REPORT + " text not null , "
 			+ Fields.DESCRIPTION + " text ) ;";
 			
 
-	static final String CREATE_TABLE2 = "create table " + Fields.TABLE_USERS
+	public static final String CREATE_TABLE2 = "create table " + Fields.TABLE_USERS
 			+ " ( " + Fields.ID_KEY + " integer primary key autoincrement, "
 			 + Fields.ITH+ " integer not null, "
 			+ Fields.ID_USR + " text not null);";
@@ -79,6 +80,7 @@ public class DBhelper extends SQLiteOpenHelper {
 
 		}
 	}
+	
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

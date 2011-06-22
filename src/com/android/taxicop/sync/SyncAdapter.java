@@ -54,7 +54,7 @@ import com.android.taxicop.data.Lists;
 import com.android.taxicop.data.PlateContentProvider;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
-	private static final String TAG = "SyncAdapter";
+	public static final String TAG = "SyncAdapter";
 
 	private final AccountManager mAccountManager;
 	private final Context mContext;
@@ -74,6 +74,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		mAccountManager = AccountManager.get(context);
 
 		insert = new ArrayList<ContentValues>();
+		FROM=0;
 
 	}
 
@@ -87,17 +88,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	public void onPerformSync(Account account, Bundle extras, String authority,
 			ContentProviderClient provider, SyncResult syncResult) {
 		
-		
 		USER = queryUser(provider);
 		Log.i(TAG, "onPerformSync: Start");
 		NetworkUtilities.reset();
+		FROM = queryLastId(provider);
+		Log.d(TAG, "data from= "+FROM);
 		ArrayList<Complaint> queries = query(provider,FROM);
+		NetworkUtilities.add(USER);
 		for (Complaint c : queries) {
 			NetworkUtilities.add(c.RANKING, c.CAR_PLATE, c.DESCRIPTION, c.USER,
 					c.DATE);
 		}
-		FROM = queryLastId(provider);
-		Log.d(TAG, "data from= "+FROM);
+		Log.d(TAG, "from= "+FROM+ " size del query= "+queries.size());
+		
 		String response = null;
 		if (NetworkUtilities.adapter.size() > 0) {
 			response = ":" + NetworkUtilities.process_upload();
@@ -116,9 +119,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			} else
 				Log.e(TAG, "no data");
 			try {
-				provider.delete(PlateContentProvider.URI_REPORT, Fields.ID_KEY+" > "+ FROM, null);
 				if (response != null) {
 					final JSONArray cars = new JSONArray(response);
+					provider.delete(PlateContentProvider.URI_REPORT, null, null);
 					Log.i(TAG, "" + response);
 					for (int i = 0; i < cars.length(); i++) {
 						JSONObject COMPLETE = cars.getJSONObject(i);
@@ -128,31 +131,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 						String desc = e1.getString(Fields.DESCRIPTION);
 						String date = e1.getString(Fields.DATE_REPORT);
 						ContentValues in = new ContentValues();
+						in.put(Fields.ID_KEY, i);
 						in.put(Fields.CAR_PLATE, car);
 						in.put(Fields.RANKING, rank);
 						in.put(Fields.DATE_REPORT, date);
 						in.put(Fields.DESCRIPTION, desc);
 						insert.add(in);
 					}
-					Log.d(TAG, "current ammount to insert= "+insert.size()+" + FROM="+FROM);
+					Log.d(TAG, "current ammount to insert= "+insert.size()+",  FROM="+FROM);
 					ContentValues upd= new ContentValues();
-					upd.put(Fields.ITH, FROM+insert.size());
+					upd.put(Fields.ITH, insert.size());
 					upd.put(Fields.ID_USR, USER);
-					provider.update(PlateContentProvider.URI_USERS, upd, ""+Fields.ID_USR+" = '"+USER+"'", null);
 					
+					provider.update(PlateContentProvider.URI_USERS, upd, ""+Fields.ID_USR+" = '"+USER+"'", null);
+					//if(insert.size()>FROM)
 					provider.applyBatch(insertData());
 					insert.clear();
-
 				} else {
 					Log.e(TAG, "null response");
 				}
 
 			} catch (Exception e) {
-				Log.e(TAG, "inserting .... fuck" + e.getMessage());
+				Log.e(TAG, "inserting .... fucked => message: " + e.getMessage());
 			}
 
 		}
 
+	}
+	@Override
+	public void onSyncCanceled() {
+		Log.i(TAG, "OnSyncCanceled");
+		// TODO Auto-generated method stub
+		super.onSyncCanceled();
 	}
 
 	private static ContentProviderOperation insert(ContentValues buff) {
@@ -173,7 +183,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		return batch;
 	}
 
-	public int queryLastId(ContentProviderClient provider) {
+	public int queryLastId(ContentProviderClient provider) {		
 		Cursor c = null;
 		int id = 0;
 		try {
@@ -187,16 +197,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		}
 		c.close();
 		return id;
-
+	}
+	public int count(ContentProviderClient provider){
+		try {
+			Cursor c=provider.query(PlateContentProvider.URI_REPORT, null,
+					null, null, null);
+			int ret=c.getCount();
+			c.close();
+			return ret;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.e(TAG, ""+e.getMessage());
+		}
+		return 0;
 	}
 
 	public ArrayList<Complaint> query(ContentProviderClient provider, int FROM) {
 		ArrayList<Complaint> reports = new ArrayList<Complaint>();
 		try {
-
 			Cursor c = provider.query(PlateContentProvider.URI_REPORT, null,
-					Fields.ID_KEY+">"+FROM, null, null);
-
+					Fields.ID_KEY+" > "+FROM+"", null, null);
 			if (c.moveToFirst()) {
 				do {
 					float rank = c.getFloat(c.getColumnIndex(Fields.RANKING));
@@ -211,7 +231,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				} while (c.moveToNext());
 			}
 			c.close();
-
 		} catch (Exception e) {
 			Log.e(TAG, "query= " + e.getMessage());
 		}

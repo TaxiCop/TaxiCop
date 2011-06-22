@@ -55,6 +55,7 @@ public class PlateContentProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_USERS, 2);
 	}
+	
 	public ContentProviderResult[] applyBatch(
 			ArrayList<ContentProviderOperation> operations)
 			throws OperationApplicationException {
@@ -109,6 +110,7 @@ public class PlateContentProvider extends ContentProvider {
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
+		
 
 	}
 

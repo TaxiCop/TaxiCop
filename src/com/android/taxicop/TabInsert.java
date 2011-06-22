@@ -33,8 +33,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +49,7 @@ import android.widget.Toast;
 import com.android.taxicop.data.Complaint;
 import com.android.taxicop.data.Fields;
 import com.android.taxicop.data.PlateContentProvider;
+import com.android.taxicop.sync.SyncAdapter;
 
 public class TabInsert extends Activity implements OnClickListener,
 		RatingBar.OnRatingBarChangeListener {
@@ -55,7 +58,7 @@ public class TabInsert extends Activity implements OnClickListener,
 	private RatingBar ratingBar;
 	private Button bt_submmit;
 	private float currentRating;
-
+	private int n;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,9 +66,11 @@ public class TabInsert extends Activity implements OnClickListener,
 		currentRating = -1.0f;
 		et_car_plate = (EditText) findViewById(R.id.et_car_plate);
 		et_desc = (EditText) findViewById(R.id.et_description);
+		
 		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 		bt_submmit = (Button) findViewById(R.id.bt_submmit);
 		bt_submmit.setOnClickListener(this);
+		n=0;
 
 	}
 
@@ -107,6 +112,7 @@ public class TabInsert extends Activity implements OnClickListener,
 					et_car_plate.setText("");
 					et_desc.setText("");
 					ratingBar.setRating(0.0f);
+					et_car_plate.requestFocus();
 
 				} else
 					showToastInfo(getString(R.string.error_message_rating));
@@ -129,6 +135,9 @@ public class TabInsert extends Activity implements OnClickListener,
 		Log.i(TAG, "insertIdc: ");
 		ContentResolver cr = getContentResolver();
 		ContentValues values = new ContentValues();
+		int ith=count(cr);
+		Log.e(SyncAdapter.TAG, "ith ="+(++ith));
+		values.put(Fields.ID_KEY, (ith));
 		values.put(Fields.CAR_PLATE, data.CAR_PLATE);
 		values.put(Fields.RANKING, data.RANKING);
 		values.put(Fields.DESCRIPTION, data.DESCRIPTION);
@@ -137,6 +146,19 @@ public class TabInsert extends Activity implements OnClickListener,
 		values.put(Fields.DATE_REPORT, date);
 		cr.insert(PlateContentProvider.URI_REPORT, values);
 		cr.notifyChange(PlateContentProvider.URI_REPORT, null);
+	}
+	public int count(ContentResolver provider){
+		try {
+			Cursor c=provider.query(PlateContentProvider.URI_REPORT, null,
+					null, null, null);
+			int ret=c.getCount();
+			c.close();
+			return ret;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.e(TAG, ""+e.getMessage());
+		}
+		return 0;
 	}
 	
 
