@@ -12,7 +12,7 @@
 	<string name="out_placa">Placa:</string>
 	<string name="out_description">Descripcion:</string>
 	<!-- Messages -->
-	<string name="confirm_message">Nuevo Registro Insertado Correctamente</string>
+	<string name="confirm_message">Gracias por tu amable aporte ;)</string>
 	<string name="error_message">Informacion Invalida</string>
 	<string name="error_message_length">Longitud Invalida</string>
 	<string name="error_message_characters">Caracteres Invalida</string>
@@ -72,7 +72,8 @@
 	<!-- Message shown in dialog to prompt the user for their password -->
 	<string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
 	<!-- Message shown if the provided account doesn't support the current activity. -->
-	<string name="login_activity_newaccount_text">Comming soon: Sign into your Taxicop account. </string>
+	<string name="login_activity_newaccount_text">Create your Taxicop or Log in account. Enter your email as
+		username. </string>
 
 	<!-- Button that takes the user to the "sign in" screen -->
 	<string name="sign_in_button_label">Comming Soon: Sign in</string>

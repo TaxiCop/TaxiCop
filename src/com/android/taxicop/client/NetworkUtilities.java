@@ -209,12 +209,12 @@ public class NetworkUtilities {
 			// String json = reader.readLine();
 
 			response = EntityUtils.toString(resp.getEntity());
-			response = response.replaceAll("Status: 200", "")
-			.replaceAll("OK", "")
-			.replaceAll("Content\\-Type: text\\/html", "")
-			.replaceAll("charset=utf\\-8", "")
-			.replaceAll(";", "")
-			.replaceAll("\\\n", "").trim();
+//			response = response.replaceAll("Status: 200", "")
+//			.replaceAll("OK", "")
+//			.replaceAll("Content\\-Type: text\\/html", "")
+//			.replaceAll("charset=utf\\-8", "")
+//			.replaceAll(";", "")
+//			.replaceAll("\\\n", "").trim();
 			Log.i(TAG, "sendToServer(): datos enviados con respuesta="
 					+ response);
 			int status = resp.getStatusLine().getStatusCode();
@@ -255,12 +255,12 @@ public class NetworkUtilities {
 			resp.getEntity().writeTo(outstream);
 			byte[] responseBody = outstream.toByteArray();
 			String response = new String(responseBody);
-			response = response.replaceAll("Status: 200", "")
-					.replaceAll("OK", "")
-					.replaceAll("Content\\-Type: text\\/html", "")
-					.replaceAll("charset=utf\\-8", "")
-					.replaceAll(";", "")
-					.replaceAll("\\\n", "").trim();
+//			response = response.replaceAll("Status: 200", "")
+//					.replaceAll("OK", "")
+//					.replaceAll("Content\\-Type: text\\/html", "")
+//					.replaceAll("charset=utf\\-8", "")
+//					.replaceAll(";", "")
+//					.replaceAll("\\\n", "").trim();
 
 			Log.i(TAG,
 					"authenticate(): respuesta obtenida del servidor. response="
