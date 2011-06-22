@@ -59,6 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -93,16 +94,16 @@ public class NetworkUtilities {
 	public static final String PARAM_UPDATED = "timestamp";
 	public static final String USER_AGENT = "AuthenticationService/1.0";
 	public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
-	public static String URL="192.168.1.6:8000";
-	public static final String BASE_URL ="http://";
-	public static final String LAST_SEQ_URI =  "/";
-	public static final String AUTH_URI =  "/auth";
+	// public static String URL="192.168.1.6:8000";
+	public static String URL = "www.taxicop.org";
+	public static final String BASE_URL = "http://";
+	public static final String LAST_SEQ_URI = "/";
+	public static final String AUTH_URI = "/auth";
 	public static final String JSON_URI_UPLOAD = "/upload";
 	public static final String JSON_URI_DOWNLOAD = "/download";
-	public static final String ID_URI =  "/";
+	public static final String ID_URI = "/";
 	private static HttpClient mHttpClient;
 
-	
 	public static void CreateHttpClient() {
 		Log.i(TAG, "CreateHttpClient(): ");
 		mHttpClient = new DefaultHttpClient();
@@ -111,7 +112,6 @@ public class NetworkUtilities {
 		HttpConnectionParams.setSoTimeout(params, REGISTRATION_TIMEOUT);
 		ConnManagerParams.setTimeout(params, REGISTRATION_TIMEOUT);
 	}
-
 
 	public static Thread performOnBackgroundThread(final Runnable runnable) {
 		final Thread t = new Thread() {
@@ -143,7 +143,8 @@ public class NetworkUtilities {
 		} catch (JSONException ex) {
 			Log.e("Json", "JSONException", ex);
 		}
-		Log.i(TAG, "process(): listo para enviar " +adapter.size()+" datos al servidor");
+		Log.i(TAG, "process(): listo para enviar " + adapter.size()
+				+ " datos al servidor");
 		while (i.hasNext()) {
 			try {
 				elements.put((adapter.poll().toJSON()));
@@ -154,14 +155,14 @@ public class NetworkUtilities {
 		request = elements.toString();
 		try {
 			Log.d(TAG, "send = " + request);
-			resp = sendToServer(request,JSON_URI_UPLOAD);
+			resp = sendToServer(request, JSON_URI_UPLOAD);
 			Log.d(TAG, "response: " + resp);
 		} catch (Exception ex) {
 			Log.e(TAG, "IOException", ex);
 		}
 		return resp;
 	}
-	
+
 	public static String process_download() {
 		Log.i(TAG, "process(): enviar datos al servidor");
 		JSONArray elements = new JSONArray();
@@ -175,8 +176,9 @@ public class NetworkUtilities {
 		} catch (JSONException ex) {
 			Log.e("Json", "JSONException", ex);
 		}
-		Log.i(TAG, "process(): listo para enviar " +adapter.size()+" datos al servidor");
-		
+		Log.i(TAG, "process(): listo para enviar " + adapter.size()
+				+ " datos al servidor");
+
 		request = elements.toString();
 		try {
 			Log.d(TAG, "send = " + request);
@@ -188,19 +190,33 @@ public class NetworkUtilities {
 		return resp;
 	}
 
-	private static String sendToServer(final String request, final String url) throws IOException {
+	private static String sendToServer(final String request, final String url)
+			throws IOException {
 		final HttpResponse resp;
-		final HttpPost post = new HttpPost(BASE_URL+URL+url);
-		Log.d(TAG, "URI=" + (BASE_URL+URL+url));
+		final HttpPost post = new HttpPost(BASE_URL + URL + url);
+		Log.d(TAG, "URI=" + (BASE_URL + URL + url));
+		// post.addHeader("Content-Type", "application/json");
 		post.addHeader("Content-Type", "text/vnd.aexp.json.req");
 		post.setEntity(new StringEntity(request));
 		CreateHttpClient();
-		String response=null;
-		Log.d(TAG, "sendToServer(): enviando datos a URI=" + (BASE_URL + URL + url));
+		String response = null;
+		Log.d(TAG, "sendToServer(): enviando datos a URI="
+				+ (BASE_URL + URL + url));
 		try {
 			resp = mHttpClient.execute(post);
+			// BufferedReader reader = new BufferedReader(new
+			// InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+			// String json = reader.readLine();
+
 			response = EntityUtils.toString(resp.getEntity());
-			Log.i(TAG, "sendToServer(): datos enviados con respuesta="+ response);
+			response = response.replaceAll("Status: 200", "")
+			.replaceAll("OK", "")
+			.replaceAll("Content\\-Type: text\\/html", "")
+			.replaceAll("charset=utf\\-8", "")
+			.replaceAll(";", "")
+			.replaceAll("\\\n", "").trim();
+			Log.i(TAG, "sendToServer(): datos enviados con respuesta="
+					+ response);
 			int status = resp.getStatusLine().getStatusCode();
 			if (status != HttpStatus.SC_OK)
 				throw new IOException("HTTP status: "
@@ -211,13 +227,10 @@ public class NetworkUtilities {
 		return response;
 	}
 
-	
-	
 	public static final String PREF_FILE_NAME = "preferences";
 
-
-	public static String authenticate(String username, String password,String country,
-			Handler handler, final Context context) {
+	public static String authenticate(String username, String password,
+			String country, Handler handler, final Context context) {
 		final HttpResponse resp;
 		final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair(PARAM_USERNAME, username));
@@ -229,20 +242,29 @@ public class NetworkUtilities {
 		} catch (final UnsupportedEncodingException e) {
 			throw new AssertionError(e);
 		}
-		final HttpPost post = new HttpPost(BASE_URL+URL+AUTH_URI);
-		Log.d(TAG, "URI= " + (BASE_URL+URL+AUTH_URI));
+		final HttpPost post = new HttpPost(BASE_URL + URL + AUTH_URI);
+		Log.d(TAG, "URI= " + (BASE_URL + URL + AUTH_URI));
 		post.addHeader(entity.getContentType());
 		post.setEntity(entity);
 		CreateHttpClient();
-		Log.i(TAG, "authenticate(): obtencion de autenticacion. " );
-		
+		Log.i(TAG, "authenticate(): obtencion de autenticacion. ");
+
 		try {
 			resp = mHttpClient.execute(post);
 			ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 			resp.getEntity().writeTo(outstream);
 			byte[] responseBody = outstream.toByteArray();
 			String response = new String(responseBody);
-			Log.i(TAG, "authenticate(): respuesta obtenida del servidor. response="+response );
+			response = response.replaceAll("Status: 200", "")
+					.replaceAll("OK", "")
+					.replaceAll("Content\\-Type: text\\/html", "")
+					.replaceAll("charset=utf\\-8", "")
+					.replaceAll(";", "")
+					.replaceAll("\\\n", "").trim();
+
+			Log.i(TAG,
+					"authenticate(): respuesta obtenida del servidor. response="
+							+ response);
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				if (Log.isLoggable(TAG, Log.VERBOSE)) {
 					Log.v(TAG, "Successful authentication");
@@ -276,8 +298,7 @@ public class NetworkUtilities {
 		}
 		handler.post(new Runnable() {
 			public void run() {
-				((AuthActivity) context)
-						.onAuthenticationResult(result);
+				((AuthActivity) context).onAuthenticationResult(result);
 			}
 		});
 	}
@@ -296,48 +317,43 @@ public class NetworkUtilities {
 	 * @return Thread The thread on which the network mOperations are executed.
 	 */
 	public static Thread attemptAuth(final String username,
-			final String password,final String country, final Handler handler, final Context context) {
+			final String password, final String country, final Handler handler,
+			final Context context) {
 		final Runnable runnable = new Runnable() {
 			public void run() {
-				String ret=	""+authenticate(username, password, country,handler, context);
-				Log.d(TAG, "respuesta de autenticacion= "+ret);
-				if(!ret.equals("")){
-					try{
-						ContentResolver next= context.getContentResolver();
+				String ret = ""
+						+ authenticate(username, password, country, handler,
+								context);
+				Log.d(TAG, "respuesta de autenticacion= " + ret);
+				if (!ret.equals("")) {
+					try {
+						ContentResolver next = context.getContentResolver();
 						ContentValues values = new ContentValues();
 						values.put(Fields.ITH, 0);
-						values.put(Fields.ID_USR, ret);					
+						values.put(Fields.ID_USR, ret);
 						next.insert(PlateContentProvider.URI_USERS, values);
 						Log.e(TAG, "i did it.");
+					} catch (Exception e) {
+						Log.e(TAG, "" + e.getMessage());
 					}
-					catch (Exception e) {
-						Log.e(TAG, ""+e.getMessage());
-					}
-					
-					
+
 				}
 			}
 		};
-    	return NetworkUtilities.performOnBackgroundThread(runnable);
+		return NetworkUtilities.performOnBackgroundThread(runnable);
 	}
 
-
-	
-
-	public static void add(float rank, String plate, String desc,String user,String date) {
-		adapter.add(new JsonData(rank,plate,desc,user,date));
+	public static void add(float rank, String plate, String desc, String user,
+			String date) {
+		adapter.add(new JsonData(rank, plate, desc, user, date));
 	}
-	
+
 	public static void add(String user) {
 		adapter.add(new JsonData(user));
 	}
+
 	public static void add(int from) {
 		adapter.add(new JsonData(from));
 	}
-	
-
-
-
 
 }
-
