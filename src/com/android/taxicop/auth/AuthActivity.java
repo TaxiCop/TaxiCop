@@ -317,7 +317,7 @@ public class AuthActivity extends AccountAuthenticatorActivity {
 	 */
 	private CharSequence getMessage() {
 		getString(R.string.label);
-		if (TextUtils.isEmpty(mUsername)||validate(mUsername)) {
+		if (TextUtils.isEmpty(mUsername)||!validate(mUsername)) {
 			// If no username, then we ask the user to log in using an
 			// appropriate service.
 			final CharSequence msg = getText(R.string.login_activity_newaccount_text);
