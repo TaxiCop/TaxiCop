@@ -20,7 +20,7 @@
 		android:singleLine="false" android:lines="4" android:focusable="true">
 	</EditText>
 	<RatingBar android:id="@+id/ratingBar" android:layout_width="wrap_content"
-		android:layout_gravity="center" android:layout_height="wrap_content">
+		android:layout_gravity="center" android:layout_height="wrap_content" android:stepSize="0.5">
 	</RatingBar>
 	<Button android:id="@+id/bt_submmit" android:layout_width="200dp"
 		android:layout_height="50dp" android:text="@string/submmit_button"

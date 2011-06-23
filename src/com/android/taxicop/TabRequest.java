@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,32 +47,39 @@ import com.android.taxicop.data.PlateContentProvider;
 
 public class TabRequest extends Activity implements OnClickListener {
 
-	private EditText et_car_plate;
-	private Button bt_query;
-	private TextView tx_output1, tx_output2;
-	private RatingBar ratingBar;
+	private EditText _etCarPlate;
+	private Button _bt_query, _bt_back;
+	private TextView _txCarPlate, _txDescrip;
+	private LinearLayout _OutLayout, _InputLayout;
+	private RatingBar _RatingBar;
 	private static final String TAG = "TabRequest";
+	private boolean MainViewState=true;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.request_activity);
+		
+		_OutLayout   = (LinearLayout)findViewById(R.id.OutLayout);
+		_InputLayout = (LinearLayout)findViewById(R.id.InputLayout);
+		_etCarPlate = (EditText) findViewById(R.id.et_car_plate);
+		_txCarPlate = (TextView) findViewById(R.id.txOutCarPlate);
+		_txDescrip = (TextView) findViewById(R.id.txOutDescription);
 
-		et_car_plate = (EditText) findViewById(R.id.et_car_plate);
-		tx_output1 = (TextView) findViewById(R.id.tx_output1);
-		tx_output2 = (TextView) findViewById(R.id.tx_output2);
-
-		bt_query = (Button) findViewById(R.id.bt_query);
-		ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-		bt_query.setOnClickListener(this);
+		_bt_query = (Button) findViewById(R.id.bt_query);
+		_bt_back= (Button) findViewById(R.id.bt_back);
+		_RatingBar = (RatingBar) findViewById(R.id.ratingBar);
+		_bt_query.setOnClickListener(this);
+		_bt_back.setOnClickListener(this);
 
 	}
+	
 
 	public void onClick(View v) {
 
 		switch (v.getId()) {
 		case R.id.bt_query:
-			String who = "" + et_car_plate.getText().toString().trim();
+			String who = "" + _etCarPlate.getText().toString().trim();
 			StringBuilder processedPlate = null,
 			finalStringtoQuery = null;
 			if (who != null && !who.equals("") && !who.equals("null")
@@ -90,18 +98,27 @@ public class TabRequest extends Activity implements OnClickListener {
 				Log.e(TAG, "query= " + finalStringtoQuery.toString());
 
 				Complaint result = query(finalStringtoQuery.toString());
-				et_car_plate.setText("");
+				_etCarPlate.setText("");
 				if (result != null) {
-
-					ratingBar.setVisibility(View.VISIBLE);
-					ratingBar.setRating(result.RANKING);
-					tx_output1.setText(result.CAR_PLATE);
-					tx_output2.setText(result.DESCRIPTION);
+					
+					MainViewState=false;  // En vista de resultados
+					
+					_bt_back.setVisibility(View.VISIBLE);
+					_OutLayout.setVisibility(View.VISIBLE);
+					_InputLayout.setVisibility(View.GONE);
+					_OutLayout.setBackgroundResource(R.drawable.back_out);
+					_RatingBar.setRating(result.RANKING);
+					_txCarPlate.setText(result.CAR_PLATE);
+					_txDescrip.setText(result.DESCRIPTION);
+					
 				} else
 					showToastInfo(getString(R.string.error_message));
 			} else
 				showToastInfo(getString(R.string.error_message_length));
 
+			break;
+		case R.id.bt_back:
+			LoadMainView();
 			break;
 
 		default:
@@ -131,6 +148,21 @@ public class TabRequest extends Activity implements OnClickListener {
 		}
 
 		return ret;
+	}
+	
+	public void LoadMainView(){
+		_InputLayout.setVisibility(View.VISIBLE);
+		_bt_back.setVisibility(View.GONE);
+		_OutLayout.setVisibility(View.GONE);
+		MainViewState=true;
+		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if(!MainViewState)LoadMainView();
+		else this.finish();
+			
 	}
 
 	void showToastInfo(CharSequence msg) {

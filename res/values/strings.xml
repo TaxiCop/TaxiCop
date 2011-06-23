@@ -14,7 +14,7 @@
 	<!-- Messages -->
 	<string name="confirm_message">Thanks for your kind contribution ;) !!</string>
 	<string name="error_message">Invalid Info</string>
-	<string name="error_message_length">Invalid Plate</string>
+	<string name="error_message_length">Invalid Caplate</string>
 	<string name="error_message_characters">Wrong Character Secuence</string>
 	<string name="error_message_rating">Invalid Rating</string>
 	<!-- Main Tabs -->
@@ -27,6 +27,7 @@
 	<!-- Request Layaout -->
 	<string name="help_carplate">Type Car-Plate</string>
 	<string name="request_button">Search</string>
+	<string name="back_button">Back</string>
 	<!-- Submmit Layaout -->
 	<string name="help_report">Report Plate:</string>
 	<string name="Description">Description (optional)</string>
