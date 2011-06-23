@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.sync;
+package com.taxicop.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -40,10 +40,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.android.taxicop.R;
-import com.android.taxicop.TabRequest;
-import com.android.taxicop.auth.Constants;
-import com.android.taxicop.data.PlateContentProvider;
+import com.taxicop.R;
+import com.taxicop.TabRequest;
+import com.taxicop.auth.Constants;
+import com.taxicop.data.PlateContentProvider;
 
 /**
  * Service to handle Account sync. This is invoked with an intent with action

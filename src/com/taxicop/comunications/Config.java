@@ -26,19 +26,14 @@
  */
 
 
-package com.android.taxicop.auth;
+package com.taxicop.comunications;
 
-
-public class Constants {
-
-	/**
-	 * Account type string.
-	 */
-	public static final String ACCOUNT_TYPE = "com.android.taxicop";
-
-	/**
-	 * Authtoken type string.
-	 */
-	public static final String AUTHTOKEN_TYPE = "com.android.taxicop";
+public class Config {
+	//	private static final String APP_BASE_URI1 = "http://192.168.1.110:8000/log";
+	
+	public static String APP_BASE_URI="http://192.168.1.110:8000";
+	
+	
+	//algorithm and programming: problems and solutions
 
 }

@@ -26,7 +26,7 @@
  */
 
 
-package com.android.taxicop.client;
+package com.taxicop.client;
 
 import android.util.Log;
 

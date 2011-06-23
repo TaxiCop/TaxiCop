@@ -25,26 +25,20 @@
  * 
  */
 
-package com.android.taxicop.data;
 
-public class Complaint {
-	public float RANKING;
-	public String CAR_PLATE;
-	public String DESCRIPTION;
-	public String USER;
-	public String DATE;
-	public 	Complaint(float r, String p, String d,String u,String date){
-		RANKING=r;
-		CAR_PLATE=p;
-		DESCRIPTION=d;
-		USER=u;
-		DATE=date;
-	}
-	public 	Complaint(float r, String p, String d){
-		RANKING=r;
-		CAR_PLATE=p;
-		DESCRIPTION=d;
-		
-	}
+package com.taxicop.auth;
+
+
+public class Constants {
+
+	/**
+	 * Account type string.
+	 */
+	public static final String ACCOUNT_TYPE = "com.taxicop";
+
+	/**
+	 * Authtoken type string.
+	 */
+	public static final String AUTHTOKEN_TYPE = "com.taxicop";
 
 }

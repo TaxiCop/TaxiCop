@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.auth;
+package com.taxicop.auth;
 
 import android.app.Service;
 import android.content.Intent;

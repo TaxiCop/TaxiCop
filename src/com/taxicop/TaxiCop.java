@@ -1,4 +1,4 @@
-package com.android.taxicop;
+package com.taxicop;
 /* 
  * PROJECT: TaxiCop
  * --------------------------------------------------------------------------------
@@ -30,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import com.taxicop.R;
 
 import android.accounts.AccountManager;
 import android.app.Activity;

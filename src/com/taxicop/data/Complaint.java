@@ -1,4 +1,3 @@
-
 /* 
  * PROJECT: TaxiCop
  * --------------------------------------------------------------------------------
@@ -25,22 +24,27 @@
  *  devel(at)taxicop.org
  * 
  */
-package com.android.taxicop.data;
 
-public class Fields {
-	public static final String TABLE_REPORT = "report";
-	public static final String ID_KEY = "ith";
-	public static final String RANKING = "rank";
-	public static final String CAR_PLATE = "car";
-	public static final String DESCRIPTION = "info";
-	public static final String DATE_REPORT = "date";
-	public static final String COUNTRY = "country";
-	public static final String DATABASE_NAME = "taxicop";
-	public static final int DATABASE_VERSION = 1;
-	
-	public static final String TABLE_USERS = "users";
-	public static final String ID_USR = "id_usr";
-	public static final String ITH = "indice";
-	
-	
+package com.taxicop.data;
+
+public class Complaint {
+	public float RANKING;
+	public String CAR_PLATE;
+	public String DESCRIPTION;
+	public String USER;
+	public String DATE;
+	public 	Complaint(float r, String p, String d,String u,String date){
+		RANKING=r;
+		CAR_PLATE=p;
+		DESCRIPTION=d;
+		USER=u;
+		DATE=date;
+	}
+	public 	Complaint(float r, String p, String d){
+		RANKING=r;
+		CAR_PLATE=p;
+		DESCRIPTION=d;
+		
+	}
+
 }

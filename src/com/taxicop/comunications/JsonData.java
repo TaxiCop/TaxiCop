@@ -25,12 +25,12 @@
  * 
  */
 
-package com.android.taxicop.comunications;
+package com.taxicop.comunications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.taxicop.data.Fields;
+import com.taxicop.data.Fields;
 
 public class JsonData {
 

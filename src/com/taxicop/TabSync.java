@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop;
+package com.taxicop;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,10 +52,11 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.android.taxicop.auth.AuthActivity;
-import com.android.taxicop.auth.Constants;
-import com.android.taxicop.data.Fields;
-import com.android.taxicop.data.PlateContentProvider;
+import com.taxicop.R;
+import com.taxicop.auth.AuthActivity;
+import com.taxicop.auth.Constants;
+import com.taxicop.data.Fields;
+import com.taxicop.data.PlateContentProvider;
 
 public class TabSync extends Activity implements OnClickListener {
 

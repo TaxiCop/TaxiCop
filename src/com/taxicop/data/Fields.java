@@ -1,3 +1,4 @@
+
 /* 
  * PROJECT: TaxiCop
  * --------------------------------------------------------------------------------
@@ -24,16 +25,22 @@
  *  devel(at)taxicop.org
  * 
  */
+package com.taxicop.data;
 
-
-package com.android.taxicop.comunications;
-
-public class Config {
-	//	private static final String APP_BASE_URI1 = "http://192.168.1.110:8000/log";
+public class Fields {
+	public static final String TABLE_REPORT = "report";
+	public static final String ID_KEY = "ith";
+	public static final String RANKING = "rank";
+	public static final String CAR_PLATE = "car";
+	public static final String DESCRIPTION = "info";
+	public static final String DATE_REPORT = "date";
+	public static final String COUNTRY = "country";
+	public static final String DATABASE_NAME = "taxicop";
+	public static final int DATABASE_VERSION = 1;
 	
-	public static String APP_BASE_URI="http://192.168.1.110:8000";
+	public static final String TABLE_USERS = "users";
+	public static final String ID_USR = "id_usr";
+	public static final String ITH = "indice";
 	
 	
-	//algorithm and programming: problems and solutions
-
 }

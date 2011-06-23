@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.data;
+package com.taxicop.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

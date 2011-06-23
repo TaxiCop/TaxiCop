@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.data;
+package com.taxicop.data;
 
 import java.util.ArrayList;
 
@@ -44,12 +44,12 @@ public class PlateContentProvider extends ContentProvider {
 
 	static final String TAG = "PlateContentProvider";
 	public static final Uri URI_REPORT = Uri
-			.parse("content://com.android.taxicop.taxicop/report");
+			.parse("content://com.taxicop.taxicop/report");
 	public static final Uri URI_USERS = Uri
-			.parse("content://com.android.taxicop.taxicop/users");
+			.parse("content://com.taxicop.taxicop/users");
 	public DataBase dba;
 	private static final UriMatcher sUriMatcher;
-	public static final String AUTHORITY = "com.android.taxicop.taxicop";
+	public static final String AUTHORITY = "com.taxicop.taxicop";
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		sUriMatcher.addURI(AUTHORITY, Fields.TABLE_REPORT, 1);

@@ -21,8 +21,8 @@
 <!-- for the SyncAdapter. -->
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="com.android.taxicop.taxicop"
-    android:accountType="com.android.taxicop"
+    android:contentAuthority="com.taxicop.taxicop"
+    android:accountType="com.taxicop"
     android:supportsUploading="true"
     
 />

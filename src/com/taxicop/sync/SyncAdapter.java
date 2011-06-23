@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.sync;
+package com.taxicop.sync;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,12 +46,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.taxicop.client.NetworkUtilities;
-import com.android.taxicop.data.Complaint;
-import com.android.taxicop.data.DataBase;
-import com.android.taxicop.data.Fields;
-import com.android.taxicop.data.Lists;
-import com.android.taxicop.data.PlateContentProvider;
+import com.taxicop.client.NetworkUtilities;
+import com.taxicop.data.Complaint;
+import com.taxicop.data.DataBase;
+import com.taxicop.data.Fields;
+import com.taxicop.data.Lists;
+import com.taxicop.data.PlateContentProvider;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	public static final String TAG = "SyncAdapter";

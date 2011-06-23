@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.auth;
+package com.taxicop.auth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,9 +52,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.taxicop.R;
-import com.android.taxicop.client.NetworkUtilities;
-import com.android.taxicop.data.PlateContentProvider;
+import com.taxicop.R;
+import com.taxicop.client.NetworkUtilities;
+import com.taxicop.data.PlateContentProvider;
 
 /**
  * Activity which displays login screen to the user.

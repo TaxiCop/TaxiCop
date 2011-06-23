@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop;
+package com.taxicop;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,10 +46,11 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.android.taxicop.data.Complaint;
-import com.android.taxicop.data.Fields;
-import com.android.taxicop.data.PlateContentProvider;
-import com.android.taxicop.sync.SyncAdapter;
+import com.taxicop.R;
+import com.taxicop.data.Complaint;
+import com.taxicop.data.Fields;
+import com.taxicop.data.PlateContentProvider;
+import com.taxicop.sync.SyncAdapter;
 
 public class TabInsert extends Activity implements OnClickListener,
 		RatingBar.OnRatingBarChangeListener {

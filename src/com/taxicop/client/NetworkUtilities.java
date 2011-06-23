@@ -25,7 +25,7 @@
  * 
  */
 
-package com.android.taxicop.client;
+package com.taxicop.client;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -66,10 +66,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.android.taxicop.auth.AuthActivity;
-import com.android.taxicop.comunications.JsonData;
-import com.android.taxicop.data.Fields;
-import com.android.taxicop.data.PlateContentProvider;
+import com.taxicop.auth.AuthActivity;
+import com.taxicop.comunications.JsonData;
+import com.taxicop.data.Fields;
+import com.taxicop.data.PlateContentProvider;
 
 /**
  * Provides utility methods for communicating with the server.
