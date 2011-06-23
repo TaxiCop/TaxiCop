@@ -13,10 +13,10 @@
 	<string name="out_description">Descripcion:</string>
 	<!-- Messages -->
 	<string name="confirm_message">Gracias por tu amable aporte ;)</string>
-	<string name="error_message">Informacion Invalida</string>
+	<string name="error_message">Esta placa no ha sido reportada, ayudanos.</string>
 	<string name="error_message_length">Longitud Invalida</string>
-	<string name="error_message_characters">Caracteres Invalida</string>
-	<string name="error_message_rating">Rating Invalida</string>
+	<string name="error_message_characters">Caracteres Invalido</string>
+	<string name="error_message_rating">Rating Invalido</string>
 	<!-- Main Tabs -->
 	<string name="tab_request">Consulta</string>
 	<string name="tab_insert">Denuncia</string>
@@ -27,6 +27,7 @@
 	<!-- Request Layaout -->
 	<string name="help_carplate">Introduzca la placa</string>
 	<string name="request_button">Consultar</string>
+	<string name="back_button">Regresar</string>
 	<!-- Submmit Layaout -->
 	<string name="help_report">Reportar placa</string>
 	<string name="Description">Descripcion (opcional)</string>

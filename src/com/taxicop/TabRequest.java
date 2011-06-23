@@ -115,7 +115,7 @@ public class TabRequest extends Activity implements OnClickListener {
 				} else
 					showToastInfo(getString(R.string.error_message));
 			} else
-				showToastInfo(getString(R.string.error_message_length));
+				showToastInfo(getString(R.string.error_message));
 
 			break;
 		case R.id.bt_back:

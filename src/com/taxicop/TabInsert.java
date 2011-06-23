@@ -84,7 +84,7 @@ public class TabInsert extends Activity implements OnClickListener,
 				float rating = ratingBar.getRating();
 				StringBuilder processedPlate = null,
 				finalStringtoInsert = null;
-				if (!plate.equals("") || plate != null || plate.length() >= 4) {	
+				if (!plate.equals("") && plate != null && plate.length() >= 4) {	
 					processedPlate = new StringBuilder(plate.replaceAll("\\^[a-zA-Z0-9]", ""));
 
 					finalStringtoInsert = new StringBuilder();
@@ -100,7 +100,7 @@ public class TabInsert extends Activity implements OnClickListener,
 
 					}
 				} else
-					showToastInfo(getString(R.string.error_message_length));
+					showToastInfo(getString(R.string.error_message));
 
 				currentRating = ratingBar.getRating();
 				
@@ -109,11 +109,12 @@ public class TabInsert extends Activity implements OnClickListener,
 					Complaint newDataToInsert = new Complaint(currentRating,
 							finalStringtoInsert.toString(), desc);
 					insertId(newDataToInsert);
-					showToastInfo(getString(R.string.confirm_message));
+					
 					et_car_plate.setText("");
 					et_desc.setText("");
 					ratingBar.setRating(0.0f);
 					et_car_plate.requestFocus();
+					showToastInfo(getString(R.string.confirm_message));
 
 				} else
 					showToastInfo(getString(R.string.error_message_rating));

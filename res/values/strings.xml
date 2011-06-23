@@ -13,8 +13,8 @@
 	<string name="out_description">Description:</string>
 	<!-- Messages -->
 	<string name="confirm_message">Thanks for your kind contribution ;) !!</string>
-	<string name="error_message">Invalid Info</string>
-	<string name="error_message_length">Invalid Caplate</string>
+	<string name="error_message">Car Plate not found, Please contribute</string>
+	<string name="error_message_length">Wrong Car-Plate Length</string>
 	<string name="error_message_characters">Wrong Character Secuence</string>
 	<string name="error_message_rating">Invalid Rating</string>
 	<!-- Main Tabs -->
