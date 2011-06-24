@@ -34,18 +34,14 @@
 	<string name="submmit_button">Enviar</string>
 
 	<!-- Permission label -->
-	<string name="permlab_TaxicopAuthPassword">access to passwords for Taxicop accounts</string>
+	<string name="permlab_TaxicopAuthPassword">Type password for Taxicop account</string>
 	<!-- Permission description -->
-	<string name="permdesc_TaxicopAuthPassword">Allows applications direct access to the passwords
-		for the
-		Taxicop account(s) you have configured.</string>
+	<string name="permdesc_TaxicopAuthPassword">Allows applications direct access to the passwords for the Taxicop account(s) you have configured.</string>
 
 	<!-- Permission label -->
-	<string name="permlab_TaxicopAuth">view configured accounts</string>
+	<string name="permlab_TaxicopAuth">View configured accounts</string>
 	<!-- Permission description -->
-	<string name="permdesc_TaxicopAuth">Allows applications to see the usernames (email
-		addresses) of
-		the Taxicop account(s) you have configured.</string>
+	<string name="permdesc_TaxicopAuth">Allows applications to see the usernames (email addresses) of the Taxicop account(s) you have configured.</string>
 	<string name="notification_login_error">Touch to sign into your Taxicop account.</string>
 
 	<!-- Title string for Login activity -->
@@ -54,7 +50,7 @@
 	<string name="ui_activity_authenticating">Authenticating\u2026</string>
 
 	<!-- AuthenticatorActivity -->
-	<string name="prompt_label">Escoga un Pais</string>
+	<string name="prompt_label">Escoja un País</string>
 	<!-- Label above username EditText -->
 	<string name="login_activity_username_label">Username</string>
 	<!-- Label above password EditText -->
@@ -73,11 +69,10 @@
 	<!-- Message shown in dialog to prompt the user for their password -->
 	<string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
 	<!-- Message shown if the provided account doesn't support the current activity. -->
-	<string name="login_activity_newaccount_text">Create your Taxicop or Log in account. Enter your email as
-		username. </string>
+	<string name="login_activity_newaccount_text">Crea tu cuenta o ingresa a Taxicop. Usa un correo como nombre de usuario.</string>
 
 	<!-- Button that takes the user to the "sign in" screen -->
-	<string name="sign_in_button_label">Comming Soon: Sign in</string>
+	<string name="sign_in_button_label">Sign in</string>
 	<!-- Button for going to the previous screen or step -->
 	<string name="back_button_label">Back</string>
 	<!-- Button to cancel the current operation -->

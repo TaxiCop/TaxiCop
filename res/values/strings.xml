@@ -14,7 +14,7 @@
 	<!-- Messages -->
 	<string name="confirm_message">Thanks for your kind contribution ;) !!</string>
 	<string name="error_message">Car Plate not found, Please contribute</string>
-	<string name="error_message_length">Wrong Car-Plate Length</string>
+	<string name="error_message_length">Wrong Car Plate Length</string>
 	<string name="error_message_characters">Wrong Character Secuence</string>
 	<string name="error_message_rating">Invalid Rating</string>
 	<!-- Main Tabs -->
@@ -22,19 +22,19 @@
 	<string name="tab_insert">Report</string>
 	<string name="tab_sync">Sync</string>
 	<!-- Sync Layaout -->
-	<string name="sync">Car-Plates Sync:</string>
+	<string name="sync">Car Plates Sync:</string>
 	<string name="sync_error">Please Activate Android Sync</string>
 	<!-- Request Layaout -->
-	<string name="help_carplate">Type Car-Plate</string>
+	<string name="help_carplate">Type Car Plate</string>
 	<string name="request_button">Search</string>
 	<string name="back_button">Back</string>
 	<!-- Submmit Layaout -->
 	<string name="help_report">Report Plate:</string>
 	<string name="Description">Description (optional)</string>
-	<string name="submmit_button">Submmit</string>
+	<string name="submmit_button">Submit</string>
 
 	<!-- Permission label -->
-	<string name="permlab_TaxicopAuthPassword">access to passwords for Taxicop accounts</string>
+	<string name="permlab_TaxicopAuthPassword">Access to passwords for Taxicop accounts</string>
 	<!-- Permission description -->
 	<string name="permdesc_TaxicopAuthPassword">Allows applications direct access to the passwords
 		for the
@@ -75,8 +75,7 @@
 	<!-- Message shown in dialog to prompt the user for their password -->
 	<string name="login_activity_loginfail_text_pwmissing">Type the password for this account.</string>
 	<!-- Message shown if the provided account doesn't support the current activity. -->
-	<string name="login_activity_newaccount_text">Create your Taxicop or Log in account. Enter your email as
-		username. </string>
+	<string name="login_activity_newaccount_text">Create an account or login to Taxicop. Enter your email as username.</string>
 
 	<!-- Button that takes the user to the "sign in" screen -->
 	<string name="sign_in_button_label">Sign in</string>

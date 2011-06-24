@@ -94,8 +94,9 @@ public class NetworkUtilities {
 	public static final String PARAM_UPDATED = "timestamp";
 	public static final String USER_AGENT = "AuthenticationService/1.0";
 	public static final int REGISTRATION_TIMEOUT = 30 * 1000; // ms
-	// public static String URL="192.168.1.6:8000";
-	public static String URL = "www.taxicop.org";
+	// public static String URL="192.168.1.6:8001";
+	// public static String URL = "www.taxicop.org";
+	public static String URL = "hpsaturnserver.appspot.com";
 	public static final String BASE_URL = "http://";
 	public static final String LAST_SEQ_URI = "/";
 	public static final String AUTH_URI = "/auth";

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/SubmmitLayout"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
 	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@drawable/background">
 	<TextView android:id="@+id/tx_help" style="@style/CarPlate"
-		android:text="@string/help_report" android:layout_marginTop="70dp"
+		android:text="@string/help_report" android:layout_marginTop="50dp"
 		android:gravity="center">
 	</TextView>
 	<EditText android:id="@+id/et_car_plate" android:layout_width="fill_parent"
